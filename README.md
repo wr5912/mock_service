@@ -92,6 +92,39 @@ docker compose down
 
 Elasticsearch 数据持久化目录为 `docker/volume/elasticsearch/data`。该目录只用于本地容器数据，不提交到 Git。
 
+## ES Mapping 模型与数据迁移
+
+`es_models/` 目录包含由 ES 索引 mapping 转换得到的 Pydantic 模型。模型字段使用 Python `snake_case` 命名，不配置 Pydantic alias；每个模型文件同时保留：
+
+- `INDEX_NAME`：原 ES 索引名，例如 `es_process_creation`。
+- `INDEX_MAPPING`：原始 ES mapping，可用于新 ES 建索引。
+- `TIME_FIELD_CANDIDATES`：导出脚本使用的时间字段候选列表。
+
+从远程 ES 导出 `2026-01-06` 至 `2026-01-22` 的所有 mapping 索引数据：
+
+```bash
+ES_URL=http://remote-host:26084 \
+.venv/bin/python scripts/export_es_data.py
+```
+
+默认输出为 JSON 数组：
+
+```text
+exports/es_export_2026-01-06_2026-01-22.json
+```
+
+每条记录包含 `_index`、`_id` 和原始 `_source`，便于重新导入。`exports/*.json` 默认不提交到 Git。
+
+导入到新的 ES：
+
+```bash
+DEST_ES_URL=http://new-es-host:9200 \
+.venv/bin/python scripts/import_es_json.py \
+  --input exports/es_export_2026-01-06_2026-01-22.json
+```
+
+如 ES 启用了用户名密码，可分别设置 `ES_USERNAME` / `ES_PASSWORD` 或 `DEST_ES_USERNAME` / `DEST_ES_PASSWORD`。
+
 ## API 清单
 
 | 方法 | 路径 | 说明 |
