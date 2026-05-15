@@ -7,7 +7,7 @@ from pathlib import Path
 from pydantic import BaseModel
 
 
-ES_MODELS_DIR = Path(__file__).resolve().parents[1] / "es_models"
+ES_MODELS_DIR = Path(__file__).resolve().parents[1] / "scripts" / "es_models"
 
 
 def mapping_module_names() -> list[str]:
@@ -37,7 +37,7 @@ def test_mapping_files_are_renamed_to_python_modules() -> None:
 
 def test_mapping_modules_expose_required_contract() -> None:
     for module_name in mapping_module_names():
-        module = importlib.import_module(f"es_models.{module_name}")
+        module = importlib.import_module(f"scripts.es_models.{module_name}")
 
         assert module.INDEX_NAME.startswith("es_")
         assert module.INDEX_MAPPING["mappings"]["_doc"]["properties"]
@@ -49,7 +49,7 @@ def test_mapping_modules_expose_required_contract() -> None:
 
 def test_model_fields_have_descriptions_and_no_aliases() -> None:
     for module_name in mapping_module_names():
-        module = importlib.import_module(f"es_models.{module_name}")
+        module = importlib.import_module(f"scripts.es_models.{module_name}")
         for cls in model_classes(module):
             for field in cls.model_fields.values():
                 assert field.alias is None
@@ -61,8 +61,8 @@ def test_model_fields_have_descriptions_and_no_aliases() -> None:
 
 
 def test_special_field_names_are_pythonic_without_aliases() -> None:
-    web_event = importlib.import_module("es_models.web_event")
-    threat_event = importlib.import_module("es_models.threat_event")
+    web_event = importlib.import_module("scripts.es_models.web_event")
+    threat_event = importlib.import_module("scripts.es_models.threat_event")
 
     assert "c_ip" in web_event.WebEventData.model_fields
     assert "cs_uri_query" in web_event.WebEventData.model_fields

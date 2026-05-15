@@ -23,6 +23,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 LOGGER = logging.getLogger("import_sanitized_es_data")
+DEFAULT_DEST_ES_URL = "http://127.0.0.1:59200"
 
 
 def configure_logging(verbose: bool = False) -> None:
@@ -35,10 +36,10 @@ def configure_logging(verbose: bool = False) -> None:
 
 def load_model_modules() -> dict[str, ModuleType]:
     modules: dict[str, ModuleType] = {}
-    for path in sorted((ROOT / "es_models").glob("*.py")):
+    for path in sorted((ROOT / "scripts" / "es_models").glob("*.py")):
         if path.name.startswith("_"):
             continue
-        module = importlib.import_module(f"es_models.{path.stem}")
+        module = importlib.import_module(f"scripts.es_models.{path.stem}")
         if hasattr(module, "INDEX_NAME") and hasattr(module, "INDEX_MAPPING"):
             modules[module.INDEX_NAME] = module
     return modules
@@ -50,6 +51,10 @@ def auth_from_env(prefix: str = "DEST_ES") -> tuple[str, str] | None:
     if username and password:
         return username, password
     return None
+
+
+def dest_es_url_from_env() -> str:
+    return os.getenv("DEST_ES_URL", DEFAULT_DEST_ES_URL)
 
 
 def to_snake_case(value: str) -> str:
@@ -243,9 +248,7 @@ def bulk_import(client: httpx.Client, index_name: str, records: list[dict[str, A
 
 
 def import_sanitized_records(args: argparse.Namespace) -> dict[str, Any]:
-    dest_es_url = os.getenv("DEST_ES_URL")
-    if not dest_es_url:
-        raise SystemExit("DEST_ES_URL is required, for example: DEST_ES_URL=http://new-es-host:9200")
+    dest_es_url = dest_es_url_from_env()
 
     archive_path = Path(args.archive)
     extract_root = Path(args.extract_root)
@@ -270,7 +273,7 @@ def import_sanitized_records(args: argparse.Namespace) -> dict[str, Any]:
             index_name = index_name_from_file(input_path)
             module = modules.get(index_name)
             if module is None:
-                raise SystemExit(f"No es_models module found for sanitized index file: {input_path}")
+                raise SystemExit(f"No scripts/es_models module found for sanitized index file: {input_path}")
 
             if create_index(client, index_name, module, args.replace):
                 created_indices.append(index_name)
@@ -304,6 +307,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--replace", action="store_true", help="Delete and recreate target indices before import.")
     parser.add_argument("--log-every", type=int, default=10000, help="Print per-index progress every N documents. Use 0 to disable.")
     parser.add_argument("--verbose", action="store_true", help="Print debug logs to stderr.")
+    parser.epilog = f"DEST_ES_URL defaults to {DEFAULT_DEST_ES_URL} and can be overridden for remote Elasticsearch."
     return parser
 
 

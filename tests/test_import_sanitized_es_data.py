@@ -5,10 +5,12 @@ import json
 import tarfile
 from pathlib import Path
 
-from es_models import process_creation
+from scripts.es_models import process_creation
 from scripts.import_sanitized_es_data import (
+    DEFAULT_DEST_ES_URL,
     build_bulk_body,
     create_index,
+    dest_es_url_from_env,
     extract_sanitized_archive,
     index_name_from_file,
     safe_tar_members,
@@ -46,6 +48,19 @@ class FakeClient:
 
 def test_index_name_comes_from_sanitized_file_name() -> None:
     assert index_name_from_file(Path("exports/sanitized/es_process_creation.json")) == "es_process_creation"
+
+
+def test_dest_es_url_defaults_to_local_es(monkeypatch) -> None:
+    monkeypatch.delenv("DEST_ES_URL", raising=False)
+
+    assert dest_es_url_from_env() == "http://127.0.0.1:59200"
+    assert dest_es_url_from_env() == DEFAULT_DEST_ES_URL
+
+
+def test_dest_es_url_allows_environment_override(monkeypatch) -> None:
+    monkeypatch.setenv("DEST_ES_URL", "http://remote-es:9200")
+
+    assert dest_es_url_from_env() == "http://remote-es:9200"
 
 
 def make_archive(archive_path: Path, files: dict[str, str]) -> None:
