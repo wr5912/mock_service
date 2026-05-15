@@ -92,38 +92,37 @@ docker compose down
 
 Elasticsearch 数据持久化目录为 `docker/volume/elasticsearch/data`。该目录只用于本地容器数据，不提交到 Git。
 
-## ES Mapping 模型与数据迁移
+## ES Mapping 模型与归档导入
 
 `es_models/` 目录包含由 ES 索引 mapping 转换得到的 Pydantic 模型。模型字段使用 Python `snake_case` 命名，不配置 Pydantic alias；每个模型文件同时保留：
 
 - `INDEX_NAME`：原 ES 索引名，例如 `es_process_creation`。
 - `INDEX_MAPPING`：原始 ES mapping，可用于新 ES 建索引。
-- `TIME_FIELD_CANDIDATES`：导出脚本使用的时间字段候选列表。
+- `SOURCE_FIELD_MAP`：原始 ES 字段到 Python `snake_case` 字段的映射。
 
-从远程 ES 导出 `2026-01-06` 至 `2026-01-22` 的所有 mapping 索引数据：
+`exports/sanitized.tar.gz` 是已经脱敏并 dump 为 Python `snake_case` 字段的数据包，提交到 Git LFS。首次拉取仓库后如未自动下载 LFS 文件，可执行：
 
 ```bash
-ES_URL=http://remote-host:26084 \
-.venv/bin/python scripts/export_es_data.py
+git lfs pull
 ```
 
-默认输出为 JSON 数组：
-
-```text
-exports/2026-01-06_2026-01-22.json
-```
-
-每条记录包含 `_index`、`_id` 和原始 `_source`，便于重新导入。`exports/*.json` 默认不提交到 Git。
-
-导入到新的 ES：
+导入到指定 ES，并按 `snake_case` 字段名重建索引：
 
 ```bash
 DEST_ES_URL=http://new-es-host:9200 \
-.venv/bin/python scripts/import_es_json.py \
-  --input exports/2026-01-06_2026-01-22.json
+.venv/bin/python scripts/import_sanitized_es_data.py --replace
 ```
 
-如 ES 启用了用户名密码，可分别设置 `ES_USERNAME` / `ES_PASSWORD` 或 `DEST_ES_USERNAME` / `DEST_ES_PASSWORD`。
+脚本会先把 `exports/sanitized.tar.gz` 解压到 `exports/sanitized/`，再逐个读取 `*.json` 文件导入同名索引，例如 `exports/sanitized/es_process_creation.json` 导入到 `es_process_creation`。
+
+`--replace` 会删除并重建同名索引；不传该参数时，如果目标索引已存在，脚本会失败退出，避免覆盖已有数据。`exports/sanitized/` 已存在时脚本默认失败，传 `--overwrite-extract` 才会覆盖旧解压目录：
+
+```bash
+DEST_ES_URL=http://new-es-host:9200 \
+.venv/bin/python scripts/import_sanitized_es_data.py --replace --overwrite-extract
+```
+
+如 ES 启用了用户名密码，可设置 `DEST_ES_USERNAME` / `DEST_ES_PASSWORD`。
 
 ## API 清单
 

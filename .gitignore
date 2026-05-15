@@ -6,5 +6,7 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 exports/*.json
+exports/**/*.json
+exports/sanitized/
 docker/volume/*
 !docker/volume/.gitkeep
