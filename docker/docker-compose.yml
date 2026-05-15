@@ -1,0 +1,46 @@
+name: mock-service
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION:-7.14.0}
+    container_name: mock-service-elasticsearch
+    restart: unless-stopped
+    environment:
+      cluster.name: mock-service-es
+      node.name: mock-service-es-01
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      bootstrap.memory_lock: "false"
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms512m -Xmx512m}
+    ports:
+      - "${ES_HTTP_PORT:-59200}:9200"
+      - "${ES_TRANSPORT_PORT:-59300}:9300"
+    volumes:
+      - ./volume/elasticsearch/data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${KIBANA_VERSION:-7.14.0}
+    container_name: mock-service-kibana
+    restart: unless-stopped
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      SERVER_NAME: mock-service-kibana
+      SERVER_HOST: "0.0.0.0"
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      I18N_LOCALE: zh-CN
+    ports:
+      - "${KIBANA_PORT:-55601}:5601"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5601/api/status >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 60s

@@ -31,6 +31,67 @@ DEEPSEEK_MODEL=deepseek-chat
 
 不要把真实 API Key 写入代码或提交到 Git。
 
+## Elasticsearch 与 Kibana 容器
+
+项目提供 Elasticsearch `7.14.0` 单节点容器和 Kibana `7.14.0`，用于本地联调搜索、索引、日志类数据和可视化查询场景。
+
+首次启动前复制 Docker 环境变量模板：
+
+```bash
+cp docker/.env.example docker/.env
+```
+
+启动 ES：
+
+```bash
+cd docker
+docker compose up -d elasticsearch
+```
+
+启动 Kibana：
+
+```bash
+cd docker
+docker compose up -d kibana
+```
+
+访问与验证：
+
+- Elasticsearch HTTP 地址：<http://127.0.0.1:59200>
+- Elasticsearch Transport 端口：`59300`
+- Kibana 地址：<http://127.0.0.1:55601>
+- Elasticsearch 健康检查：
+
+```bash
+curl "http://127.0.0.1:59200/_cluster/health?pretty"
+```
+
+- Kibana 健康检查：
+
+```bash
+curl "http://127.0.0.1:55601/api/status"
+```
+
+如已导入 `mock_es_data_json` 中的 OCSF 攻击链数据，可在 Kibana 中创建 Data View：
+
+```bash
+curl -X POST "http://127.0.0.1:55601/api/index_patterns/index_pattern" \
+  -H "kbn-xsrf: true" \
+  -H "Content-Type: application/json" \
+  -d '{"index_pattern":{"title":"ocsf-attack-chain-*","timeFieldName":"time"}}'
+```
+
+创建后可在 Kibana 的 Discover 中选择 `ocsf-attack-chain-*` 查看数据。
+
+停止 ES 与 Kibana：
+
+```bash
+cd docker
+docker compose down
+```
+
+Elasticsearch 数据持久化目录为 `docker/volume/elasticsearch/data`。该目录只用于本地容器数据，不提交到 Git。
+
 ## API 清单
 
 | 方法 | 路径 | 说明 |

