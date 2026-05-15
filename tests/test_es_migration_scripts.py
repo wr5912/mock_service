@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 
 from es_models import process_creation, threat_event
-from scripts.export_es_data import build_range_query, to_epoch_millis
+from scripts.export_es_data import build_range_query, default_output_path, to_epoch_millis
 from scripts.import_es_json import (
     build_bulk_body,
     collect_indices,
@@ -23,6 +23,12 @@ def test_build_range_query_uses_keyword_for_text_time_fields() -> None:
             }
         }
     }
+
+
+def test_default_output_path_uses_plain_date_range_name() -> None:
+    assert str(default_output_path("2026-01-06", "2026-01-23")).endswith(
+        "exports/2026-01-06_2026-01-22.json"
+    )
 
 
 def test_build_range_query_converts_long_time_fields_to_epoch_millis() -> None:

@@ -126,7 +126,7 @@ def default_output_path(start_date: str, end_exclusive_date: str) -> Path:
         end_label = inclusive_end.isoformat()
     except ValueError:
         end_label = end_exclusive_date.replace(":", "").replace("/", "-")
-    return ROOT / "exports" / f"es_export_{start_date}_{end_label}.json"
+    return ROOT / "exports" / f"{start_date}_{end_label}.json"
 
 
 def iter_index_hits(
@@ -239,7 +239,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--start-date", default=DEFAULT_START_DATE, help="Inclusive start date or datetime.")
     parser.add_argument("--end-date", default=DEFAULT_END_EXCLUSIVE_DATE, help="Exclusive end date or datetime.")
     parser.add_argument("--timezone", default=DEFAULT_TIMEZONE, help="Timezone used when converting long timestamps.")
-    parser.add_argument("--output", help="Output JSON file path. Defaults to exports/es_export_<range>.json.")
+    parser.add_argument("--output", help="Output JSON file path. Defaults to exports/<start>_<end>.json.")
     parser.add_argument("--page-size", type=int, default=1000, help="Scroll page size.")
     parser.add_argument("--scroll", default="2m", help="Elasticsearch scroll keepalive.")
     parser.add_argument("--timeout", type=float, default=60.0, help="HTTP timeout in seconds.")

@@ -110,7 +110,7 @@ ES_URL=http://remote-host:26084 \
 默认输出为 JSON 数组：
 
 ```text
-exports/es_export_2026-01-06_2026-01-22.json
+exports/2026-01-06_2026-01-22.json
 ```
 
 每条记录包含 `_index`、`_id` 和原始 `_source`，便于重新导入。`exports/*.json` 默认不提交到 Git。
@@ -120,7 +120,7 @@ exports/es_export_2026-01-06_2026-01-22.json
 ```bash
 DEST_ES_URL=http://new-es-host:9200 \
 .venv/bin/python scripts/import_es_json.py \
-  --input exports/es_export_2026-01-06_2026-01-22.json
+  --input exports/2026-01-06_2026-01-22.json
 ```
 
 如 ES 启用了用户名密码，可分别设置 `ES_USERNAME` / `ES_PASSWORD` 或 `DEST_ES_USERNAME` / `DEST_ES_PASSWORD`。
