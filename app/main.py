@@ -25,6 +25,7 @@ from app.models import (
     SecurityEvent,
     Vulnerability,
 )
+from app.threat_analysis_mock_data.router import router as threat_analysis_router
 
 CountQuery = Annotated[int, Query(ge=1, le=200, description="返回记录数，范围 1-200。")]
 SeedQuery = Annotated[int | None, Query(description="随机种子。传入相同 seed 可得到稳定的模拟数据。")]
@@ -37,6 +38,7 @@ tags_metadata = [
     {"name": "事件", "description": "生成安全事件、漏洞、威胁情报和原始日志样例。"},
     {"name": "看板", "description": "生成 SOC 首页或运营大屏常用汇总指标。"},
     {"name": "AI 场景", "description": "调用 DeepSeek 生成安全运营演练文本；需要配置 DEEPSEEK_API_KEY。"},
+    {"name": "Threat Analysis Mock", "description": "Threat Analysis 外部查询接口 mock 数据。"},
 ]
 
 app = FastAPI(
@@ -49,6 +51,7 @@ app = FastAPI(
     version="0.1.0",
     openapi_tags=tags_metadata,
 )
+app.include_router(threat_analysis_router)
 
 
 @app.get("/health", tags=["系统"], response_model=HealthResponse, summary="健康检查")
