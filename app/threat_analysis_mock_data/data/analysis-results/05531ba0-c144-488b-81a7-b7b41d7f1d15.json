@@ -1,0 +1,139 @@
+{
+  "finding": {
+    "finding_id": "05531ba0-c144-488b-81a7-b7b41d7f1d15",
+    "source_id": "contract-fixture-es",
+    "idempotency_key": "contract-fixture-es:detection_finding:contract-extra-finding-05",
+    "event_time": "2026-01-08T20:43:24Z",
+    "analysis_status": "succeeded",
+    "latest_analysis_job_id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
+    "entity_summary": {
+      "host": {
+        "uid": "MOCK-PC-000C29BEEF002",
+        "name": "MOCK-PC-000C29BEEF002"
+      },
+      "user": {
+        "name": "tester4"
+      },
+      "network": {
+        "dst_ip": null
+      },
+      "process": {
+        "pid": 7088,
+        "uid": "7088_1767900880000",
+        "file": {
+          "md5": "00000000000000000000000000abc058",
+          "name": "ipconfig.exe",
+          "path": "C:\\Windows\\System32\\ipconfig.exe"
+        },
+        "name": "ipconfig.exe",
+        "created_time": 1767900880000
+      }
+    },
+    "created_at": "2026-05-18T01:59:10.839990Z",
+    "updated_at": "2026-05-18T03:18:14.292691Z"
+  },
+  "latest_job": {
+    "id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
+    "finding_id": "05531ba0-c144-488b-81a7-b7b41d7f1d15",
+    "status": "succeeded",
+    "run_reason": "manual",
+    "retry_count": 0,
+    "error_summary": {},
+    "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
+    "created_at": "2026-05-18T03:18:14.194529Z",
+    "updated_at": "2026-05-18T03:18:14.292691Z"
+  },
+  "latest_result": {
+    "id": "ae339845-0682-4c35-9f6f-4c3cdb6219cc",
+    "finding_id": "05531ba0-c144-488b-81a7-b7b41d7f1d15",
+    "analysis_job_id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
+    "verdict": "threat",
+    "confidence": 0.75,
+    "severity": "medium",
+    "summary": {
+      "engine_id": "builtin/cypher_rule",
+      "package_uri": "engine_packages/builtin/cypher_rule",
+      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_run_id": "91a5a104-02b3-4381-bb2e-6e1e83ebee4d",
+      "engine_version": "0.1.0",
+      "evidence_count": 1
+    },
+    "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
+    "created_at": "2026-05-18T03:18:14.292691Z",
+    "updated_at": "2026-05-18T03:18:14.292691Z"
+  },
+  "evidence": [
+    {
+      "id": "7c902cf7-8e7b-4f17-b949-1104b890338c",
+      "evidence": {
+        "file_id": "file--fad4cb7e-fe55-5753-9685-742fc36568a2",
+        "file_md5": "00000000000000000000000000abc058",
+        "data_type": "network_activity",
+        "dst_value": "198.51.100.62",
+        "file_path": "C:\\Windows\\System32\\ipconfig.exe",
+        "host_name": "MOCK-PC-000C29BEEF002",
+        "event_time": "1767903016000",
+        "network_id": "network-traffic--08d6a820-8d0c-5e3f-a98b-54ecc202f6f9",
+        "process_id": "process--72ced679-53f9-5584-ad87-f53f14c0322d",
+        "observed_id": "observed-data--6a7a0758-c3f5-5539-8b2a-4ac691def91d",
+        "process_pid": 7088,
+        "process_name": "ipconfig.exe",
+        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29BEEF002",
+        "process_created_time": 1767900880000
+      },
+      "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
+      "created_at": "2026-05-18T03:18:14.292691Z"
+    }
+  ],
+  "report": {
+    "id": "112686b6-ec36-4007-a4cc-7e058ea1c162",
+    "analysis_result_id": "ae339845-0682-4c35-9f6f-4c3cdb6219cc",
+    "status": "ready",
+    "report": {
+      "title": "测试主机罕见外部连接告警",
+      "attack_story": "用户 tester4 在测试主机上运行 ipconfig.exe，该进程随后连接至罕见外部地址 198.51.100.62。可能为信息收集或命令执行（T1059）后的外连行为。",
+      "key_evidence": [
+        "进程 ipconfig.exe（路径 C:\\Windows\\System32\\ipconfig.exe）发起连接",
+        "目标 IP: 198.51.100.62（外部地址）",
+        "主机: MOCK-PC-000C29BEEF002，用户: tester4",
+        "关联攻击技术: T1059（命令执行）"
+      ],
+      "uncertainties": [
+        "证据仅包含单次网络连接，缺乏上下文（如连接时长、数据量）",
+        "未提供父进程信息，无法判断执行链"
+      ],
+      "executive_summary": "在主机 MOCK-PC-000C29BEEF002 上，进程 ipconfig.exe（PID 7088）于 2026-01-08 20:43:24 向外部 IP 198.51.100.62 发起网络连接。该行为被规则引擎识别为威胁，置信度中等（0.75），严重程度中等。",
+      "recommended_actions": [
+        "调查进程 ipconfig.exe 的父进程及启动参数",
+        "确认用户 tester4 的操作意图",
+        "检查目标 IP 198.51.100.62 的威胁情报",
+        "评估主机是否存在其他异常行为"
+      ],
+      "confidence_explanation": "基于规则匹配和单一证据，置信度中等（0.75），需进一步验证。"
+    },
+    "provider": "deepseek",
+    "model": "openai/deepseek-chat",
+    "prompt_version": "fast-threat-report-v1",
+    "input_hash": "a7275eebe14c638c8fc098f6afa7113991f01178c4bb86a8c71f579dc56eb90e",
+    "error_summary": {},
+    "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
+    "created_at": "2026-05-18T03:18:19.924114Z",
+    "updated_at": "2026-05-18T03:18:19.924114Z"
+  },
+  "traces": [
+    {
+      "id": "7cd9c621-f746-446f-afe1-36f52ce4cfea",
+      "trace": {
+        "rule": "host_process_context_match",
+        "engine_id": "builtin/cypher_rule",
+        "engine_type": "cypher_rule",
+        "package_uri": "engine_packages/builtin/cypher_rule",
+        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "engine_version": "0.1.0",
+        "evidence_count": 1
+      },
+      "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
+      "created_at": "2026-05-18T03:18:14.292691Z"
+    }
+  ]
+}

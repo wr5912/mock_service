@@ -1,0 +1,203 @@
+{
+  "items": [
+    {
+      "finding_id": "00fb5c80-999d-4ac4-88e9-587d47e5350e",
+      "source_id": "contract-fixture-es",
+      "idempotency_key": "contract-fixture-es:detection_finding:contract-extra-finding-02",
+      "event_time": "2026-01-08T20:43:21Z",
+      "analysis_status": "succeeded",
+      "latest_analysis_job_id": "d22ed77b-ffa3-41c0-ac96-fea287cf21be",
+      "entity_summary": {
+        "host": {
+          "uid": "MOCK-PC-000C29BABA354EA1",
+          "name": "MOCK-PC-000C29BABA354EA1"
+        },
+        "user": {
+          "name": "admin"
+        },
+        "network": {
+          "dst_ip": null
+        },
+        "process": {
+          "pid": 7005,
+          "uid": "7005_1767900050000",
+          "file": {
+            "md5": "00000000000000000000000000abc005",
+            "name": "schtasks.exe",
+            "path": "C:\\Windows\\System32\\schtasks.exe"
+          },
+          "name": "schtasks.exe",
+          "created_time": 1767900050000
+        }
+      },
+      "created_at": "2026-05-18T01:59:10.839990Z",
+      "updated_at": "2026-05-18T03:18:39.743111Z"
+    },
+    {
+      "finding_id": "3601bb12-d218-4124-b312-5d0f203d0f69",
+      "source_id": "contract-fixture-es",
+      "idempotency_key": "contract-fixture-es:detection_finding:contract-extra-finding-04",
+      "event_time": "2026-01-08T20:43:23Z",
+      "analysis_status": "succeeded",
+      "latest_analysis_job_id": "9800655d-5e72-4a28-8981-56de1d07c963",
+      "entity_summary": {
+        "host": {
+          "uid": "MOCK-PC-000C29DEAD001",
+          "name": "MOCK-PC-000C29DEAD001"
+        },
+        "user": {
+          "name": "tester3"
+        },
+        "network": {
+          "dst_ip": null
+        },
+        "process": {
+          "pid": 7072,
+          "uid": "7072_1767900720000",
+          "file": {
+            "md5": "00000000000000000000000000abc048",
+            "name": "regsvr32.exe",
+            "path": "C:\\Windows\\System32\\regsvr32.exe"
+          },
+          "name": "regsvr32.exe",
+          "created_time": 1767900720000
+        }
+      },
+      "created_at": "2026-05-18T01:59:10.839990Z",
+      "updated_at": "2026-05-18T03:19:18.671539Z"
+    },
+    {
+      "finding_id": "b1b2bd12-1038-407a-af71-9dff0ba15746",
+      "source_id": "contract-fixture-es",
+      "idempotency_key": "contract-fixture-es:detection_finding:contract-extra-finding-01",
+      "event_time": "2026-01-08T20:43:20Z",
+      "analysis_status": "succeeded",
+      "latest_analysis_job_id": "6ff971bb-e0c2-42a2-8df8-e5fcae37a6a4",
+      "entity_summary": {
+        "host": {
+          "uid": "MOCK-PC-000C29BABA354EA1",
+          "name": "MOCK-PC-000C29BABA354EA1"
+        },
+        "user": {
+          "name": "admin"
+        },
+        "network": {
+          "dst_ip": null
+        },
+        "process": {
+          "pid": 7002,
+          "uid": "7002_1767900020000",
+          "file": {
+            "md5": "00000000000000000000000000abc002",
+            "name": "conhost.exe",
+            "path": "C:\\Windows\\System32\\conhost.exe"
+          },
+          "name": "conhost.exe",
+          "created_time": 1767900020000
+        }
+      },
+      "created_at": "2026-05-18T01:59:10.839990Z",
+      "updated_at": "2026-05-18T02:00:23.748181Z"
+    },
+    {
+      "finding_id": "05531ba0-c144-488b-81a7-b7b41d7f1d15",
+      "source_id": "contract-fixture-es",
+      "idempotency_key": "contract-fixture-es:detection_finding:contract-extra-finding-05",
+      "event_time": "2026-01-08T20:43:24Z",
+      "analysis_status": "succeeded",
+      "latest_analysis_job_id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
+      "entity_summary": {
+        "host": {
+          "uid": "MOCK-PC-000C29BEEF002",
+          "name": "MOCK-PC-000C29BEEF002"
+        },
+        "user": {
+          "name": "tester4"
+        },
+        "network": {
+          "dst_ip": null
+        },
+        "process": {
+          "pid": 7088,
+          "uid": "7088_1767900880000",
+          "file": {
+            "md5": "00000000000000000000000000abc058",
+            "name": "ipconfig.exe",
+            "path": "C:\\Windows\\System32\\ipconfig.exe"
+          },
+          "name": "ipconfig.exe",
+          "created_time": 1767900880000
+        }
+      },
+      "created_at": "2026-05-18T01:59:10.839990Z",
+      "updated_at": "2026-05-18T03:18:14.292691Z"
+    },
+    {
+      "finding_id": "8531ebc5-fa4d-4a9d-bebc-5048960a750e",
+      "source_id": "contract-fixture-es",
+      "idempotency_key": "contract-fixture-es:detection_finding:contract-extra-finding-03",
+      "event_time": "2026-01-08T20:43:22Z",
+      "analysis_status": "succeeded",
+      "latest_analysis_job_id": "5456e9f7-be9a-4f52-8575-d3d68e8def29",
+      "entity_summary": {
+        "host": {
+          "uid": "MOCK-PC-000C29BABA354EA1",
+          "name": "MOCK-PC-000C29BABA354EA1"
+        },
+        "user": {
+          "name": "admin"
+        },
+        "network": {
+          "dst_ip": null
+        },
+        "process": {
+          "pid": 7011,
+          "uid": "7011_1767900110000",
+          "file": {
+            "md5": "00000000000000000000000000abc00b",
+            "name": "net.exe",
+            "path": "C:\\Windows\\System32\\net.exe"
+          },
+          "name": "net.exe",
+          "created_time": 1767900110000
+        }
+      },
+      "created_at": "2026-05-18T01:59:10.839990Z",
+      "updated_at": "2026-05-18T03:19:07.076351Z"
+    },
+    {
+      "finding_id": "c9c6f912-4cf8-4323-9561-6b8dcc8b3b4b",
+      "source_id": "contract-fixture-es",
+      "idempotency_key": "contract-fixture-es:detection_finding:contract-finding-001",
+      "event_time": "2026-01-06T16:59:34.371000Z",
+      "analysis_status": "succeeded",
+      "latest_analysis_job_id": "6deb0b85-4224-4c54-9025-023805155ae4",
+      "entity_summary": {
+        "host": {
+          "uid": "MOCK-PC-000C29BABA354EA1",
+          "name": "MOCK-PC-000C29BABA354EA1"
+        },
+        "user": {
+          "name": "admin"
+        },
+        "network": {
+          "dst_ip": null
+        },
+        "process": {
+          "pid": 6828,
+          "uid": "6828_1767718768337",
+          "file": {
+            "md5": "ceaa5817a65e914aa178b28f12359a46",
+            "name": "WINWORD.EXE",
+            "path": "C:\\Program Files (x86)\\Microsoft Office\\Office12\\WINWORD.EXE"
+          },
+          "name": "WINWORD.EXE",
+          "created_time": 1767718768337
+        }
+      },
+      "created_at": "2026-05-17T18:02:41.980380Z",
+      "updated_at": "2026-05-17T18:09:03.774528Z"
+    }
+  ],
+  "limit": 50
+}
