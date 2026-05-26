@@ -106,3 +106,46 @@ class ScenarioRequest(BaseModel):
 class ScenarioResponse(BaseModel):
     model: str = Field(examples=["deepseek-chat"])
     content: str = Field(examples=["演练目标：验证 SOC 对勒索软件早期行为的识别与处置能力..."])
+
+
+ThreatIntelligenceType = Literal["ioc", "actor_profile", "campaign", "vulnerability", "malware", "situational"]
+IndicatorType = Literal["ip", "domain", "url", "hash", "email", "cve"]
+
+
+class ThreatIntelligenceRequest(BaseModel):
+    topic: str = Field(
+        min_length=2,
+        max_length=120,
+        examples=["近期针对制造业的勒索软件活动"],
+        description="希望生成的威胁情报主题，可以是行业、攻击组织、IOC、漏洞或安全事件场景。",
+    )
+    intelligence_type: ThreatIntelligenceType = Field(
+        default="situational",
+        description="威胁情报类型：IOC、攻击组织画像、攻击活动、漏洞、恶意软件或态势简报。",
+    )
+    language: Literal["zh", "en"] = Field(default="zh", description="返回语言。")
+    include_iocs: bool = Field(default=True, description="是否在返回内容中包含模拟 IOC。")
+
+
+class ThreatIntelligenceIndicator(BaseModel):
+    type: IndicatorType = Field(description="IOC 类型。", examples=["domain"])
+    value: str = Field(description="模拟 IOC 值。", examples=["update-check.example"])
+    threat_type: str = Field(description="关联威胁类型。", examples=["c2"])
+    confidence: int = Field(ge=0, le=100, description="IOC 可信度，范围 0-100。", examples=[82])
+    description: str = Field(description="IOC 的模拟上下文说明。", examples=["模拟 C2 域名，用于联调展示。"])
+
+
+class ThreatIntelligenceResponse(BaseModel):
+    model: str = Field(description="生成内容使用的 LLM 模型。", examples=["deepseek-chat"])
+    topic: str = Field(description="请求中的威胁情报主题。", examples=["近期针对制造业的勒索软件活动"])
+    intelligence_type: ThreatIntelligenceType = Field(description="威胁情报类型。")
+    generated_at: datetime = Field(description="生成时间。")
+    title: str = Field(description="威胁情报标题。", examples=["制造业勒索软件活动模拟简报"])
+    summary: str = Field(description="威胁情报摘要。")
+    severity: Severity = Field(description="模拟威胁严重性。", examples=["high"])
+    confidence: int = Field(ge=0, le=100, description="整体情报可信度，范围 0-100。", examples=[78])
+    threat_actor: str | None = Field(default=None, description="模拟攻击组织或威胁主体。")
+    ttps: list[str] = Field(default_factory=list, description="MITRE ATT&CK 技术或战术列表。")
+    indicators: list[ThreatIntelligenceIndicator] = Field(default_factory=list, description="模拟 IOC 列表。")
+    recommendations: list[str] = Field(default_factory=list, description="处置和检测建议。")
+    raw_content: str = Field(description="LLM 返回的原始内容，便于调试和展示。")

@@ -25,7 +25,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python -e ".[test]"
 
 # 本地开发
-.venv/bin/uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+.venv/bin/uvicorn app.main:app --reload --host 0.0.0.0 --port 53001
 
 # 测试
 .venv/bin/pytest

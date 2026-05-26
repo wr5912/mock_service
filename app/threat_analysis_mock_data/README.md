@@ -14,7 +14,7 @@ GET /api/external/detection-findings/{finding_id}/analysis-result
 把整个目录复制到任意位置后，在该目录内运行：
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn main:app --host 0.0.0.0 --port 53001
 ```
 
 ## 挂到现有 FastAPI 应用

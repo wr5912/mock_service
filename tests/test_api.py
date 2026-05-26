@@ -1,9 +1,14 @@
 from fastapi.testclient import TestClient
 
+from app.config import Settings, get_settings
 from app.main import app
 
 
 client = TestClient(app)
+
+
+def settings_without_api_key() -> Settings:
+    return Settings(DEEPSEEK_API_KEY=None)
 
 
 def test_health() -> None:
@@ -40,7 +45,9 @@ def test_openapi_contains_docs() -> None:
 
 
 def test_ai_scenario_requires_api_key() -> None:
+    app.dependency_overrides[get_settings] = settings_without_api_key
     response = client.post("/api/v1/ai/scenarios", json={"topic": "勒索软件告警调查", "language": "zh"})
+    app.dependency_overrides.clear()
 
     assert response.status_code == 503
     assert "DEEPSEEK_API_KEY" in response.json()["detail"]

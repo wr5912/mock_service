@@ -2,22 +2,35 @@
 
 这是一个基于 Python 3 和 FastAPI 的模拟数据服务，用于给 SOC、SIEM、SOAR、EDR、漏洞管理、威胁情报和安全运营看板等系统提供联调与演示数据。
 
-服务默认不依赖外部网络。只有 `/api/v1/ai/scenarios` 会在配置 `DEEPSEEK_API_KEY` 后调用 DeepSeek 生成演练文本。
+服务默认不依赖外部网络。只有 `/api/v1/ai/scenarios` 和独立威胁情报服务会在配置 `DEEPSEEK_API_KEY` 后调用 DeepSeek 生成内容。
 
 ## 快速启动
 
 ```bash
 uv venv .venv
 uv pip install -e ".[test]"
-.venv/bin/uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+.venv/bin/uvicorn app.main:app --reload --host 0.0.0.0 --port 53001
 ```
 
 启动后访问：
 
-- Swagger UI：<http://127.0.0.1:8000/docs>
-- ReDoc：<http://127.0.0.1:8000/redoc>
-- OpenAPI JSON：<http://127.0.0.1:8000/openapi.json>
-- 健康检查：<http://127.0.0.1:8000/health>
+- Swagger UI：<http://127.0.0.1:53001/docs>
+- ReDoc：<http://127.0.0.1:53001/redoc>
+- OpenAPI JSON：<http://127.0.0.1:53001/openapi.json>
+- 健康检查：<http://127.0.0.1:53001/health>
+
+威胁情报服务是独立 Flask-RESTX 服务，单独启动：
+
+```bash
+.venv/bin/python -m app.threat_intelligence
+```
+
+默认访问地址：
+
+- 威胁情报生成接口：<http://127.0.0.1:53002/generate>
+- Swagger 2.0 JSON：<http://127.0.0.1:53002/swagger.json>
+- Swagger UI：<http://127.0.0.1:53002/docs>
+- 健康检查：<http://127.0.0.1:53002/health>
 
 ## 环境变量
 
@@ -140,24 +153,40 @@ DEST_ES_URL=http://127.0.0.1:59200 \
 生成 3 条稳定告警：
 
 ```bash
-curl "http://127.0.0.1:8000/api/v1/alerts?count=3&seed=7"
+curl "http://127.0.0.1:53001/api/v1/alerts?count=3&seed=7"
 ```
 
 生成 SOC 看板汇总：
 
 ```bash
-curl "http://127.0.0.1:8000/api/v1/dashboard/summary?seed=7"
+curl "http://127.0.0.1:53001/api/v1/dashboard/summary?seed=7"
 ```
 
 调用 DeepSeek 生成演练场景：
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/api/v1/ai/scenarios" \
+curl -X POST "http://127.0.0.1:53001/api/v1/ai/scenarios" \
   -H "Content-Type: application/json" \
   -d '{"topic":"勒索软件告警调查","language":"zh"}'
 ```
 
-如果未配置 `DEEPSEEK_API_KEY`，该接口会返回 `503`，其他模拟数据接口不受影响。
+如果未配置 `DEEPSEEK_API_KEY`，LLM 生成接口会返回 `503`，其他模拟数据接口不受影响。
+
+调用独立威胁情报服务生成模拟威胁情报：
+
+```bash
+curl -X POST "http://127.0.0.1:53002/generate" \
+  -H "Content-Type: application/json" \
+  -d '{"topic":"近期针对制造业的勒索软件活动","intelligence_type":"campaign","language":"zh","include_iocs":true}'
+```
+
+获取威胁情报接口 Swagger 2.0 文档：
+
+```bash
+curl "http://127.0.0.1:53002/swagger.json"
+```
+
+该文档由 Flask-RESTX 根据威胁情报接口模型自动生成。也可以访问 <http://127.0.0.1:53002/docs> 查看 Swagger UI。
 
 ## 数据对象
 
