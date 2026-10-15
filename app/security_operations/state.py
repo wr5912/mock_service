@@ -18,7 +18,7 @@ class MockError(Exception):
 
 
 LOCK = RLock()
-STATE = {name: {} for name in ("inspection", "policy", "emergency", "claims", "writebacks", "reports", "requests")}
+STATE = {name: {} for name in ("inspection", "policy", "policy_endpoints", "emergency", "claims", "writebacks", "reports", "requests")}
 ASSETS = [
     {"assetId": 9106, "id": 9106, "name": "测试应用服务器", "hostname": "mock-app", "ip": "192.0.2.10", "status": "ONLINE", "importance": "NORMAL", "type": "SERVER"},
     {"assetId": 9107, "id": 9107, "name": "测试数据库服务器", "hostname": "mock-db", "ip": "192.0.2.20", "status": "ONLINE", "importance": "NORMAL", "type": "SERVER"},

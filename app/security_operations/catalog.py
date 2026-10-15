@@ -1,4 +1,4 @@
-"""唯一工具目录；SOC 参数源自 019 Candidate 的已使用工具合同。"""
+"""唯一工具目录；SOC 沿用固定合同，策略与应急兼容当前运行时。"""
 from __future__ import annotations
 
 
@@ -51,6 +51,8 @@ DESCRIPTIONS = {
     "list_executable_inspections": "列出已发布的基础资产健康巡检模板及当前全部测试资产范围。",
     "start_inspection": "按目录中的 taskId 和 definitionVersion 发起异步模拟巡检，重试复用 requestId。",
     "get_inspection_result": "按 runId 查询巡检进度，完成后返回摘要、设备数量和可下载报告地址。",
+    "resolve_policy_endpoints": "在固定测试资产中解析源和目的端点，返回冻结候选或可原样准备的基础模拟对象。",
+    "choose_ambiguous_policy_endpoints": "按当前请求的冻结候选摘要和端点标识完成选择，不创建或执行策略。",
     "prepare_policy_configuration": "准备主机到主机的基础模拟访问策略草案；请求放在 body，幂等键为 request_id。",
     "get_policy_configuration_status": "按 operationId 查询模拟策略阶段、冻结候选及草案状态。",
     "select_policy_configuration_candidate": "提交当前冻结候选的完整排序和摘要，准备可确认的模拟策略草案。",
@@ -76,7 +78,7 @@ POLICY_INTENT = obj({
     "policy_kind": {"const": "NETWORK_ACCESS"}, "operation": {"const": "ADD"},
     "source": obj({"selector_type": {"const": "IP"}, "value": TEXT}, ["selector_type", "value"]),
     "destination": obj({"selector_type": {"const": "IP"}, "value": TEXT}, ["selector_type", "value"]),
-    "protocol": {"enum": ["TCP", "UDP"]},
+    "action": {"enum": ["ALLOW", "DENY"]}, "protocol": {"enum": ["TCP", "UDP"]},
     "destination_port": {"type": "integer", "minimum": 1, "maximum": 65535},
     "target_external_id": {"type": "null"}, "device_query": TEXT,
     "validity": BODY, "change_reason": TEXT,
@@ -84,7 +86,30 @@ POLICY_INTENT = obj({
 PREPARE_POLICY = obj({"body": obj({
     "contract_version": {"const": "workbench-policy-configuration/v2"},
     "request_id": IDENTIFIER, "intent": POLICY_INTENT,
+    "endpoint_resolution": obj({
+        "source_query": TEXT, "destination_query": TEXT, "candidate_set_digest": TEXT,
+        "selected_source_candidate_id": TEXT, "selected_destination_candidate_id": TEXT,
+    }, ["source_query", "destination_query", "candidate_set_digest", "selected_source_candidate_id", "selected_destination_candidate_id"]),
 }, ["contract_version", "request_id", "intent"])}, ["body"])
+POLICY_ENDPOINT_FIELDS = {
+    "contract_version": {"const": "workbench-policy-endpoint-resolution/v1"}, "request_id": IDENTIFIER,
+    "operation": {"const": "ADD"}, "action": {"enum": ["ALLOW", "DENY"]},
+    "source_query": TEXT, "destination_query": TEXT, "protocol": {"enum": ["TCP", "UDP"]},
+    "destination_port": {"type": "integer", "minimum": 1, "maximum": 65535}, "device_query": TEXT,
+}
+POLICY_ENDPOINT_REQUIRED = ["contract_version", "request_id", "operation", "action", "source_query", "destination_query", "protocol", "destination_port"]
+POLICY_ENDPOINT_SELECTION = obj({
+    **POLICY_ENDPOINT_FIELDS, "candidate_set_digest": TEXT,
+    "selected_source_candidate_id": TEXT, "selected_destination_candidate_id": TEXT,
+}, [*POLICY_ENDPOINT_REQUIRED, "candidate_set_digest", "selected_source_candidate_id", "selected_destination_candidate_id"])
+POLICY_CONFIRMATION_SCHEMA = obj({
+    "request_id": IDENTIFIER, "candidate_digest": TEXT,
+    "proof": {"type": "string", "minLength": 1, "maxLength": 8192},
+}, ["request_id", "candidate_digest", "proof"])
+POLICY_DECISION_SCHEMA = obj({
+    "request_id": IDENTIFIER, "candidate_digest": TEXT, "business_revision": ASSET,
+    "decision": {"enum": ["REJECT", "REQUEST_CHANGES"]}, "reason": TEXT,
+}, ["request_id", "candidate_digest", "business_revision", "decision", "reason"])
 EMERGENCY_BODY = {
     "request_id": IDENTIFIER, "intent": TEXT, "target_hint": TEXT, "action_key": TEXT,
     "params": obj({"src_ip": TEXT, "port": {"type": ["string", "integer"]}, "user": TEXT}),
@@ -93,7 +118,12 @@ EMERGENCY_CONFIRMATION_SCHEMA = obj({
     "request_id": IDENTIFIER, "expected_version": ASSET,
     "snapshot_digest": {"type": "string", "pattern": r"^sha256:[a-f0-9]{64}$"},
     "confirmation_event_ref": {"type": "string", "minLength": 1, "maxLength": 8192},
-}, ["request_id", "expected_version", "snapshot_digest", "confirmation_event_ref"])
+    "proof": {"type": "string", "minLength": 1, "maxLength": 8192},
+}, ["request_id", "expected_version", "snapshot_digest"])
+EMERGENCY_CONFIRMATION_SCHEMA["oneOf"] = [
+    {"required": ["proof"], "not": {"required": ["confirmation_event_ref"]}},
+    {"required": ["confirmation_event_ref"], "not": {"required": ["proof"]}},
+]
 
 TOOL_GROUPS = {
     "sec-ops": [
@@ -123,6 +153,8 @@ TOOL_GROUPS = {
         tool("get_inspection_result", obj({"runId": IDENTIFIER}, ["runId"])),
     ],
     "policy-configuration": [
+        tool("resolve_policy_endpoints", obj({"body": obj(POLICY_ENDPOINT_FIELDS, POLICY_ENDPOINT_REQUIRED)}, ["body"])),
+        tool("choose_ambiguous_policy_endpoints", obj({"body": POLICY_ENDPOINT_SELECTION}, ["body"])),
         tool("prepare_policy_configuration", PREPARE_POLICY),
         tool("get_policy_configuration_status", OPERATION),
         tool("select_policy_configuration_candidate", obj({"operationId": IDENTIFIER, "body": obj({
@@ -133,6 +165,7 @@ TOOL_GROUPS = {
         tool("get_policy_configuration_result", OPERATION),
         tool("confirm_policy_configuration", obj({"operationId": IDENTIFIER, "body": obj({
             "request_id": IDENTIFIER, "candidate_digest": TEXT,
+            "proof": {"type": "string", "minLength": 1, "maxLength": 8192},
         }, ["request_id", "candidate_digest"])}, ["operationId", "body"])),
     ],
     "emergency-action": [

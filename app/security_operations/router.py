@@ -7,12 +7,15 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.security_operations.catalog import SOC_TOOLS
+from app.security_operations.catalog import EMERGENCY_CONFIRMATION_SCHEMA, POLICY_CONFIRMATION_SCHEMA, POLICY_DECISION_SCHEMA, POLICY_ENDPOINT_SELECTION, SOC_TOOLS, TOOL_INPUT_SCHEMAS
 from app.security_operations.handlers import (
     confirm_emergency,
     emergency_result,
+    decide_policy,
+    invoke,
     invoke_soc,
     report_html,
+    validate,
 )
 from app.security_operations.state import MockError
 
@@ -32,14 +35,11 @@ class GatewayResponse(BaseModel):
     result: GatewayBusinessResponse
 
 
-class EmergencyResponse(BaseModel):
+class BusinessResponse(BaseModel):
     model_config = ConfigDict(extra="allow")
 
-    operation_id: str = Field(description="准备工具返回的模拟操作标识。")
-    version: int = Field(description="当前模拟草案版本。")
-    phase: str = Field(description="当前模拟操作阶段。")
-    execution_status: str = Field(description="模拟执行状态。")
-    simulated: bool = Field(description="始终为 true；不会操作真实设备。")
+    code: str = Field(description="成功为字符串 200；这里只提供基础模拟状态。")
+    data: dict[str, Any] = Field(description="当前绑定的模拟草案、端点候选或操作结果，不代表真实设备执行。")
 
 
 async def _body(request: Request) -> dict[str, Any]:
@@ -54,6 +54,10 @@ async def _body(request: Request) -> dict[str, Any]:
 
 def _error(error: MockError) -> JSONResponse:
     return JSONResponse({"detail": error.message}, status_code=error.status_code)
+
+
+def _request_schema(schema):
+    return {"requestBody": {"required": True, "content": {"application/json": {"schema": schema}}}}
 
 
 def _soc_endpoint(resource_id: str, tool_name: str):
@@ -113,25 +117,88 @@ def create_router() -> APIRouter:
         )
 
     @router.post(
+        "/api/v1/policy-configurations/endpoint-resolution/selection",
+        summary="选择当前冻结的基础模拟端点", tags=["策略模拟"], response_model=BusinessResponse,
+        description="复用端点工具的冻结请求、候选摘要及两个端点标识；不创建或执行策略。",
+        openapi_extra=_request_schema(POLICY_ENDPOINT_SELECTION),
+    )
+    async def select_endpoints(request: Request):
+        try:
+            return invoke("policy-configuration", "choose_ambiguous_policy_endpoints", {"body": await _body(request)}, "")
+        except MockError as error:
+            return _error(error)
+
+    @router.get(
+        "/api/v1/policy-configurations/{operation_id}", summary="读取模拟策略当前状态",
+        description="仅返回该操作当前版本与冻结候选；未知操作返回 404。",
+        tags=["策略模拟"], response_model=BusinessResponse,
+    )
+    def policy_status(operation_id: str):
+        try:
+            return invoke("policy-configuration", "get_policy_configuration_status", {"operationId": operation_id}, "")
+        except MockError as error:
+            return _error(error)
+
+    @router.get(
+        "/api/v1/policy-configurations/{operation_id}/result", summary="读取模拟策略结果",
+        description="仅返回已经创建的模拟操作结果，不准备或重复执行。",
+        tags=["策略模拟"], response_model=BusinessResponse,
+    )
+    def policy_result(operation_id: str):
+        try:
+            return invoke("policy-configuration", "get_policy_configuration_result", {"operationId": operation_id}, "")
+        except MockError as error:
+            return _error(error)
+
+    @router.post(
+        "/api/v1/policy-configurations/{operation_id}/candidate-selection",
+        summary="选择模拟策略的冻结路径候选", tags=["策略模拟"], response_model=BusinessResponse,
+        description="提交当前全部候选的排序及摘要；仅继续当前内存草案。",
+        openapi_extra=_request_schema(TOOL_INPUT_SCHEMAS["select_policy_configuration_candidate"]["properties"]["body"]),
+    )
+    async def select_candidate(operation_id: str, request: Request):
+        try:
+            return invoke("policy-configuration", "select_policy_configuration_candidate", {"operationId": operation_id, "body": await _body(request)}, "")
+        except MockError as error:
+            return _error(error)
+
+    @router.post(
+        "/api/v1/policy-configurations/{operation_id}/confirmation",
+        summary="确认绑定当前版本的模拟策略", tags=["策略模拟"], response_model=BusinessResponse,
+        description="校验模拟载荷对象、摘要、版本与时效；不验证生产 RSA 签名或审批身份，不操作真实设备。",
+        openapi_extra=_request_schema(POLICY_CONFIRMATION_SCHEMA),
+    )
+    async def policy_confirmation(operation_id: str, request: Request):
+        try:
+            body = await _body(request)
+            validate(POLICY_CONFIRMATION_SCHEMA, body)
+            return invoke("policy-configuration", "confirm_policy_configuration", {"operationId": operation_id, "body": body}, "")
+        except MockError as error:
+            return _error(error)
+
+    @router.post(
+        "/api/v1/policy-configurations/{operation_id}/decisions",
+        summary="取消当前模拟策略或请求修改", tags=["策略模拟"], response_model=BusinessResponse,
+        description="决定绑定当前草案或候选的摘要及版本，reason 不回显；修改后需重新准备。",
+        openapi_extra=_request_schema(POLICY_DECISION_SCHEMA),
+    )
+    async def policy_decision(operation_id: str, request: Request):
+        try:
+            return {"code": "200", "data": decide_policy(operation_id, await _body(request))}
+        except MockError as error:
+            return _error(error)
+
+    @router.post(
         "/api/v1/emergency-actions/{operation_id}/confirmations",
         summary="确认模拟应急操作",
         description="仅确认准备工具已返回的当前草案；operation_id 未找到时返回 404，版本或摘要不一致时返回 409。",
-        response_model=EmergencyResponse,
+        response_model=BusinessResponse,
         tags=["应急模拟"],
-        openapi_extra={"requestBody": {"required": True, "content": {"application/json": {"schema": {
-            "type": "object",
-            "properties": {
-                "request_id": {"type": "string", "description": "本次模拟确认的请求标识。"},
-                "expected_version": {"type": "integer", "description": "准备结果中的当前版本。"},
-                "snapshot_digest": {"type": "string", "description": "准备结果中的当前摘要。"},
-                "confirmation_event_ref": {"type": "string", "description": "确认运行时提供的绑定载荷；Mock 不声明生产签名验证。"},
-            },
-            "required": ["request_id", "expected_version", "snapshot_digest", "confirmation_event_ref"],
-        }}}}},
+        openapi_extra=_request_schema(EMERGENCY_CONFIRMATION_SCHEMA),
     )
     async def confirm(operation_id: str, request: Request):
         try:
-            return confirm_emergency(operation_id, await _body(request))
+            return {"code": "200", "data": confirm_emergency(operation_id, await _body(request))}
         except MockError as error:
             return _error(error)
 
@@ -139,12 +206,12 @@ def create_router() -> APIRouter:
         "/api/v1/emergency-actions/{operation_id}/result",
         summary="查询模拟应急操作结果",
         description="operation_id 使用准备工具返回的标识；未知标识返回 404，结果只包含当前基础模拟状态。",
-        response_model=EmergencyResponse,
+        response_model=BusinessResponse,
         tags=["应急模拟"],
     )
     def result(operation_id: str):
         try:
-            return emergency_result(operation_id)
+            return {"code": "200", "data": emergency_result(operation_id)}
         except MockError as error:
             return _error(error)
 

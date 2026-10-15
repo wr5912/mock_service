@@ -2,13 +2,12 @@
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from ipaddress import IPv4Address
-import base64
-import json
 import re
 
 from jsonschema import Draft202012Validator
 
 from .catalog import EMERGENCY_CONFIRMATION_SCHEMA
+from .confirmation import validate_proof
 from .state import MockError, STATE, asset, digest, identifier, lookup, remember, replay, validate_identifier
 
 
@@ -67,7 +66,8 @@ def snapshot(body, previous=None):
         if not isinstance(user, str) or not re.fullmatch(r"[A-Za-z0-9_.-]{1,64}", user):
             raise MockError(422, "该模拟动作需要基础测试账号")
         safe_params["user"] = user
-    return {"action_key": key, "action_name": ACTIONS[key], "target": target, "params": safe_params,
+    return {"action_key": key, "action_name": ACTIONS[key], "intent": ACTIONS[key],
+            "target": target, "target_name": target["name"], "target_hint": target["ip"], "params": safe_params,
             "simulated": True, "commands": []}
 
 
@@ -128,19 +128,8 @@ def confirm_emergency(operation_id, body):
             or body["snapshot_digest"] != operation["snapshot_digest"]
             or datetime.fromisoformat(operation["expires_at"]) <= datetime.now(timezone.utc)):
         raise MockError(409, "确认未绑定当前有效模拟草案")
-    # Mock 仅核对签名载荷的对象绑定；不声称验证生产签名或审批权限。
-    try:
-        encoded, signature = body["confirmation_event_ref"].split(".", 1)
-        payload = json.loads(base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)))
-        if (not signature or not isinstance(payload, dict)
-                or isinstance(payload.get("version"), bool) or not isinstance(payload.get("version"), int)
-                or payload["operation_id"] != operation_id
-                or payload["version"] != operation["version"]
-                or payload["snapshot_digest"] != operation["snapshot_digest"]
-                or payload["decision"] != "CONFIRM"):
-            raise ValueError
-    except (ValueError, TypeError, AttributeError, KeyError):
-        raise MockError(422, "模拟确认载荷与草案不一致") from None
+    validate_proof(body.get("proof", body.get("confirmation_event_ref")), operation,
+                   "snapshot_digest", "emergency.execute", legacy="proof" not in body)
     operation.update(phase="TERMINAL", required_next_action="NONE", approval_status="APPROVED",
                      execution_status="SUCCEEDED", soc_execution_id=identifier("mock_execution_"),
                      soc_observation={"evidence": {"status": "SUCCESS", "simulated": True}},

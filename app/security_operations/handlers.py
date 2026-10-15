@@ -7,9 +7,9 @@ import binascii
 
 from jsonschema import Draft202012Validator
 
-from .catalog import SOC_TOOLS, TOOL_GROUPS, TOOL_INPUT_SCHEMAS
+from .catalog import POLICY_DECISION_SCHEMA, SOC_TOOLS, TOOL_GROUPS, TOOL_INPUT_SCHEMAS
 from .emergency import confirm_emergency as _confirm_emergency, emergency_result as _emergency_result, invoke_emergency
-from .policy import invoke_policy
+from .policy import decide_policy as _decide_policy, invoke_policy
 from .soc import context, incident, soc_data
 from .state import ASSETS, HTML, LOCK, STATE, MockError, asset, identifier, lookup, remember, replay, reset_state, validate_identifier
 
@@ -175,3 +175,10 @@ def confirm_emergency(operation_id, body):
 def emergency_result(operation_id):
     with LOCK:
         return _emergency_result(operation_id)
+
+
+def decide_policy(operation_id, body):
+    validate_identifier(operation_id)
+    validate(POLICY_DECISION_SCHEMA, body)
+    with LOCK:
+        return _decide_policy(operation_id, body)

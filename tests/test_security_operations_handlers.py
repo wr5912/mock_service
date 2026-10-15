@@ -59,7 +59,7 @@ def confirmation(operation, request_id="confirm-1"):
 
 def test_catalog_counts_and_dsh_schema_subset():
     assert {key: len(value) for key, value in TOOL_GROUPS.items()} == {
-        "sec-ops": 15, "inspection": 3, "policy-configuration": 5, "emergency-action": 6, "report": 1,
+        "sec-ops": 15, "inspection": 3, "policy-configuration": 7, "emergency-action": 6, "report": 1,
     }
     assert len(SOC_TOOLS) == 19
 

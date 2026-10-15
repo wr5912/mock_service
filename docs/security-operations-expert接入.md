@@ -22,6 +22,12 @@
 | POST | `/api/v1/mcp-resources/{resourceId}/tools/{fullToolName}/invoke` | 下表 19 项 SOC 操作，使用冻结的资源 UUID |
 | POST | `/api/v1/emergency-actions/{operationId}/confirmations` | 模拟受信确认 |
 | GET | `/api/v1/emergency-actions/{operationId}/result` | 查询模拟确认结果 |
+| POST | `/api/v1/policy-configurations/endpoint-resolution/selection` | 选择解析工具返回的冻结基本端点 |
+| GET | `/api/v1/policy-configurations/{operationId}` | 查询当前模拟策略版本与候选 |
+| POST | `/api/v1/policy-configurations/{operationId}/candidate-selection` | 选择当前模拟路径候选 |
+| GET | `/api/v1/policy-configurations/{operationId}/result` | 查询模拟策略草案或结果 |
+| POST | `/api/v1/policy-configurations/{operationId}/confirmation` | 新运行时绑定草案确认；路径为单数 |
+| POST | `/api/v1/policy-configurations/{operationId}/decisions` | 取消当前模拟草案或请求修改 |
 | GET | `/reports/{report_id}.html` | 下载已创建的基本 HTML 报告 |
 | GET | `/api/v1/security-operations/openapi.json` | 由实际业务路由派生的接入规范 |
 | GET | `/api/v1/security-operations/readonly/assets/{assetId}` | 平台组合第一步：读取基本资产 |
@@ -45,17 +51,29 @@ SOC 操作请求是 `{"arguments": {...}}`，响应是 `{"status":"success","sta
 
 ## MCP 清单
 
-传输使用 Streamable HTTP，地址保留尾斜杠。每组只发现本组工具，共 30 个。下面是协议原始工具名，DSH 自动添加 `mcp__<serverName>__` 前缀。
+传输使用 Streamable HTTP，地址保留尾斜杠。当前源码每组只发现本组工具，共 32 个；下文历史实例证据中的 30 个对应增量前。下面是协议原始工具名，DSH 自动添加 `mcp__<serverName>__` 前缀。
 
 | serverName 与路径 | 原始工具名 |
 |---|---|
 | `sec-ops`，`/mcp/sec-ops/` | `search_graph_assets`、`get_graph_resolve_ip_host`、`get_soc_asset_by_asset_id`、`list_soc_asset`、`get_soc_asset_biz_systems`、`get_soc_asset_vulnerabilities`、`get_ingest_devices_by_asset_by_asset_id`、`get_graph_node_detail`、`get_graph_path_query`、`get_reachability_path_by_ip`、`get_graph_flow_host_pair_ports`、`get_reachability_cross_signal`、`get_graph_compliance_violations`、`get_graph_coverage`、`get_event_by_id` |
 | `inspection`，`/mcp/inspection/` | `list_executable_inspections`、`start_inspection`、`get_inspection_result` |
-| `policy-configuration`，`/mcp/policy-configuration/` | `prepare_policy_configuration`、`get_policy_configuration_status`、`select_policy_configuration_candidate`、`get_policy_configuration_result`、`confirm_policy_configuration` |
+| `policy-configuration`，`/mcp/policy-configuration/` | `resolve_policy_endpoints`、`choose_ambiguous_policy_endpoints`、`prepare_policy_configuration`、`get_policy_configuration_status`、`select_policy_configuration_candidate`、`get_policy_configuration_result`、`confirm_policy_configuration` |
 | `emergency-action`，`/mcp/emergency-action/` | `prepare_emergency_action`、`revise_emergency_action`、`get_emergency_action`、`list_emergency_actions`、`get_emergency_action_result`、`cancel_emergency_action` |
 | `report`，`/mcp/report/` | `save_persistence_result` |
 
-`confirm_policy_configuration` 只供受信确认器，MCP 管理界面中将策略服务设为“仅选定工具”，选择其余四项；`report` 由后端独立调用。策略业务回执中的 `code` 是字符串 `"200"`，SOC Gateway 和报告回执中的 `code` 是数字 `200`。
+`confirm_policy_configuration` 仅保留旧受信确认兼容入口，模型不开放此工具；MCP 管理界面将策略服务设为“仅选定工具”，选择其余六项。新运行时确认改走表中的 HTTP 接口；`report` 由后端独立调用。策略与应急业务回执中的 `code` 是字符串 `"200"`，SOC Gateway 和报告回执中的 `code` 是数字 `200`。
+
+### 新 EXP021 兼容合同
+
+源码已兼容 `EXP-security-operations-expert-021-rdd331f9f2e30`，本节不代表运行进程已经加载更新。基础端点来自固定测试资产：`192.0.2.10`（测试应用服务器）、`192.0.2.20`（测试数据库服务器）、`192.0.2.1`（测试防火墙）。未知资产返回 404；名称“服务器”可触发两个基本候选，供原生单选联调。
+
+策略先调用 `resolve_policy_endpoints`，参数放在 `body`，合同为 `workbench-policy-endpoint-resolution/v1`，包含 `request_id`、`operation=ADD`、`action=ALLOW|DENY`、`source_query`、`destination_query`、`protocol=TCP|UDP`、`destination_port`，可选 `device_query`。返回 `RESOLVED` 时，将 `prepare_body` 原样交给准备工具；返回 `SELECTION_REQUIRED` 时，用原请求及 `candidate_set_digest`、两个 `selected_*_candidate_id` 调用选择工具或端点选择 HTTP。准备对象的端点证明、动作或端口有改动时拒绝。草案提供 `version` 与 `confirmation_expires_at`，路径候选仍使用原有状态机。
+
+策略确认请求是 `{request_id,candidate_digest,proof}`；取消或修改请求是 `{request_id,candidate_digest,business_revision,decision,reason}`，`decision` 为 `REJECT` 或 `REQUEST_CHANGES`，其中原因不回显。应急确认使用 `{request_id,expected_version,snapshot_digest,proof}`，同时保留旧 `confirmation_event_ref` 字段形式，二者只能提供一个。策略及应急 HTTP 成功统一返回 `{code:"200",data:...}`。基础成功只更新内存，策略结果码为 `SUCCESS`，应急阶段为 `TERMINAL`。
+
+`proof` 是当前运行时的二段 Base64URL 载荷与签名格式。Mock 只校验操作号、版本、摘要、用途和有效时间，**不验证 RSA 签名、真实用户身份或审批权限**；回执明确给出 `confirmation_proof_verified:false`，不得用于真实审批验收。旧受信兼容入口同样只模拟绑定。该增量不连接设备，也不产生设备配置命令。
+
+隔离验收可使用现有专用完整 Mock 进程（如 `app.main:app` 的 53002），由维护者单独重启加载；主 53001 无需随之重启。这里的完整 Mock 与前文默认使用 53002 的独立 `/generate` 服务是不同启动入口，不应同时占用同一端口。
 
 ## 集成步骤
 

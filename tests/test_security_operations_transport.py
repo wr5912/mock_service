@@ -61,7 +61,7 @@ def rpc(service_url, group, method, params=None):
 
 @pytest.mark.parametrize(
     ("group", "count"),
-    [("sec-ops", 15), ("inspection", 3), ("policy-configuration", 5), ("emergency-action", 6), ("report", 1)],
+    [("sec-ops", 15), ("inspection", 3), ("policy-configuration", 7), ("emergency-action", 6), ("report", 1)],
 )
 def test_each_mcp_group_initializes_and_discovers(service_url, group, count):
     response = rpc(
@@ -96,6 +96,30 @@ def test_mcp_text_and_structured_results_match(service_url):
     assert payload == result["structuredContent"]
     assert payload["code"] == 200
     assert payload["data"]
+
+
+def test_policy_endpoint_tools_execute_over_real_mcp_transport(service_url):
+    body = {"contract_version": "workbench-policy-endpoint-resolution/v1", "request_id": "mcp-basic-endpoints",
+            "operation": "ADD", "action": "ALLOW", "source_query": "服务器", "destination_query": "mock-db",
+            "protocol": "TCP", "destination_port": 443, "device_query": "测试防火墙"}
+
+    def call(name, body):
+        result = rpc(service_url, "policy-configuration", "tools/call", {"name": name, "arguments": {"body": body}})["result"]
+        assert result["isError"] is False
+        assert json.loads(result["content"][0]["text"]) == result["structuredContent"]
+        assert result["structuredContent"]["code"] == "200"
+        return result["structuredContent"]["data"]
+
+    resolution = call("resolve_policy_endpoints", body)
+    assert resolution["resolution_status"] == "SELECTION_REQUIRED"
+    selected = call("choose_ambiguous_policy_endpoints", {**body,
+        "candidate_set_digest": resolution["candidate_set_digest"],
+        "selected_source_candidate_id": resolution["source"]["candidates"][0]["candidate_id"],
+        "selected_destination_candidate_id": resolution["destination"]["selected_candidate_id"]})
+    operation = call("prepare_policy_configuration", selected["prepare_body"])
+    assert operation["task_status"] == "DRAFT"
+    assert operation["version"] == 1
+    assert operation["confirmation_expires_at"]
 
 
 def test_unknown_mcp_tool_does_not_echo_input(service_url, caplog):
