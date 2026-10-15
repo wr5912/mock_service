@@ -4,6 +4,8 @@ from __future__ import annotations
 from copy import deepcopy
 import base64
 import binascii
+from html import escape
+import re
 
 from jsonschema import Draft202012Validator
 
@@ -11,7 +13,7 @@ from .catalog import POLICY_DECISION_SCHEMA, SOC_TOOLS, TOOL_GROUPS, TOOL_INPUT_
 from .emergency import confirm_emergency as _confirm_emergency, emergency_result as _emergency_result, invoke_emergency
 from .policy import decide_policy as _decide_policy, invoke_policy
 from .soc import context, incident, soc_data
-from .state import ASSETS, HTML, LOCK, STATE, MockError, asset, identifier, lookup, remember, replay, reset_state, validate_identifier
+from .state import ASSETS, HTML, INCIDENT_IDS, LOCK, STATE, MockError, asset, identifier, lookup, remember, replay, reset_state, validate_identifier
 
 
 def validate(schema, args):
@@ -23,9 +25,11 @@ def report_url(base_url, report_id):
     return base_url.rstrip("/") + "/reports/" + report_id + ".html"
 
 
-def create_report():
+def create_report(metadata):
     report_id = identifier("report_")
-    STATE["reports"][report_id] = HTML
+    fields = {"reportId": report_id, **metadata}
+    STATE["reports"][report_id] = HTML.format(metadata="".join(
+        f"<dt>{escape(key)}</dt><dd>{escape(str(value))}</dd>" for key, value in fields.items()))
     return report_id
 
 
@@ -105,9 +109,12 @@ def inspection(name, args, base_url):
     record["queries"] += 1
     result = record["result"]
     if record["queries"] >= 2 and result["status"] == "RUNNING":
-        report_id = create_report()
+        metadata = {"kind": "inspection", "runId": result["runId"], "taskId": TASK["taskId"],
+                    "definitionVersion": TASK["definitionVersion"], "assetCount": record["asset_count"]}
+        report_id = create_report(metadata)
         result.update(status="COMPLETED", conclusionStatus="NORMAL", reportReady=True,
                       reportDownloadUrl=report_url(base_url, report_id), scopeLabel=record["scope"],
+                      reportKind="basic_mock", originalContentStored=False, reportMetadata=metadata,
                       deviceCount=record["asset_count"], assetCount=record["asset_count"],
                       businessSummary="例行检查正常，测试资产与采集连接均在线。",
                       reportMarkdown="### 基础资产健康巡检\n\n测试资产在线，采集连接正常。仅提供基础模拟数据。",
@@ -127,8 +134,27 @@ def save_report(args, base_url):
     previous = replay("report.save", key, args)
     if previous is not None:
         return previous
-    report_id = create_report()
-    result = {"id": report_id, "downloadUrl": report_url(base_url, report_id), "simulated": True}
+    metadata = {"kind": "unlinked"}
+    # 报告请求本身没有 route；只从同一运行已接受的 SOC 回写读取基本身份。
+    run_id = args["businessId"]
+    if args["sourceModule"] == "threat-analysis" and re.fullmatch(
+            r"run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", run_id):
+        records = [record for record in STATE["writebacks"].values() if record["result"]["runId"] == run_id]
+        if len(records) > 1:
+            raise MockError(409, "模拟报告运行身份不唯一")
+        if records:
+            record = records[0]
+            incident_id, route = record["result"]["incidentId"], record.get("report_route")
+            if (record["result"]["status"] != "COMPLETED" or incident_id not in INCIDENT_IDS
+                    or route not in {"fast_classification", "five_source"}
+                    or args["fileName"] != incident_id + "-" + run_id + ".html"):
+                raise MockError(422, "模拟报告元数据未与已完成的本次运行一致")
+            metadata = {"kind": "threat_analysis", "runId": run_id, "incidentId": incident_id, "route": route}
+    report_id = create_report(metadata)
+    result = {"id": report_id, "downloadUrl": report_url(base_url, report_id), "simulated": True,
+              "reportKind": "basic_mock", "originalContentStored": False,
+              "metadataStatus": "LINKED" if metadata["kind"] == "threat_analysis" else "UNLINKED",
+              "reportMetadata": metadata}
     return remember("report.save", key, args, result)
 
 

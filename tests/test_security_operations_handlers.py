@@ -7,7 +7,7 @@ from app.security_operations.catalog import SOC_TOOLS, TOOL_GROUPS
 from app.security_operations.handlers import (
     confirm_emergency, emergency_result, invoke, invoke_soc, report_html, reset_state,
 )
-from app.security_operations.state import INCIDENT_IDS, MockError
+from app.security_operations.state import INCIDENT_IDS, STATE, MockError
 
 
 BASE = "http://mock.test"
@@ -103,6 +103,10 @@ def test_inspection_async_idempotence_and_real_report():
     assert completed["assetCount"] == 3
     report_id = completed["reportDownloadUrl"].rsplit("/", 1)[1].removesuffix(".html")
     assert "基础模拟报告" in report_html(report_id)
+    assert started["runId"] in report_html(report_id)
+    assert completed["reportMetadata"] == {"kind": "inspection", "runId": started["runId"],
+                                            "taskId": task["taskId"], "definitionVersion": 1, "assetCount": 3}
+    assert completed["originalContentStored"] is False
     with pytest.raises(MockError) as failure:
         call("inspection", "start_inspection", {**args, "scope": {"type": "ASSET_IDS", "assetIds": ["9106"]}})
     assert failure.value.status_code == 409
@@ -208,12 +212,69 @@ def test_report_never_returns_caller_html_and_has_stable_id():
             "fileContentBase64": base64.b64encode(marker.encode()).decode()}
     result = invoke("report", "save_persistence_result", args, BASE)
     assert result["code"] == 200
+    assert result["data"]["originalContentStored"] is False
+    assert result["data"]["metadataStatus"] == "UNLINKED"
     assert marker not in report_html(result["data"]["id"])
     assert result == invoke("report", "save_persistence_result", args, BASE)
     with pytest.raises(MockError):
         report_html("unknown")
     with pytest.raises(MockError):
         invoke("report", "save_persistence_result", {**args, "fileContentBase64": "not-base64"}, BASE)
+
+
+def report_args(run_id, incident_id, text="基础上传正文不保留"):
+    return {"businessId": run_id, "sourceModule": "threat-analysis", "revision": 1,
+            "resultType": "report", "contentType": "text/html", "fileName": incident_id + "-" + run_id + ".html",
+            "fileContentBase64": base64.b64encode(text.encode()).decode()}
+
+
+def complete_report_run(run_id, incident_id, route, marker="基础上游文字"):
+    claim = soc("ai_soc_correlate__create_incident_judgement_claim", {"incidentId": incident_id})
+    body = {"runId": run_id, "route": route, "verdict": "误报", "validationStatus": "passed",
+            "summary": marker, "reportHtml": marker,
+            "resultJson": {"run_id": run_id, "incident_id": incident_id, "route": route, "detail": marker}}
+    soc("ai_soc_correlate__update_incident_judgement_result", {"judgementId": claim["judgementId"], "body": body})
+
+
+def test_threat_reports_bind_distinct_runs_without_storing_or_reflecting_upstream_content():
+    marker = "BASIC_UPSTREAM_CONTENT_NOT_RETAINED"
+    artifacts = []
+    for index, route in enumerate(("fast_classification", "five_source"), 1):
+        run_id = f"run-00000000-0000-4000-8000-{index:012d}"
+        incident_id = INCIDENT_IDS[index - 1]
+        complete_report_run(run_id, incident_id, route, marker)
+        result = call("report", "save_persistence_result", report_args(run_id, incident_id, "<article>" + marker + "</article>"))
+        assert result["metadataStatus"] == "LINKED"
+        assert result["originalContentStored"] is False
+        assert result["reportKind"] == "basic_mock"
+        assert result["reportMetadata"] == {"kind": "threat_analysis", "runId": run_id, "incidentId": incident_id, "route": route}
+        html = report_html(result["id"])
+        assert all(value in html for value in (result["id"], run_id, incident_id, route))
+        assert "上传的报告正文未保存" in html
+        artifacts.append(html)
+    assert artifacts[0] != artifacts[1]
+    assert marker not in repr(STATE)
+
+
+@pytest.mark.parametrize("mismatch", ["fileName", "route"])
+def test_threat_report_rejects_unbound_filename_or_non_enum_route(mismatch):
+    run_id = "run-00000000-0000-4000-8000-000000000001"
+    complete_report_run(run_id, INCIDENT_IDS[0], "five_source" if mismatch == "fileName" else "BASIC_UNKNOWN_ROUTE")
+    args = report_args(run_id, INCIDENT_IDS[1] if mismatch == "fileName" else INCIDENT_IDS[0])
+    with pytest.raises(MockError) as failure:
+        call("report", "save_persistence_result", args)
+    assert failure.value.status_code == 422
+    assert not STATE["reports"]
+    assert "BASIC_UNKNOWN_ROUTE" not in repr(STATE)
+
+
+def test_report_without_soc_writeback_or_valid_run_format_is_explicitly_unlinked():
+    for run_id in ("run-00000000-0000-4000-8000-000000000001", "run-00000000-0000-3000-8000-000000000001"):
+        result = call("report", "save_persistence_result", report_args(run_id, INCIDENT_IDS[0]))
+        assert result["metadataStatus"] == "UNLINKED"
+        assert result["originalContentStored"] is False
+        assert result["reportMetadata"] == {"kind": "unlinked"}
+        assert run_id not in report_html(result["id"])
 
 
 @pytest.mark.parametrize("port", [-1, 0, 65536, True])

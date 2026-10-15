@@ -27,7 +27,8 @@ ASSETS = [
 INCIDENT_IDS = ("INC-20261015-000001", "INC-20261015-000002")
 HTML = ('<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<title>基础模拟报告</title></head><body><h1>基础模拟报告</h1>'
-        '<p>测试资产在线，例行运维检查正常。这是固定基础数据，不涉及真实设备操作。</p></body></html>')
+        '<p>本文件仅包含基础模拟元数据，不表示真实业务结论。上传的报告正文未保存，也未回显。</p>'
+        '<dl>{metadata}</dl></body></html>')
 
 
 def now():

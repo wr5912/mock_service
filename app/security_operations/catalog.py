@@ -64,7 +64,7 @@ DESCRIPTIONS = {
     "list_emergency_actions": "列出当前 Mock 进程中已准备的模拟应急操作。",
     "get_emergency_action_result": "按 operationId 查询应急模拟结果，不重新准备或提交动作。",
     "cancel_emergency_action": "按操作号和 expected_version 取消未确认的模拟应急草案。",
-    "save_persistence_result": "模拟保存报告并返回真实可下载的固定基础 HTML 样例；不回显上传内容。",
+    "save_persistence_result": "生成可下载的基础模拟元数据报告；通过已完成 SOC 回写关联本次运行，不保存或回显上传正文，回执明确 originalContentStored=false。",
 }
 
 

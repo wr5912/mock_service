@@ -102,6 +102,14 @@ SOC 操作请求是 `{"arguments": {...}}`，响应是 `{"status":"success","sta
 
 模型仍使用现有 `LOCAL_LLM_BASE_URL`、`LOCAL_LLM_API_KEY` 等受控来源；不要把真实凭据写入本说明、普通日志或验收材料。报告内容由基本数据生成，不原样发布提交的 HTML。
 
+### 基础模拟报告的内容边界
+
+报告下载使用固定 HTML 模板，只展示基本元数据。巡检报告包含服务端生成的 `runId`、任务、模板版本和资产数量。研判报告的保存参数没有独立 `route` 或 `resultJson`；服务按 `businessId` 的小写 `run-UUIDv4` 关联本次已完成 SOC 回写，校验文件名与该事件和运行一致后，仅投影 `runId`、固定模拟事件 `incidentId` 和 `route=fast_classification|five_source`。不同运行的报告可据此区分，不表示真实研判结论。
+
+`save_persistence_result` 回执保留 `id` 和 `downloadUrl`，另明确返回 `reportKind:"basic_mock"`、`originalContentStored:false`、`metadataStatus` 与 `reportMetadata`。能关联时为 `LINKED`；SOC 写回失败或旧调用没有有效运行关联时仍可下载基础样例，但标记为 `UNLINKED`，不补造运行、事件或路径。关联记录的路径不在枚举内、文件名不匹配或同一运行身份不唯一时拒绝。上传的 Base64 正文、SOC `reportHtml`、`summary` 和 `resultJson` 自由内容均不存储、不反射，不能据此声称上传的原文报告已保存。
+
+这段合同描述当前源码；更新后须由维护者另行启动或重启加载。本次边界修复的隔离 MCP 保存与下载验证不能替代智能体完整链路重测，也不会改写旧报告或历史验收证据。
+
 ## 验证边界
 
 Mock 只处理已声明对象和基础模拟状态，不连接真实设备，不执行配置命令。业务状态在重启后重置，重启前创建的运行或下载地址随后可能不存在。

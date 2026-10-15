@@ -219,7 +219,7 @@ def create_router() -> APIRouter:
         "/reports/{report_id}.html",
         response_class=HTMLResponse,
         summary="下载基础模拟报告",
-        description="report_id 使用模拟服务回执中的标识；未知标识返回 404，正文为固定基础 HTML 样例。",
+        description="report_id 使用模拟服务回执中的标识；未知标识返回 404。固定 HTML 模板仅包含已校验的基本运行元数据，不包含上传正文或真实业务结论。",
         tags=["报告模拟"],
     )
     def download_report(report_id: str):

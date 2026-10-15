@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import socket
@@ -12,7 +13,7 @@ from fastapi import FastAPI
 
 from app.security_operations.catalog import SOC_TOOLS
 from app.security_operations.router import create_router
-from app.security_operations.state import reset_state
+from app.security_operations.state import INCIDENT_IDS, reset_state
 from app.security_operations.transport import lifespan, mount_mcp
 
 
@@ -194,6 +195,8 @@ def test_report_mcp_returns_real_download_from_same_record(service_url):
     assert not result["isError"]
     data = json.loads(result["content"][0]["text"])["data"]
     assert data["id"]
+    assert data["originalContentStored"] is False
+    assert data["metadataStatus"] == "UNLINKED"
     assert urlsplit(data["downloadUrl"]).netloc == urlsplit(service_url).netloc
     download = httpx.get(data["downloadUrl"])
     assert download.status_code == 200
@@ -201,6 +204,43 @@ def test_report_mcp_returns_real_download_from_same_record(service_url):
     assert "<html" in download.text
     assert "PGgxPk9LPC9oMT4=" not in download.text
     assert httpx.get(f"{service_url}/reports/unknown-basic-record.html").status_code == 404
+
+
+def test_two_report_mcp_downloads_match_soc_run_metadata_without_reflecting_content(service_url):
+    marker = "BASIC_MCP_UPLOAD_NOT_RETAINED"
+
+    def soc(name, arguments):
+        path = f"/api/v1/mcp-resources/{SOC_TOOLS[name]['resource_id']}/tools/{name}/invoke"
+        response = httpx.post(service_url + path, json={"arguments": arguments})
+        assert response.status_code == 200
+        return response.json()["result"]["data"]
+
+    downloads = []
+    for index, route in enumerate(("fast_classification", "five_source"), 1):
+        run_id = f"run-00000000-0000-4000-8000-{index:012d}"
+        incident_id = INCIDENT_IDS[index - 1]
+        claim = soc("ai_soc_correlate__create_incident_judgement_claim", {"incidentId": incident_id})
+        soc("ai_soc_correlate__update_incident_judgement_result", {
+            "judgementId": claim["judgementId"], "body": {"runId": run_id, "route": route, "verdict": "误报",
+                "validationStatus": "passed", "summary": marker, "reportHtml": marker,
+                "resultJson": {"detail": marker, "route": route, "run_id": run_id, "incident_id": incident_id}}})
+        arguments = {"businessId": run_id, "sourceModule": "threat-analysis", "revision": 1,
+                     "resultType": "report", "contentType": "text/html", "fileName": incident_id + "-" + run_id + ".html",
+                     "fileContentBase64": base64.b64encode(("<article>" + marker + "</article>").encode()).decode()}
+        response = rpc(service_url, "report", "tools/call", {"name": "save_persistence_result", "arguments": arguments})["result"]
+        assert not response["isError"]
+        assert json.loads(response["content"][0]["text"]) == response["structuredContent"]
+        data = response["structuredContent"]["data"]
+        assert data["metadataStatus"] == "LINKED"
+        assert data["originalContentStored"] is False
+        assert data["reportMetadata"] == {"kind": "threat_analysis", "runId": run_id, "incidentId": incident_id, "route": route}
+        download = httpx.get(data["downloadUrl"])
+        assert download.status_code == 200
+        assert download.headers["content-type"].startswith("text/html")
+        assert all(value in download.text for value in (data["id"], run_id, incident_id, route))
+        assert marker not in download.text and marker not in json.dumps(response)
+        downloads.append(download.content)
+    assert downloads[0] != downloads[1]
 
 
 def test_http_errors_do_not_reflect_invalid_body(service_url):

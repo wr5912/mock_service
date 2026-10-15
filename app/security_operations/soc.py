@@ -117,6 +117,9 @@ def soc_data(tool_name, args):
         claim["status"] = status
         result = {"judgementId": judgement_id, "incidentId": claim["incidentId"], "runId": run_id,
                   "status": status, "replayed": False, "simulated": True}
-        STATE["writebacks"][key] = {"digest": fingerprint, "result": result}
+        # 仅保留报告需要的路径枚举；正文、summary 与 resultJson 均不留存。
+        route = body.get("route")
+        STATE["writebacks"][key] = {"digest": fingerprint, "result": result,
+                                    "report_route": route if isinstance(route, str) and route in {"fast_classification", "five_source"} else None}
         return deepcopy(result)
     raise MockError(404, "未找到对应模拟工具")
