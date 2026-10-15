@@ -15,6 +15,7 @@ uv pip install --python .venv/bin/python -e ".[test]"
 - HTTP 文档：<http://127.0.0.1:53001/docs>
 - 全部 API 规范：<http://127.0.0.1:53001/openapi.json>
 - 智能体业务 API 规范：<http://127.0.0.1:53001/api/v1/security-operations/openapi.json>
+- 平台资产关联告警编排规范：<http://127.0.0.1:53001/api/v1/security-operations/readonly/openapi.json>
 - 健康检查：<http://127.0.0.1:53001/health>
 
 保留的独立基本简报服务：
@@ -25,7 +26,7 @@ uv pip install --python .venv/bin/python -e ".[test]"
 
 默认端口 `53002`，提供 `POST /generate`、`GET /health`、`GET /swagger.json` 和 `/docs`。通过进程环境变量 `THREAT_INTEL_HOST`、`THREAT_INTEL_PORT` 配置监听地址与端口，变量示例见 `.env.example`；该启动入口不自动加载 `.env`。两个服务均在对应终端按 `Ctrl+C` 停止。
 
-完整 API/MCP 清单、MCP 管理界面配置、固定后端环境变量及验证边界见 [security-operations-expert 接入说明](docs/security-operations-expert接入.md)。
+完整 API/MCP 清单、MCP 管理界面配置、平台组合编排接入、固定后端环境变量及验证边界见 [security-operations-expert 接入说明](docs/security-operations-expert接入.md)。
 
 ## 基础 HTTP 数据
 

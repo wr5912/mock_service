@@ -1,0 +1,12 @@
+{
+  "observed_at": "2026-10-15T08:45:32.728Z",
+  "base": "http://10.0.160.32:3090/hap/",
+  "server_id": "mock-soc-readonly",
+  "tools": [
+    "list_detect_alert"
+  ],
+  "resource_templates": [
+    "get_soc_asset_by_asset_id"
+  ],
+  "browser_errors": []
+}

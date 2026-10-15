@@ -24,6 +24,9 @@
 | GET | `/api/v1/emergency-actions/{operationId}/result` | 查询模拟确认结果 |
 | GET | `/reports/{report_id}.html` | 下载已创建的基本 HTML 报告 |
 | GET | `/api/v1/security-operations/openapi.json` | 由实际业务路由派生的接入规范 |
+| GET | `/api/v1/security-operations/readonly/assets/{assetId}` | 平台组合第一步：读取基本资产 |
+| GET | `/api/v1/security-operations/readonly/alerts` | 平台组合第二步：按资产查询基本告警分组 |
+| GET | `/api/v1/security-operations/readonly/openapi.json` | 仅包含上述两个 GET 的组合编排规范 |
 
 主服务另有 `/openapi.json`、`/docs`、`/docs/oauth2-redirect`、`/redoc`。独立 `app.threat_analysis_mock_data.main:app` 复用发现接口；53002 独立服务提供 `POST /generate`、`GET /health`、`/swagger.json` 和 `/docs`。
 
@@ -117,7 +120,7 @@ Mock 应急确认核对载荷与草案绑定，不验证生产签名；回执保
 
 - “请执行一次基础资产健康巡检，查询到完成结果并提供报告下载链接。”
 - “请排查 192.0.2.10 到 192.0.2.20 的访问是否可达，只查询证据。”
-- “请研判基本运维测试事件 INC-20261015-000001。”（快速路径）或 `INC-20261015-000002`（完整路径）。本次已认领完成，重新演示该事件的研判需重启 Mock 清空状态，已有报告链接也随之失效。
+- “请研判基本运维测试事件 INC-20261015-000001。”（快速路径）或 `INC-20261015-000002`（完整路径）。事件在一次 Mock 运行期内只能认领一次；重启服务后可重新演示，原报告链接随之失效。
 
 ## 当前实例接入
 
@@ -143,3 +146,19 @@ Mock 应急确认核对载荷与草案绑定，不验证生产签名；回执保
 普通 `docker restart security-operations-expert-eval` 保留容器已有环境。平台“重启”及 `dsh-dev up --replace` 会重建容器，必须再次提供上表运行环境；现有实例登记只保存变量名，不自动恢复变量值。原配置和必要启动环境已在本机私有目录备份，凭据未写入本文或证据。
 
 停止当前实例使用原仓库 `dsh-dev down security-operations-expert-eval`；主 Mock 和独立简报服务在启动终端按 `Ctrl+C` 停止。Mock 服务重启后不保留模拟业务状态。
+
+## 平台工具组合编排
+
+平台 <http://10.0.160.32:3090/hap/> 的“资产相关告警只读查询”已通过 MCP 管理界面接入并发布，工具名称保持 `query_asset_related_alerts`。本次未修改平台 SDK 或业务 Harness，也未设置额外运行环境变量。
+
+复用当前两节点流程的配置步骤：
+
+1. 在“服务列表”添加启用的 OpenAPI 连接 `mock-soc-readonly`，规范地址填写 `http://10.0.160.32:53001/api/v1/security-operations/readonly/openapi.json`，无需凭据。
+2. 在“工具组合编排”编辑该工具，接口流程选“SOC 资产详情 → 近 30 天告警分组”，资产和告警服务器都选择此连接，保存草稿。
+3. 查询资产填写 `9106`。先执行 dry，再执行实际组合，确认两个步骤成功后发布；发布后工具可通过平台 MCP 入口发现和调用。
+
+两个实际操作分别是 `get_soc_asset_by_asset_id` 和 `list_detect_alert`。第二步输入 `req` 对象使用 OpenAPI `form/explode` 展开成 `assetId`、`pageNum`、`pageSize`、`windowSeconds` 四个查询参数，最大 30 天、每页最多 20 组。原生发现将资产 GET 显示为资源模板，告警 GET 显示为工具；两者都可供编排执行。
+
+[连接与发现记录](evidence/platform-composition-connection-20261015.json)确认规范回读和两种能力；[实际执行记录](evidence/platform-composition-20261015.json)与[发布后页面](evidence/platform-composition-20261015.png)确认页面草稿和发布版查询资产 `9106` 均完成两个 GET，业务与 HTTP 均为 `200`。平台 MCP 入口 `/hap/api/harness-platform/mcp` 使用平台登录认证，实际调用 `query_asset_related_alerts`、参数 `{"asset":"9107","limit":5}` 返回该资产的一个基本告警分组；未知资产 `9999` 返回 404，第二步正确跳过。此结果仅为基础模拟数据，不表示真实告警验收。
+
+本次主 Mock 为加载新接口已重启，旧报告链接属于重启前的运行结果；平台与智能体的连接配置保留。重启后已用现有智能体新 Session 完成一次巡检并实际下载新报告；[重新生成报告的记录](evidence/eval-after-composition-inspection-20261015.json)。新增接口及原有接口全量测试共 114 项通过，原 SOC 专用规范仍只有 19 个 POST 操作。

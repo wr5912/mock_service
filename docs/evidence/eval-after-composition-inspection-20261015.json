@@ -1,0 +1,70 @@
+{
+  "case": "after-composition-inspection",
+  "observed_at": "2026-10-15T08:49:51Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请执行一次基础资产健康巡检，使用唯一请求ID platform-reload-health-20261015，仅发起一次并查询到完成结果，返回可下载的局域网报告链接。不要创建周期任务，不修改配置，不重启服务。",
+      "assistant": "巡检已完成，报告可下载。\n\n## 结论\n\n- **巡检任务**：基础资产健康巡检（`mock-health-inspection`，模板版本 1）\n- **请求 ID**：`platform-reload-health-20261015`（仅发起一次）\n- **Run ID**：`inspection_6d1d059745ed45a1a768fee2dc08e372`\n- **状态**：COMPLETED，`reportReady: true`，`conclusionStatus: NORMAL`\n- **业务摘要**：例行检查正常，测试资产与采集连接均在线。\n- **范围**：当前全部测试资产（`scopeLabel`），设备/资产数量 3\n- **检查项**：资产在线状态 NORMAL（3）；采集连接状态 NORMAL（3）\n\n## 可下载报告（服务返回的局域网地址）\n\n<http://10.0.160.32:53001/reports/report_023a5eff6b494f0593f02959d9e612a9.html>\n\n## 范围与未知项\n\n- 本次结果为服务返回的基础模拟数据（`simulated: true`），覆盖范围为 3 个测试资产，不代表真实生产环境结论。\n- 未创建周期任务、未修改任何配置、未重启服务；除上述一次发起与结果查询外未执行其他动作。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_rfUyByuP381ZSc8QSu2t5788"
+        },
+        {
+          "name": "mcp__inspection__list_executable_inspections",
+          "call_id": "call_01_RMyiwgLEwJj6VpB2RG2H5676"
+        },
+        {
+          "name": "mcp__inspection__start_inspection",
+          "call_id": "call_00_tJ4DdEcuhMDayIYYUQrF4602"
+        },
+        {
+          "name": "mcp__inspection__get_inspection_result",
+          "call_id": "call_00_79BuaRcyRBQGd5qTn6JQ1436"
+        },
+        {
+          "name": "mcp__inspection__get_inspection_result",
+          "call_id": "call_00_aYGoPZMwXfpbQaNxTzjn7447"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 40
+    }
+  ],
+  "session_id": "session-464a7fb5-e457-4f62-919b-c69fd00afa21",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  },
+  "requested_inspection_id": "platform-reload-health-20261015",
+  "purpose": "Mock 组合接口加载重启后的新巡检和新报告验证。",
+  "verification": {
+    "new_session": true,
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "inspection_start_count": 1,
+    "inspection_start_arguments": {
+      "taskId": "mock-health-inspection",
+      "definitionVersion": 1,
+      "requestId": "platform-reload-health-20261015"
+    },
+    "request_id_matches": true,
+    "periodic_task_created": false,
+    "completed_receipt_found": true,
+    "run_id": "inspection_6d1d059745ed45a1a768fee2dc08e372",
+    "completion_status": "COMPLETED",
+    "report_url": "http://10.0.160.32:53001/reports/report_023a5eff6b494f0593f02959d9e612a9.html",
+    "download_http_status": 200,
+    "download_content_type": "text/html; charset=utf-8",
+    "download_contains_basic_report": true
+  },
+  "verified_at": "2026-10-15T08:50:00.006658+00:00"
+}

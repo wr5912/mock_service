@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import Settings, get_settings
 from app.llm import LOCAL_MODEL, generate_scenario
+from app.security_operations.composition import router as composition_router
 from app.security_operations.router import create_router
 from app.security_operations.transport import lifespan, mount_mcp
 from app.mock_data import (
@@ -57,6 +58,7 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 app.include_router(threat_analysis_router)
+app.include_router(composition_router)
 app.include_router(create_router())
 mount_mcp(app)
 

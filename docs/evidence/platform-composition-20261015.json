@@ -1,0 +1,819 @@
+{
+  "observed_at": "2026-10-15T08:46:46.184Z",
+  "base": "http://10.0.160.32:3090/hap/",
+  "composition_id": "security-asset-related-alerts-readonly",
+  "tool_name": "query_asset_related_alerts",
+  "connection_id": "mock-soc-readonly",
+  "dry_upstream_requests": 0,
+  "draft": {
+    "ok": true,
+    "version": {
+      "gitCommit": "77eaa90729bf1eb485ac3d0e0bf762b39fbe7c76",
+      "gitDirty": true,
+      "sourceDigest": "1c93ce9ca1dbd511569f911d52d8cdcbc917ac9426e7996152a29c7f8de2d726",
+      "digest": "f09ec0dffb79e02480fb2c97130ab8d2d7fe3099dc89c1ff71bbfa4de92a042c",
+      "definition": {
+        "schema_version": "1.0",
+        "readonly": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "asset": {
+              "type": "string",
+              "description": "SOC 正整数资产 ID，例如 9106",
+              "pattern": "^[1-9]\\d*$"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 5
+            }
+          },
+          "required": [
+            "asset"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "asset": {
+              "type": "object"
+            },
+            "alerts": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "alertSummary": {
+              "type": "object",
+              "description": "SOC 告警分组的查询范围、总分组数及总告警数；alerts 为首页分组"
+            },
+            "trace": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "asset",
+            "alerts",
+            "trace"
+          ]
+        },
+        "upstream": {
+          "kind": "openapi",
+          "steps": [
+            {
+              "step": "asset",
+              "title": "查询资产",
+              "connectionId": "mock-soc-readonly",
+              "operationId": "get_soc_asset_by_asset_id",
+              "input": {
+                "assetId": "$input.asset"
+              },
+              "output": "asset"
+            },
+            {
+              "step": "alerts",
+              "title": "查询近 30 天关联告警分组",
+              "connectionId": "mock-soc-readonly",
+              "operationId": "list_detect_alert",
+              "input": {
+                "req.assetId": "$state.assetId",
+                "req.pageNum": 1,
+                "req.pageSize": "$input.limit",
+                "req.windowSeconds": 2592000
+              },
+              "output": "alerts"
+            }
+          ]
+        },
+        "toolName": "query_asset_related_alerts",
+        "title": "资产相关告警只读查询",
+        "description": "按资产 ID 查询资产详情，再查询近 30 天关联告警分组；返回首页分组、总分组数及总告警数，仅执行只读 GET。",
+        "connectionId": "mock-soc-readonly",
+        "flow": "soc-asset-alerts",
+        "alertsConnectionId": "mock-soc-readonly"
+      }
+    },
+    "receipts": [
+      {
+        "connectionId": "mock-soc-readonly",
+        "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+        "operationId": "get_soc_asset_by_asset_id",
+        "method": "GET",
+        "path": "/api/v1/security-operations/readonly/assets/{assetId}",
+        "schemaDigest": "1e23feacde0866900aae889672ecec3d072d7f5692fb9904e8e5f89841435292"
+      },
+      {
+        "connectionId": "mock-soc-readonly",
+        "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+        "operationId": "list_detect_alert",
+        "method": "GET",
+        "path": "/api/v1/security-operations/readonly/alerts",
+        "schemaDigest": "3cb0e695c43102c12f36a45c6d36e1f95a096aed50c6c819392a974a2507d915"
+      }
+    ],
+    "result": {
+      "asset": {
+        "assetId": 9106,
+        "id": 9106,
+        "name": "测试应用服务器",
+        "hostname": "mock-app",
+        "ip": "192.0.2.10",
+        "status": "ONLINE",
+        "importance": "NORMAL",
+        "type": "SERVER"
+      },
+      "alerts": [
+        {
+          "groupId": "group-MOCK-ALERT-000001",
+          "assetId": 9106,
+          "title": "正常运维测试告警",
+          "severity": "LOW",
+          "alertCount": 1,
+          "firstSeenTime": "2026-10-15T01:00:00Z",
+          "lastSeenTime": "2026-10-15T01:00:00Z",
+          "alerts": [
+            {
+              "alert_id": "MOCK-ALERT-000001",
+              "id": "MOCK-ALERT-000001",
+              "title": "正常运维测试告警",
+              "description": "例行健康检查的基础测试数据。",
+              "severity": "LOW",
+              "rule_id": 1,
+              "affected_asset_id": 9106,
+              "affectedAssetId": 9106,
+              "created_at": "2026-10-15T01:00:00Z",
+              "alert_type": "HEALTH_CHECK",
+              "destination_ip": "192.0.2.10",
+              "ocsf": {
+                "activity_name": "例行健康检查",
+                "class_name": "设备状态",
+                "metadata": {
+                  "original_time": "2026-10-15T01:00:00Z",
+                  "product": {
+                    "name": "基础模拟服务"
+                  }
+                },
+                "device": {
+                  "uid": "9106",
+                  "ip": "192.0.2.10",
+                  "hostname": "mock-app"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "trace": [
+        {
+          "step": "asset",
+          "title": "查询资产",
+          "connectionId": "mock-soc-readonly",
+          "operationId": "get_soc_asset_by_asset_id",
+          "input": {
+            "assetId": "$input.asset"
+          },
+          "output": "asset",
+          "status": "succeeded",
+          "httpStatus": 200,
+          "durationMs": 33,
+          "mappedArguments": {
+            "assetId": 9106
+          }
+        },
+        {
+          "step": "alerts",
+          "title": "查询近 30 天关联告警分组",
+          "connectionId": "mock-soc-readonly",
+          "operationId": "list_detect_alert",
+          "input": {
+            "req.assetId": "$state.assetId",
+            "req.pageNum": 1,
+            "req.pageSize": "$input.limit",
+            "req.windowSeconds": 2592000
+          },
+          "output": "alerts",
+          "status": "succeeded",
+          "httpStatus": 200,
+          "durationMs": 36,
+          "mappedArguments": {
+            "req": {
+              "assetId": "9106",
+              "pageNum": 1,
+              "pageSize": 5,
+              "windowSeconds": 2592000
+            }
+          }
+        }
+      ],
+      "alertSummary": {
+        "totalGroups": 1,
+        "totalAlerts": 1,
+        "truncated": false,
+        "from": "2026-09-15T01:00:00Z",
+        "to": "2026-10-15T01:00:00Z",
+        "pageNum": 1,
+        "pageSize": 5
+      }
+    }
+  },
+  "published": {
+    "ok": true,
+    "version": {
+      "gitCommit": "77eaa90729bf1eb485ac3d0e0bf762b39fbe7c76",
+      "gitDirty": true,
+      "sourceDigest": "1c93ce9ca1dbd511569f911d52d8cdcbc917ac9426e7996152a29c7f8de2d726",
+      "digest": "6a3e50b3fa0b037d3438a0782c3cdb201d5a695562700878f3dd4219bcd44e54",
+      "definition": {
+        "schema_version": "1.0",
+        "readonly": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "asset": {
+              "type": "string",
+              "description": "SOC 正整数资产 ID，例如 9106",
+              "pattern": "^[1-9]\\d*$"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 5
+            }
+          },
+          "required": [
+            "asset"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "asset": {
+              "type": "object"
+            },
+            "alerts": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "alertSummary": {
+              "type": "object",
+              "description": "SOC 告警分组的查询范围、总分组数及总告警数；alerts 为首页分组"
+            },
+            "trace": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "asset",
+            "alerts",
+            "trace"
+          ]
+        },
+        "upstream": {
+          "kind": "openapi",
+          "steps": [
+            {
+              "step": "asset",
+              "title": "查询资产",
+              "connectionId": "mock-soc-readonly",
+              "operationId": "get_soc_asset_by_asset_id",
+              "input": {
+                "assetId": "$input.asset"
+              },
+              "output": "asset"
+            },
+            {
+              "step": "alerts",
+              "title": "查询近 30 天关联告警分组",
+              "connectionId": "mock-soc-readonly",
+              "operationId": "list_detect_alert",
+              "input": {
+                "req.assetId": "$state.assetId",
+                "req.pageNum": 1,
+                "req.pageSize": "$input.limit",
+                "req.windowSeconds": 2592000
+              },
+              "output": "alerts"
+            }
+          ]
+        },
+        "toolName": "query_asset_related_alerts",
+        "title": "资产相关告警只读查询",
+        "description": "按资产 ID 查询资产详情，再查询近 30 天关联告警分组；返回首页分组、总分组数及总告警数，仅执行只读 GET。",
+        "connectionId": "mock-soc-readonly",
+        "flow": "soc-asset-alerts",
+        "alertsConnectionId": "mock-soc-readonly",
+        "publishedAt": "2026-10-15T08:46:43.198Z"
+      }
+    },
+    "receipts": [
+      {
+        "connectionId": "mock-soc-readonly",
+        "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+        "operationId": "get_soc_asset_by_asset_id",
+        "method": "GET",
+        "path": "/api/v1/security-operations/readonly/assets/{assetId}",
+        "schemaDigest": "1e23feacde0866900aae889672ecec3d072d7f5692fb9904e8e5f89841435292"
+      },
+      {
+        "connectionId": "mock-soc-readonly",
+        "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+        "operationId": "list_detect_alert",
+        "method": "GET",
+        "path": "/api/v1/security-operations/readonly/alerts",
+        "schemaDigest": "3cb0e695c43102c12f36a45c6d36e1f95a096aed50c6c819392a974a2507d915"
+      }
+    ],
+    "result": {
+      "asset": {
+        "assetId": 9106,
+        "id": 9106,
+        "name": "测试应用服务器",
+        "hostname": "mock-app",
+        "ip": "192.0.2.10",
+        "status": "ONLINE",
+        "importance": "NORMAL",
+        "type": "SERVER"
+      },
+      "alerts": [
+        {
+          "groupId": "group-MOCK-ALERT-000001",
+          "assetId": 9106,
+          "title": "正常运维测试告警",
+          "severity": "LOW",
+          "alertCount": 1,
+          "firstSeenTime": "2026-10-15T01:00:00Z",
+          "lastSeenTime": "2026-10-15T01:00:00Z",
+          "alerts": [
+            {
+              "alert_id": "MOCK-ALERT-000001",
+              "id": "MOCK-ALERT-000001",
+              "title": "正常运维测试告警",
+              "description": "例行健康检查的基础测试数据。",
+              "severity": "LOW",
+              "rule_id": 1,
+              "affected_asset_id": 9106,
+              "affectedAssetId": 9106,
+              "created_at": "2026-10-15T01:00:00Z",
+              "alert_type": "HEALTH_CHECK",
+              "destination_ip": "192.0.2.10",
+              "ocsf": {
+                "activity_name": "例行健康检查",
+                "class_name": "设备状态",
+                "metadata": {
+                  "original_time": "2026-10-15T01:00:00Z",
+                  "product": {
+                    "name": "基础模拟服务"
+                  }
+                },
+                "device": {
+                  "uid": "9106",
+                  "ip": "192.0.2.10",
+                  "hostname": "mock-app"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "trace": [
+        {
+          "step": "asset",
+          "title": "查询资产",
+          "connectionId": "mock-soc-readonly",
+          "operationId": "get_soc_asset_by_asset_id",
+          "input": {
+            "assetId": "$input.asset"
+          },
+          "output": "asset",
+          "status": "succeeded",
+          "httpStatus": 200,
+          "durationMs": 34,
+          "mappedArguments": {
+            "assetId": 9106
+          }
+        },
+        {
+          "step": "alerts",
+          "title": "查询近 30 天关联告警分组",
+          "connectionId": "mock-soc-readonly",
+          "operationId": "list_detect_alert",
+          "input": {
+            "req.assetId": "$state.assetId",
+            "req.pageNum": 1,
+            "req.pageSize": "$input.limit",
+            "req.windowSeconds": 2592000
+          },
+          "output": "alerts",
+          "status": "succeeded",
+          "httpStatus": 200,
+          "durationMs": 34,
+          "mappedArguments": {
+            "req": {
+              "assetId": "9106",
+              "pageNum": 1,
+              "pageSize": 5,
+              "windowSeconds": 2592000
+            }
+          }
+        }
+      ],
+      "alertSummary": {
+        "totalGroups": 1,
+        "totalAlerts": 1,
+        "truncated": false,
+        "from": "2026-09-15T01:00:00Z",
+        "to": "2026-10-15T01:00:00Z",
+        "pageNum": 1,
+        "pageSize": 5
+      }
+    }
+  },
+  "published_reloaded": true,
+  "mcp": {
+    "initialize_status": 200,
+    "tools": [
+      "query_asset_related_alerts"
+    ],
+    "asset_9107": {
+      "ok": true,
+      "version": {
+        "gitCommit": "77eaa90729bf1eb485ac3d0e0bf762b39fbe7c76",
+        "gitDirty": true,
+        "sourceDigest": "1c93ce9ca1dbd511569f911d52d8cdcbc917ac9426e7996152a29c7f8de2d726",
+        "digest": "6a3e50b3fa0b037d3438a0782c3cdb201d5a695562700878f3dd4219bcd44e54",
+        "definition": {
+          "schema_version": "1.0",
+          "readonly": true,
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string",
+                "description": "SOC 正整数资产 ID，例如 9106",
+                "pattern": "^[1-9]\\d*$"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20,
+                "default": 5
+              }
+            },
+            "required": [
+              "asset"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "object"
+              },
+              "alerts": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "alertSummary": {
+                "type": "object",
+                "description": "SOC 告警分组的查询范围、总分组数及总告警数；alerts 为首页分组"
+              },
+              "trace": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "required": [
+              "asset",
+              "alerts",
+              "trace"
+            ]
+          },
+          "upstream": {
+            "kind": "openapi",
+            "steps": [
+              {
+                "step": "asset",
+                "title": "查询资产",
+                "connectionId": "mock-soc-readonly",
+                "operationId": "get_soc_asset_by_asset_id",
+                "input": {
+                  "assetId": "$input.asset"
+                },
+                "output": "asset"
+              },
+              {
+                "step": "alerts",
+                "title": "查询近 30 天关联告警分组",
+                "connectionId": "mock-soc-readonly",
+                "operationId": "list_detect_alert",
+                "input": {
+                  "req.assetId": "$state.assetId",
+                  "req.pageNum": 1,
+                  "req.pageSize": "$input.limit",
+                  "req.windowSeconds": 2592000
+                },
+                "output": "alerts"
+              }
+            ]
+          },
+          "toolName": "query_asset_related_alerts",
+          "title": "资产相关告警只读查询",
+          "description": "按资产 ID 查询资产详情，再查询近 30 天关联告警分组；返回首页分组、总分组数及总告警数，仅执行只读 GET。",
+          "connectionId": "mock-soc-readonly",
+          "flow": "soc-asset-alerts",
+          "alertsConnectionId": "mock-soc-readonly",
+          "publishedAt": "2026-10-15T08:46:43.198Z"
+        }
+      },
+      "receipts": [
+        {
+          "connectionId": "mock-soc-readonly",
+          "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+          "operationId": "get_soc_asset_by_asset_id",
+          "method": "GET",
+          "path": "/api/v1/security-operations/readonly/assets/{assetId}",
+          "schemaDigest": "1e23feacde0866900aae889672ecec3d072d7f5692fb9904e8e5f89841435292"
+        },
+        {
+          "connectionId": "mock-soc-readonly",
+          "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+          "operationId": "list_detect_alert",
+          "method": "GET",
+          "path": "/api/v1/security-operations/readonly/alerts",
+          "schemaDigest": "3cb0e695c43102c12f36a45c6d36e1f95a096aed50c6c819392a974a2507d915"
+        }
+      ],
+      "result": {
+        "asset": {
+          "assetId": 9107,
+          "id": 9107,
+          "name": "测试数据库服务器",
+          "hostname": "mock-db",
+          "ip": "192.0.2.20",
+          "status": "ONLINE",
+          "importance": "NORMAL",
+          "type": "SERVER"
+        },
+        "alerts": [
+          {
+            "groupId": "group-MOCK-ALERT-000002",
+            "assetId": 9107,
+            "title": "正常运维测试告警",
+            "severity": "LOW",
+            "alertCount": 1,
+            "firstSeenTime": "2026-10-15T01:00:00Z",
+            "lastSeenTime": "2026-10-15T01:00:00Z",
+            "alerts": [
+              {
+                "alert_id": "MOCK-ALERT-000002",
+                "id": "MOCK-ALERT-000002",
+                "title": "正常运维测试告警",
+                "description": "例行健康检查的基础测试数据。",
+                "severity": "LOW",
+                "rule_id": 1,
+                "affected_asset_id": 9107,
+                "affectedAssetId": 9107,
+                "created_at": "2026-10-15T01:00:00Z",
+                "alert_type": "HEALTH_CHECK",
+                "destination_ip": "192.0.2.20",
+                "ocsf": {
+                  "activity_name": "例行健康检查",
+                  "class_name": "设备状态",
+                  "metadata": {
+                    "original_time": "2026-10-15T01:00:00Z",
+                    "product": {
+                      "name": "基础模拟服务"
+                    }
+                  },
+                  "device": {
+                    "uid": "9107",
+                    "ip": "192.0.2.20",
+                    "hostname": "mock-db"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": "asset",
+            "title": "查询资产",
+            "connectionId": "mock-soc-readonly",
+            "operationId": "get_soc_asset_by_asset_id",
+            "input": {
+              "assetId": "$input.asset"
+            },
+            "output": "asset",
+            "status": "succeeded",
+            "httpStatus": 200,
+            "durationMs": 32,
+            "mappedArguments": {
+              "assetId": 9107
+            }
+          },
+          {
+            "step": "alerts",
+            "title": "查询近 30 天关联告警分组",
+            "connectionId": "mock-soc-readonly",
+            "operationId": "list_detect_alert",
+            "input": {
+              "req.assetId": "$state.assetId",
+              "req.pageNum": 1,
+              "req.pageSize": "$input.limit",
+              "req.windowSeconds": 2592000
+            },
+            "output": "alerts",
+            "status": "succeeded",
+            "httpStatus": 200,
+            "durationMs": 34,
+            "mappedArguments": {
+              "req": {
+                "assetId": "9107",
+                "pageNum": 1,
+                "pageSize": 5,
+                "windowSeconds": 2592000
+              }
+            }
+          }
+        ],
+        "alertSummary": {
+          "totalGroups": 1,
+          "totalAlerts": 1,
+          "truncated": false,
+          "from": "2026-09-15T01:00:00Z",
+          "to": "2026-10-15T01:00:00Z",
+          "pageNum": 1,
+          "pageSize": 5
+        }
+      }
+    },
+    "unknown_asset": {
+      "ok": false,
+      "version": {
+        "gitCommit": "77eaa90729bf1eb485ac3d0e0bf762b39fbe7c76",
+        "gitDirty": true,
+        "sourceDigest": "1c93ce9ca1dbd511569f911d52d8cdcbc917ac9426e7996152a29c7f8de2d726",
+        "digest": "6a3e50b3fa0b037d3438a0782c3cdb201d5a695562700878f3dd4219bcd44e54",
+        "definition": {
+          "schema_version": "1.0",
+          "readonly": true,
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string",
+                "description": "SOC 正整数资产 ID，例如 9106",
+                "pattern": "^[1-9]\\d*$"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20,
+                "default": 5
+              }
+            },
+            "required": [
+              "asset"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "object"
+              },
+              "alerts": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "alertSummary": {
+                "type": "object",
+                "description": "SOC 告警分组的查询范围、总分组数及总告警数；alerts 为首页分组"
+              },
+              "trace": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "required": [
+              "asset",
+              "alerts",
+              "trace"
+            ]
+          },
+          "upstream": {
+            "kind": "openapi",
+            "steps": [
+              {
+                "step": "asset",
+                "title": "查询资产",
+                "connectionId": "mock-soc-readonly",
+                "operationId": "get_soc_asset_by_asset_id",
+                "input": {
+                  "assetId": "$input.asset"
+                },
+                "output": "asset"
+              },
+              {
+                "step": "alerts",
+                "title": "查询近 30 天关联告警分组",
+                "connectionId": "mock-soc-readonly",
+                "operationId": "list_detect_alert",
+                "input": {
+                  "req.assetId": "$state.assetId",
+                  "req.pageNum": 1,
+                  "req.pageSize": "$input.limit",
+                  "req.windowSeconds": 2592000
+                },
+                "output": "alerts"
+              }
+            ]
+          },
+          "toolName": "query_asset_related_alerts",
+          "title": "资产相关告警只读查询",
+          "description": "按资产 ID 查询资产详情，再查询近 30 天关联告警分组；返回首页分组、总分组数及总告警数，仅执行只读 GET。",
+          "connectionId": "mock-soc-readonly",
+          "flow": "soc-asset-alerts",
+          "alertsConnectionId": "mock-soc-readonly",
+          "publishedAt": "2026-10-15T08:46:43.198Z"
+        }
+      },
+      "receipts": [
+        {
+          "connectionId": "mock-soc-readonly",
+          "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+          "operationId": "get_soc_asset_by_asset_id",
+          "method": "GET",
+          "path": "/api/v1/security-operations/readonly/assets/{assetId}",
+          "schemaDigest": "1e23feacde0866900aae889672ecec3d072d7f5692fb9904e8e5f89841435292"
+        }
+      ],
+      "result": {
+        "alerts": [],
+        "trace": [
+          {
+            "step": "asset",
+            "title": "查询资产",
+            "connectionId": "mock-soc-readonly",
+            "operationId": "get_soc_asset_by_asset_id",
+            "input": {
+              "assetId": "$input.asset"
+            },
+            "output": "asset",
+            "status": "failed",
+            "httpStatus": 404,
+            "durationMs": 33,
+            "mappedArguments": {
+              "assetId": 9999
+            }
+          },
+          {
+            "step": "alerts",
+            "title": "查询近 30 天关联告警分组",
+            "connectionId": "mock-soc-readonly",
+            "operationId": "list_detect_alert",
+            "input": {
+              "req.assetId": "$state.assetId",
+              "req.pageNum": 1,
+              "req.pageSize": "$input.limit",
+              "req.windowSeconds": 2592000
+            },
+            "output": "alerts",
+            "status": "skipped",
+            "reason": "查询资产失败：HTTP 404"
+          }
+        ]
+      },
+      "error": {
+        "code": "step_failed",
+        "message": "查询资产失败：HTTP 404"
+      }
+    }
+  },
+  "browser_errors": []
+}
