@@ -8,24 +8,24 @@
     "latest_analysis_job_id": "9800655d-5e72-4a28-8981-56de1d07c963",
     "entity_summary": {
       "host": {
-        "uid": "MOCK-PC-000C29DEAD001",
-        "name": "MOCK-PC-000C29DEAD001"
+        "uid": "mock-host-02",
+        "name": "demo-workstation-02"
       },
       "user": {
-        "name": "tester3"
+        "name": "demo_user"
       },
       "network": {
-        "dst_ip": null
+        "dst_ip": "192.0.2.2"
       },
       "process": {
         "pid": 7072,
         "uid": "7072_1767900720000",
         "file": {
-          "md5": "00000000000000000000000000abc048",
-          "name": "regsvr32.exe",
-          "path": "C:\\Windows\\System32\\regsvr32.exe"
+          "md5": "00000000000000000000000000000002",
+          "name": "demo-status-service",
+          "path": "/demo/status/service-02"
         },
-        "name": "regsvr32.exe",
+        "name": "demo-status-service",
         "created_time": 1767900720000
       }
     },
@@ -47,13 +47,13 @@
     "id": "4259060a-cff3-4c02-84e1-dae0aaaf3ec4",
     "finding_id": "3601bb12-d218-4124-b312-5d0f203d0f69",
     "analysis_job_id": "9800655d-5e72-4a28-8981-56de1d07c963",
-    "verdict": "threat",
-    "confidence": 0.75,
-    "severity": "medium",
+    "verdict": "benign",
+    "confidence": 1.0,
+    "severity": "info",
     "summary": {
-      "engine_id": "builtin/cypher_rule",
-      "package_uri": "engine_packages/builtin/cypher_rule",
-      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_id": "local/basic-status",
+      "package_uri": "local/basic-status",
+      "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "engine_run_id": "78a49eb7-d1b7-45fa-b955-b97423270c8e",
       "engine_version": "0.1.0",
       "evidence_count": 1
@@ -67,18 +67,18 @@
       "id": "8c3317c3-79b7-47ec-840f-7ded910fee82",
       "evidence": {
         "file_id": "file--f475d06c-4bc4-5291-85b9-78c85c8aecc5",
-        "file_md5": "00000000000000000000000000abc048",
-        "data_type": "network_activity",
-        "dst_value": "198.51.100.41",
-        "file_path": "C:\\Windows\\System32\\regsvr32.exe",
-        "host_name": "MOCK-PC-000C29DEAD001",
+        "file_md5": "00000000000000000000000000000002",
+        "data_type": "service_status",
+        "dst_value": "192.0.2.2",
+        "file_path": "/demo/status/service-02",
+        "host_name": "demo-workstation-02",
         "event_time": "1767903010000",
         "network_id": "network-traffic--70c13b32-fe8e-56f5-b98b-5a0cdd74c69b",
         "process_id": "process--45f2e9fc-1965-5a31-9aba-9c30d79e8315",
         "observed_id": "observed-data--c7f3e9a6-651b-5171-bf95-bc5968eb91fb",
         "process_pid": 7072,
-        "process_name": "regsvr32.exe",
-        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29DEAD001",
+        "process_name": "demo-status-service",
+        "host_graph_key": "contract-fixture-es:host:mock-host-02",
         "process_created_time": 1767900720000
       },
       "request_id": "req_f70f3d3970f442c8bfc1dd3dacedc59d",
@@ -90,32 +90,21 @@
     "analysis_result_id": "4259060a-cff3-4c02-84e1-dae0aaaf3ec4",
     "status": "ready",
     "report": {
-      "title": "异常进程活动：regsvr32.exe 连接可疑外部IP",
-      "attack_story": "攻击者可能利用 regsvr32.exe 作为代理执行远程文件下载或命令，建立与外部C2服务器的通信。进程由用户 tester3 启动，时间戳显示在2026年1月8日20:43左右。",
+      "title": "演示主机 02 基础状态",
+      "attack_story": "",
       "key_evidence": [
-        "进程 regsvr32.exe（MD5: 00000000000000000000000000abc048）在主机 MOCK-PC-000C29DEAD001 上运行",
-        "进程连接至外部IP 198.51.100.41",
-        "关联攻击技术：T1105（远程文件拷贝）",
-        "用户上下文：tester3"
+        "示例服务可用。",
+        "演示账号完成常规登录。"
       ],
-      "uncertainties": [
-        "缺乏 regsvr32.exe 的具体命令行参数，无法确认其执行的具体操作",
-        "未提供网络流量的完整数据包内容，无法验证传输的数据类型",
-        "单一证据点，缺乏横向移动或持久化迹象的佐证"
-      ],
-      "executive_summary": "主机 MOCK-PC-000C29DEAD001 上的 regsvr32.exe 进程（PID 7072）被检测到连接外部IP 198.51.100.41，该行为与命令与控制（T1105）技术相关。分析引擎以中等置信度（0.75）判定为威胁，严重性为中等。",
-      "recommended_actions": [
-        "调查主机 MOCK-PC-000C29DEAD001 上 regsvr32.exe 的完整命令行参数",
-        "检查198.51.100.41的威胁情报关联",
-        "审查用户 tester3 的近期活动及权限",
-        "确认是否有其他主机存在类似连接模式"
-      ],
-      "confidence_explanation": "基于 regsvr32.exe 连接外部IP的行为与已知攻击技术T1105的匹配，但证据数量有限且缺乏上下文细节，因此置信度评定为中等（0.75）。"
+      "uncertainties": [],
+      "executive_summary": "本记录仅用于展示基本资产和服务状态，所有值均为模拟值。",
+      "recommended_actions": [],
+      "confidence_explanation": "固定的本地基本数据，不对应真实事件判断。"
     },
-    "provider": "deepseek",
-    "model": "openai/deepseek-chat",
-    "prompt_version": "fast-threat-report-v1",
-    "input_hash": "9fcdbed93bf851136811f0c096ad55b831014d43600ef595db54cd232c73ead6",
+    "provider": "local",
+    "model": "local-basic-mock",
+    "prompt_version": "basic-status-v1",
+    "input_hash": "c9d690e616b75255c2631d5348ebe732cf29c00492443b2dd6a9cfec461bb759",
     "error_summary": {},
     "request_id": "req_f70f3d3970f442c8bfc1dd3dacedc59d",
     "created_at": "2026-05-18T03:19:25.712747Z",
@@ -125,11 +114,11 @@
     {
       "id": "fd86f460-a2bc-4b68-b424-e425bd6b1327",
       "trace": {
-        "rule": "host_process_context_match",
-        "engine_id": "builtin/cypher_rule",
-        "engine_type": "cypher_rule",
-        "package_uri": "engine_packages/builtin/cypher_rule",
-        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "rule": "basic_service_status",
+        "engine_id": "local/basic-status",
+        "engine_type": "basic_status",
+        "package_uri": "local/basic-status",
+        "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "engine_version": "0.1.0",
         "evidence_count": 1
       },

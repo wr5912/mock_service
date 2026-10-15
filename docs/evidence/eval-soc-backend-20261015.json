@@ -1,0 +1,61 @@
+{
+  "runtime_source": "EXP-security-operations-expert-019-rc442472a242a",
+  "read_only_soc_calls": [
+    {
+      "name": "ai_soc_correlate__get_correlate_incident_by_incident_id",
+      "outcome": "success_with_data",
+      "incident_id": "INC-20261015-000001"
+    },
+    {
+      "name": "ai_soc_correlate__get_correlate_incident_judge_pending",
+      "status": "success",
+      "rows_count": 0,
+      "target_in_pending": false
+    }
+  ],
+  "claims_sent": 0,
+  "analysis_started": 0,
+  "fixed_backend_settings": {
+    "SOC_MCP_BASE_URL_configured": true,
+    "REPORT_MCP_URL_configured": true,
+    "soc_uses_lan": true,
+    "report_uses_lan": true
+  },
+  "report_client": {
+    "client": "019 PersistenceClient",
+    "status": "saved",
+    "id": "report_cf4252f0b3844f999486b4a135842ed6",
+    "download_url": "http://10.0.160.32:53001/reports/report_cf4252f0b3844f999486b4a135842ed6.html",
+    "simulated": true
+  },
+  "observed_at_utc": "2026-10-15T08:22:20.271173+00:00",
+  "instance": "security-operations-expert-eval",
+  "agent_url": "http://127.0.0.1:3081/assistant/",
+  "method": "原 eval 容器内 019 固定后端客户端；不创建 Session、不认领或重新研判",
+  "scope": "当前证据证明固定后端连接和报告下载；完成研判结果仅引用已有历史模型 Session，不声称存在当前研判历史查询接口。",
+  "existing_completed_analysis": {
+    "source_evidence": "threat-fast-session-7a28409f-a86d-40af-8cd6-2c9b2432f687.json",
+    "session_id": "session-7a28409f-a86d-40af-8cd6-2c9b2432f687",
+    "incident_id": "INC-20261015-000001",
+    "historical_turn_completed": true,
+    "historical_verdict": "误报",
+    "original_report_url_count": 1,
+    "current_judgement_history_query_available": false
+  },
+  "existing_report": {
+    "url": "http://127.0.0.1:53001/reports/report_daef7926186c43638afba79b23b838e5.html",
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 261,
+    "sha256": "69a12e1bff5e743e554f19762e059e5721f7269d3e3ee985b3b3a48c80e6039b",
+    "contains_basic_sample": true
+  },
+  "new_lan_report": {
+    "url": "http://10.0.160.32:53001/reports/report_cf4252f0b3844f999486b4a135842ed6.html",
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 261,
+    "sha256": "69a12e1bff5e743e554f19762e059e5721f7269d3e3ee985b3b3a48c80e6039b",
+    "contains_basic_sample": true
+  }
+}

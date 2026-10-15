@@ -42,8 +42,7 @@ cd docker && docker compose up -d kibana
 
 ## 项目特有规则
 
-- API Key 只能通过环境变量读取，禁止写入代码、README 示例真实值或测试文件。
-- DeepSeek 相关接口必须在未配置 `DEEPSEEK_API_KEY` 时优雅返回错误，不影响本地模拟数据接口。
+- 所有接口使用本地基本模拟数据，不调用外部模型，不回显任意请求文本。
 - API 文档必须包含清晰的中文 summary、description、参数边界和响应模型。
 - Elasticsearch 与 Kibana 只作为本地开发和联调容器，默认关闭安全认证，不用于生产环境。
 
@@ -61,5 +60,5 @@ cd docker && docker compose up -d kibana
 
 ## 已知风险与例外
 
-- `/api/v1/ai/scenarios` 依赖外部 DeepSeek API；离线或未配置 API Key 时会返回 `503`。
+- `/api/v1/ai/scenarios` 与独立 `/generate` 保留接口入口，返回确定性的本地基本运营数据。
 - Elasticsearch 和 Kibana 镜像使用 Elastic 官方镜像仓库，版本均为 `7.14.0`。

@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import asyncio
 import os
-from typing import Any
+from typing import Any, get_args
 
-from fastapi import HTTPException as FastAPIHTTPException
 from flask import Flask, request
 from flask_restx import Api, Namespace, Resource, fields
 from pydantic import ValidationError
+from werkzeug.exceptions import HTTPException
 
 from app.config import get_settings
 from app.llm import generate_threat_intelligence
-from app.models import ThreatIntelligenceRequest
+from app.models import ThreatIntelligenceRequest, ThreatIntelligenceType
 
 
 def create_threat_intelligence_app() -> Flask:
@@ -22,9 +22,9 @@ def create_threat_intelligence_app() -> Flask:
         app,
         version="1.0.0",
         title="模拟威胁情报服务 API",
-        description="使用 LLM 生成结构化模拟威胁情报，供安全运营系统联调和演示使用。",
+        description="使用本地固定基本数据，提供资产与服务状态联调示例，不依赖外部模型。",
         doc="/docs",
-        validate=True,
+        validate=False,
     )
     namespace = Namespace("威胁情报", path="/", description="模拟威胁情报生成接口。")
 
@@ -35,14 +35,14 @@ def create_threat_intelligence_app() -> Flask:
                 required=True,
                 min_length=2,
                 max_length=120,
-                description="威胁情报主题，可以是行业、攻击组织、IOC、漏洞或安全事件场景。",
-                example="近期针对制造业的勒索软件活动",
+                description="兼容主题参数，不回显，不用于生成内容。",
+                example="基础资产状态",
             ),
             "intelligence_type": fields.String(
                 required=False,
-                enum=["ioc", "actor_profile", "campaign", "vulnerability", "malware", "situational"],
+                enum=list(get_args(ThreatIntelligenceType)),
                 default="situational",
-                description="威胁情报类型。",
+                description="兼容分类参数，响应统一返回基本状态简报。",
             ),
             "language": fields.String(required=False, enum=["zh", "en"], default="zh", description="返回语言。"),
             "include_iocs": fields.Boolean(required=False, default=True, description="是否包含模拟 IOC。"),
@@ -57,7 +57,7 @@ def create_threat_intelligence_app() -> Flask:
                 description="IOC 类型。",
             ),
             "value": fields.String(required=True, description="模拟 IOC 值。", example="update-check.example"),
-            "threat_type": fields.String(required=True, description="关联威胁类型。", example="c2"),
+            "threat_type": fields.String(required=True, description="基本模拟值固定为 none。", example="none"),
             "confidence": fields.Integer(required=True, min=0, max=100, description="IOC 可信度。"),
             "description": fields.String(required=True, description="IOC 上下文说明。"),
         },
@@ -65,8 +65,8 @@ def create_threat_intelligence_app() -> Flask:
     response_model = namespace.model(
         "ThreatIntelligenceResponse",
         {
-            "model": fields.String(required=True, description="生成内容使用的 LLM 模型。"),
-            "topic": fields.String(required=True, description="请求中的威胁情报主题。"),
+            "model": fields.String(required=True, description="本地模拟实现标识。"),
+            "topic": fields.String(required=True, description="固定的基本状态主题。"),
             "intelligence_type": fields.String(required=True, description="威胁情报类型。"),
             "generated_at": fields.DateTime(required=True, description="生成时间。"),
             "title": fields.String(required=True, description="威胁情报标题。"),
@@ -77,20 +77,19 @@ def create_threat_intelligence_app() -> Flask:
                 description="模拟威胁严重性。",
             ),
             "confidence": fields.Integer(required=True, min=0, max=100, description="整体情报可信度。"),
-            "threat_actor": fields.String(required=False, description="模拟攻击组织或威胁主体。"),
-            "ttps": fields.List(fields.String, required=True, description="MITRE ATT&CK 技术或战术列表。"),
+            "threat_actor": fields.String(required=False, description="兼容字段，固定为 null。"),
+            "ttps": fields.List(fields.String, required=True, description="兼容字段，固定为空列表。"),
             "indicators": fields.List(fields.Nested(indicator_model), required=True, description="模拟 IOC 列表。"),
             "recommendations": fields.List(fields.String, required=True, description="处置和检测建议。"),
-            "raw_content": fields.String(required=True, description="LLM 返回的原始内容。"),
+            "raw_content": fields.String(required=True, description="兼容字段，固定为空字符串。"),
         },
     )
 
     @namespace.route("/generate")
     class ThreatIntelligenceResource(Resource):
-        @namespace.expect(request_model, validate=True)
+        @namespace.expect(request_model, validate=False)
         @namespace.response(200, "生成成功。", response_model)
         @namespace.response(400, "请求参数校验失败。")
-        @namespace.response(503, "未配置 DEEPSEEK_API_KEY。")
         def post(self) -> tuple[dict[str, Any], int]:
             try:
                 payload = request.get_json(silent=True) or {}
@@ -102,10 +101,13 @@ def create_threat_intelligence_app() -> Flask:
                     )
                 )
                 return result.model_dump(mode="json"), 200
-            except ValidationError as exc:
-                return {"message": "请求参数校验失败。", "errors": exc.errors()}, 400
-            except FastAPIHTTPException as exc:
-                return {"message": exc.detail}, exc.status_code
+            except ValidationError:
+                return {"message": "请求参数校验失败。"}, 400
+
+    @api.errorhandler(HTTPException)
+    @app.errorhandler(HTTPException)
+    def http_error(error: HTTPException) -> tuple[dict[str, str], int]:
+        return {"message": "请求无法处理。"}, error.code or 500
 
     api.add_namespace(namespace)
 

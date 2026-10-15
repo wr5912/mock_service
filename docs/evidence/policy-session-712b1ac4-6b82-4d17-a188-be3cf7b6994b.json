@@ -1,0 +1,107 @@
+{
+  "case": "policy",
+  "observed_at": "2026-10-15T07:19:47Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请为测试应用服务器 192.0.2.10 到测试数据库服务器 192.0.2.20 开通 TCP 443 访问，指定测试防火墙 mock-firewall。先准备草案，不执行。",
+      "assistant": "已准备完成，草案处于 **DRAFT** 状态（等待确认，未下发）：\n\n- 意图：192.0.2.10 → 192.0.2.20，TCP/443，ADD\n- 设备线索：mock-firewall\n- operationId：`op_a0a31a0cd0914af7a581e94bba016b9f`\n- taskId：`task_0a7187e1d4aa4e6b926727b8d9badc3a`\n- 冻结候选：`candidate-primary`（device_id 9200，测试防火墙，path_order 1，FORWARD，FIRST，COMPLETE），备选 `candidate-secondary` 未选用\n\nWorkbench 返回的草案全文如下（原样展示）：\n\n### 基础模拟策略草案\n\n状态：DRAFT。\n\n配置预览：正常测试资产之间的访问配置，命令数组为空。\n\n```json\n{\"commands\": []}\n```\n\n仅更新 Mock 进程中的模拟状态，不下发设备配置。请在本会话单独发送“执行”。\n\n说明：DRAFT 与确认受理都不代表策略已下发或已在设备生效；按你的要求本轮未执行任何下发动作。如需推进，在本会话单独回复“执行”，由受信确认插件绑定该草案处理。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_3bYwtWwf8uAQjGehyZqm3403"
+        },
+        {
+          "name": "mcp__policy-configuration__prepare_policy_configuration",
+          "call_id": "call_00_P0z5mogmA4Nmtp1snhM84386"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_m7EQMb7ewSPFEp9xWLzJ8950"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 32
+    },
+    {
+      "input": "执行",
+      "assistant": "模拟配置已完成。仅更新 Mock 状态，没有下发真实设备配置。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_3bYwtWwf8uAQjGehyZqm3403"
+        },
+        {
+          "name": "mcp__policy-configuration__prepare_policy_configuration",
+          "call_id": "call_00_P0z5mogmA4Nmtp1snhM84386"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_m7EQMb7ewSPFEp9xWLzJ8950"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 5
+    },
+    {
+      "input": "查询刚才这次策略操作的最终结果。",
+      "assistant": "本次策略操作的权威终态查询结果如下。\n\n**结论**\n- 任务状态：`SUCCEEDED`；操作状态：`completed`；阶段：`completed`；结果码：`SIMULATION_COMPLETED`\n- 执行结果：`execution.status = SUCCEEDED`，`simulated = true`\n- 失败范围：`failure_scope = NONE`\n- 确认：`confirmation.accepted = true`，回执 ID `receipt_0b0df0fb37f84e5b9ff76e0cc51d0459`\n- 性质限定：本次为模拟操作，只更新 Mock 状态，没有下发真实设备配置\n\n**Workbench 返回结果（原样）**\n\n模拟配置已完成。仅更新 Mock 状态，没有下发真实设备配置。\n\n**对象与标识**\n- operationId：`op_a0a31a0cd0914af7a581e94bba016b9f`\n- taskId：`task_0a7187e1d4aa4e6b926727b8d9badc3a`\n- 意图：192.0.2.10 → 192.0.2.20，TCP/443，ADD；设备线索 mock-firewall\n- 选定候选：`candidate-primary`（device_id 9200，测试防火墙，FORWARD/FIRST，覆盖 COMPLETE）\n- 候选摘要：`sha256:b96bdbf7b47010d269d7bc8e04496d47ff50503612faf868191e86e52523ce3c`\n\n**未执行/未验证**\n- 未做任何真实设备配置下发，也未对真实转发路径做连通性验证；上述成功仅指 Mock 模拟流程完成。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_3bYwtWwf8uAQjGehyZqm3403"
+        },
+        {
+          "name": "mcp__policy-configuration__prepare_policy_configuration",
+          "call_id": "call_00_P0z5mogmA4Nmtp1snhM84386"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_m7EQMb7ewSPFEp9xWLzJ8950"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_status",
+          "call_id": "call_00_1OhychmPtwNgwMsQbsGf7544"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_AXdg85h6Jjdbf4G3rjpa7852"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_status",
+          "call_id": "call_00_ET_lY1evwj7E6NFucgnW6f45524"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_sO2Z6ICXIdakWN9GGy7o3559"
+        }
+      ],
+      "tool_errors": [
+        {
+          "call_id": "call_00_1OhychmPtwNgwMsQbsGf7544",
+          "error": true,
+          "text": "Error: 策略工具必须先加载本轮策略配置 Skill"
+        }
+      ],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 28
+    }
+  ],
+  "session_id": "session-712b1ac4-6b82-4d17-a188-be3cf7b6994b",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

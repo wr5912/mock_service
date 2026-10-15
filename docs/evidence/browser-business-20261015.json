@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-10-15T07:36:57.737Z",
+  "instance": "security-operations-expert-mock",
+  "session_id": "session-66175ec3-41cf-4ba7-aa79-9d2a74dc3369",
+  "browser_prompt": "请继续查询刚才同一次巡检的结果，不要重新发起，并保留报告链接。",
+  "websocket": {
+    "sent": 8,
+    "received": 486
+  },
+  "browser_errors": [],
+  "report_links": [
+    "http://127.0.0.1:53001/reports/report_8a4cfe64f7fb4bd6b251a012a250f714.html",
+    "http://127.0.0.1:53001/reports/report_8a4cfe64f7fb4bd6b251a012a250f714.html"
+  ]
+}

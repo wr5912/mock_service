@@ -8,24 +8,24 @@
     "latest_analysis_job_id": "6deb0b85-4224-4c54-9025-023805155ae4",
     "entity_summary": {
       "host": {
-        "uid": "MOCK-PC-000C29BABA354EA1",
-        "name": "MOCK-PC-000C29BABA354EA1"
+        "uid": "mock-host-06",
+        "name": "demo-workstation-06"
       },
       "user": {
-        "name": "admin"
+        "name": "demo_user"
       },
       "network": {
-        "dst_ip": null
+        "dst_ip": "192.0.2.6"
       },
       "process": {
         "pid": 6828,
         "uid": "6828_1767718768337",
         "file": {
-          "md5": "ceaa5817a65e914aa178b28f12359a46",
-          "name": "WINWORD.EXE",
-          "path": "C:\\Program Files (x86)\\Microsoft Office\\Office12\\WINWORD.EXE"
+          "md5": "00000000000000000000000000000006",
+          "name": "demo-status-service",
+          "path": "/demo/status/service-06"
         },
-        "name": "WINWORD.EXE",
+        "name": "demo-status-service",
         "created_time": 1767718768337
       }
     },
@@ -47,13 +47,13 @@
     "id": "0d9717e4-41b2-49ea-bfc0-d29bb59cc43e",
     "finding_id": "c9c6f912-4cf8-4323-9561-6b8dcc8b3b4b",
     "analysis_job_id": "6deb0b85-4224-4c54-9025-023805155ae4",
-    "verdict": "threat",
-    "confidence": 0.75,
-    "severity": "medium",
+    "verdict": "benign",
+    "confidence": 1.0,
+    "severity": "info",
     "summary": {
-      "engine_id": "builtin/cypher_rule",
-      "package_uri": "engine_packages/builtin/cypher_rule",
-      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_id": "local/basic-status",
+      "package_uri": "local/basic-status",
+      "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "engine_run_id": "52dade2e-09e0-4bed-a216-076a7ef19425",
       "engine_version": "0.1.0",
       "evidence_count": 1
@@ -67,18 +67,18 @@
       "id": "852d9d62-8c65-4989-87a6-7497ae4d94dd",
       "evidence": {
         "file_id": "file--f958baac-eb33-50c4-b971-c473d6d788c4",
-        "file_md5": "ceaa5817a65e914aa178b28f12359a46",
-        "data_type": "network_activity",
-        "dst_value": "192.168.10.100",
-        "file_path": "C:\\Program Files (x86)\\Microsoft Office\\Office12\\WINWORD.EXE",
-        "host_name": "MOCK-PC-000C29BABA354EA1",
+        "file_md5": "00000000000000000000000000000006",
+        "data_type": "service_status",
+        "dst_value": "192.0.2.6",
+        "file_path": "/demo/status/service-06",
+        "host_name": "demo-workstation-06",
         "event_time": "1767826201000",
         "network_id": "network-traffic--ede82e2d-004e-5c7c-97eb-cd1bac531969",
         "process_id": "process--4f270c07-254d-5e9a-b192-13aa26d4db9e",
         "observed_id": "observed-data--0a9cb3a6-dfaa-5ac9-a7fc-b80d18cd3743",
         "process_pid": 6828,
-        "process_name": "WINWORD.EXE",
-        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29BABA354EA1",
+        "process_name": "demo-status-service",
+        "host_graph_key": "contract-fixture-es:host:mock-host-06",
         "process_created_time": 1767718768337
       },
       "request_id": "req_9adbfccebb1a44f7a19a9af93cb74141",
@@ -90,34 +90,21 @@
     "analysis_result_id": "0d9717e4-41b2-49ea-bfc0-d29bb59cc43e",
     "status": "ready",
     "report": {
-      "title": "可疑进程加载调试符号DLL告警",
-      "attack_story": "攻击者可能利用 WINWORD.EXE 进程加载调试符号 DLL，尝试从 LSASS 等进程转储凭据，以获取用户凭据进行横向移动或权限提升。",
+      "title": "演示主机 06 基础状态",
+      "attack_story": "",
       "key_evidence": [
-        "进程 WINWORD.EXE (路径: C:\\Program Files (x86)\\Microsoft Office\\Office12\\WINWORD.EXE) 加载了 dbghelp/dbgcore DLL",
-        "进程创建时间: 2026-01-06 16:59:34 UTC",
-        "目标网络地址: 192.168.10.100",
-        "关联用户: admin",
-        "关联攻击技术: T1003.001 (凭据窃取)"
+        "示例服务可用。",
+        "演示账号完成常规登录。"
       ],
-      "uncertainties": [
-        "缺乏进程命令行参数，无法确认 DLL 加载的具体意图",
-        "未提供网络连接的具体协议和端口信息",
-        "证据数量有限 (仅1条)，可能遗漏其他相关活动"
-      ],
-      "executive_summary": "主机 MOCK-PC-000C29BABA354EA1 上，进程 WINWORD.EXE (PID 6828) 加载了 dbghelp/dbgcore DLL，该行为与凭据窃取技术 T1003.001 相关。分析引擎判定为威胁，置信度中等，严重程度中等。",
-      "recommended_actions": [
-        "调查 WINWORD.EXE 进程的命令行参数和启动来源",
-        "检查该进程是否被注入或存在异常行为",
-        "确认 192.168.10.100 是否为合法目标，并检查相关网络连接",
-        "审查 admin 用户账户的活动日志",
-        "考虑隔离受影响主机并执行进一步取证分析"
-      ],
-      "confidence_explanation": "分析引擎基于规则匹配 (host_process_context_match) 给出中等置信度 (0.75)，结合 MITRE ATT&CK 技术映射，但证据单一，需进一步验证。"
+      "uncertainties": [],
+      "executive_summary": "本记录仅用于展示基本资产和服务状态，所有值均为模拟值。",
+      "recommended_actions": [],
+      "confidence_explanation": "固定的本地基本数据，不对应真实事件判断。"
     },
-    "provider": "deepseek",
-    "model": "openai/deepseek-chat",
-    "prompt_version": "fast-threat-report-v1",
-    "input_hash": "90cd751ae21a62d6df7580d1b18f7df0f78582970ef39f695b008bf126a95652",
+    "provider": "local",
+    "model": "local-basic-mock",
+    "prompt_version": "basic-status-v1",
+    "input_hash": "0207a294c18ebb06b8591cdbe1bdf96dd59b14e3e1e0372060bfebf8f8d82a8f",
     "error_summary": {},
     "request_id": "req_9adbfccebb1a44f7a19a9af93cb74141",
     "created_at": "2026-05-17T18:09:09.769276Z",
@@ -127,11 +114,11 @@
     {
       "id": "94801996-7e24-4a7f-8d58-47ee4f9fb70d",
       "trace": {
-        "rule": "host_process_context_match",
-        "engine_id": "builtin/cypher_rule",
-        "engine_type": "cypher_rule",
-        "package_uri": "engine_packages/builtin/cypher_rule",
-        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "rule": "basic_service_status",
+        "engine_id": "local/basic-status",
+        "engine_type": "basic_status",
+        "package_uri": "local/basic-status",
+        "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "engine_version": "0.1.0",
         "evidence_count": 1
       },

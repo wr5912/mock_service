@@ -8,24 +8,24 @@
     "latest_analysis_job_id": "6ff971bb-e0c2-42a2-8df8-e5fcae37a6a4",
     "entity_summary": {
       "host": {
-        "uid": "MOCK-PC-000C29BABA354EA1",
-        "name": "MOCK-PC-000C29BABA354EA1"
+        "uid": "mock-host-03",
+        "name": "demo-workstation-03"
       },
       "user": {
-        "name": "admin"
+        "name": "demo_user"
       },
       "network": {
-        "dst_ip": null
+        "dst_ip": "192.0.2.3"
       },
       "process": {
         "pid": 7002,
         "uid": "7002_1767900020000",
         "file": {
-          "md5": "00000000000000000000000000abc002",
-          "name": "conhost.exe",
-          "path": "C:\\Windows\\System32\\conhost.exe"
+          "md5": "00000000000000000000000000000003",
+          "name": "demo-status-service",
+          "path": "/demo/status/service-03"
         },
-        "name": "conhost.exe",
+        "name": "demo-status-service",
         "created_time": 1767900020000
       }
     },
@@ -47,13 +47,13 @@
     "id": "b840dc71-52d0-4d34-8472-6ab15043fc84",
     "finding_id": "b1b2bd12-1038-407a-af71-9dff0ba15746",
     "analysis_job_id": "6ff971bb-e0c2-42a2-8df8-e5fcae37a6a4",
-    "verdict": "threat",
-    "confidence": 0.75,
-    "severity": "medium",
+    "verdict": "benign",
+    "confidence": 1.0,
+    "severity": "info",
     "summary": {
-      "engine_id": "builtin/cypher_rule",
-      "package_uri": "engine_packages/builtin/cypher_rule",
-      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_id": "local/basic-status",
+      "package_uri": "local/basic-status",
+      "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "engine_run_id": "26774bf1-f316-4fad-8335-462eccc6914a",
       "engine_version": "0.1.0",
       "evidence_count": 1
@@ -67,18 +67,18 @@
       "id": "8ee89344-9084-4eb5-8b1b-451d53f184c1",
       "evidence": {
         "file_id": "file--c23cc35c-ddaa-53ac-b541-6cbf7a9a87eb",
-        "file_md5": "00000000000000000000000000abc002",
-        "data_type": "network_activity",
-        "dst_value": "198.51.100.21",
-        "file_path": "C:\\Windows\\System32\\conhost.exe",
-        "host_name": "MOCK-PC-000C29BABA354EA1",
+        "file_md5": "00000000000000000000000000000003",
+        "data_type": "service_status",
+        "dst_value": "192.0.2.3",
+        "file_path": "/demo/status/service-03",
+        "host_name": "demo-workstation-03",
         "event_time": "1767903000000",
         "network_id": "network-traffic--39cb3058-3df0-5941-b4f5-5033a0bd3ac3",
         "process_id": "process--6d416a1b-7f68-5870-baea-6e91248df80b",
         "observed_id": "observed-data--9aaf1a8c-a868-5da9-ba1a-b28d25be9a04",
         "process_pid": 7002,
-        "process_name": "conhost.exe",
-        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29BABA354EA1",
+        "process_name": "demo-status-service",
+        "host_graph_key": "contract-fixture-es:host:mock-host-03",
         "process_created_time": 1767900020000
       },
       "request_id": "req_37457d2b462c416e959d8201bcb8bcd9",
@@ -90,32 +90,21 @@
     "analysis_result_id": "b840dc71-52d0-4d34-8472-6ab15043fc84",
     "status": "ready",
     "report": {
-      "title": "可疑 LOLBin 网络活动告警",
-      "attack_story": "攻击者可能利用系统合法二进制文件 conhost.exe 执行恶意命令或建立远程连接，以逃避检测。进程由用户 admin 启动，时间戳为 2026-01-08 20:43:20 UTC。该行为与 LOLBin 滥用模式一致，可能用于命令执行或横向移动。",
+      "title": "演示主机 03 基础状态",
+      "attack_story": "",
       "key_evidence": [
-        "主机 MOCK-PC-000C29BABA354EA1 上的 conhost.exe (PID 7002) 向外部 IP 198.51.100.21 发起网络连接",
-        "进程文件路径: C:\\Windows\\System32\\conhost.exe, MD5: 00000000000000000000000000abc002",
-        "关联 MITRE ATT&CK 技术: T1059 (执行)",
-        "告警标题: Suspicious LOLBin Network Activity"
+        "示例服务可用。",
+        "演示账号完成常规登录。"
       ],
-      "uncertainties": [
-        "缺乏 conhost.exe 进程的父进程信息，无法确认攻击入口",
-        "未提供网络连接的具体协议和端口，限制了对通信内容的分析",
-        "证据仅包含单一网络活动，未提供更多上下文（如文件创建、注册表修改等）"
-      ],
-      "executive_summary": "在主机 MOCK-PC-000C29BABA354EA1 上，进程 conhost.exe (PID 7002) 被检测到向外部 IP 198.51.100.21 发起网络连接，该行为符合 LOLBin (Living Off the Land Binary) 滥用特征，关联 MITRE ATT&CK 技术 T1059 (执行)。分析引擎判定为威胁，置信度中等偏高 (0.75)，严重程度中等。",
-      "recommended_actions": [
-        "立即隔离主机 MOCK-PC-000C29BABA354EA1 并进行取证分析",
-        "检查 conhost.exe 进程的父进程及命令行参数，确认是否存在恶意载荷",
-        "审查用户 admin 近期活动，评估账户是否被入侵",
-        "在网络边界设备上阻止对 IP 198.51.100.21 的通信"
-      ],
-      "confidence_explanation": "置信度 0.75 基于引擎规则匹配 (host_process_context_match) 和 MITRE 技术关联，但证据数量有限且缺少深度上下文，因此未达到更高置信度。"
+      "uncertainties": [],
+      "executive_summary": "本记录仅用于展示基本资产和服务状态，所有值均为模拟值。",
+      "recommended_actions": [],
+      "confidence_explanation": "固定的本地基本数据，不对应真实事件判断。"
     },
-    "provider": "deepseek",
-    "model": "openai/deepseek-chat",
-    "prompt_version": "fast-threat-report-v1",
-    "input_hash": "e81421476e6a59eef18f3be33ea7d62ab7d7188275fe8188eeb3bcf2f82a9236",
+    "provider": "local",
+    "model": "local-basic-mock",
+    "prompt_version": "basic-status-v1",
+    "input_hash": "e24484eac8035f82d75eefd3294cf42070f6e898ef229a329f4c6d15372a345a",
     "error_summary": {},
     "request_id": "req_37457d2b462c416e959d8201bcb8bcd9",
     "created_at": "2026-05-18T02:00:30.213801Z",
@@ -125,11 +114,11 @@
     {
       "id": "53adf1f5-b914-4859-93aa-c31cacae4c8b",
       "trace": {
-        "rule": "host_process_context_match",
-        "engine_id": "builtin/cypher_rule",
-        "engine_type": "cypher_rule",
-        "package_uri": "engine_packages/builtin/cypher_rule",
-        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "rule": "basic_service_status",
+        "engine_id": "local/basic-status",
+        "engine_type": "basic_status",
+        "package_uri": "local/basic-status",
+        "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "engine_version": "0.1.0",
         "evidence_count": 1
       },

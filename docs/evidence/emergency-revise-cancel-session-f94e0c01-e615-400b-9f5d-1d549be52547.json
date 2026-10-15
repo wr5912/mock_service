@@ -1,0 +1,134 @@
+{
+  "case": "emergency-revise-cancel",
+  "observed_at": "2026-10-15T07:29:24Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请为测试主机 192.0.2.10 准备解除隔离的模拟草案，先给我看草案。",
+      "assistant": "已为测试主机 192.0.2.10 准备好**解除隔离**的模拟草案，动作与你的要求一致（非隔离动作）。\n\n- 动作：解除测试主机隔离（`host-unisolate`），模拟草案\n- 目标：测试应用服务器 / mock-app，192.0.2.10（资产 ID 9106，ONLINE）\n- 参数：无额外参数\n- 操作号：`op_f9771da4ad244b4a9e94f4b6e566e689`\n\n请在本会话单独发送“确认执行”，受控运行时才会绑定该草案并签名提交；当前仅为草案，尚未提交、未生效。\n\n说明：解除隔离会恢复该主机的网络连通性，如需重新隔离需再发起一次隔离动作。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_UkcJHlL1t38wg87Vr3vu0460"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_SiydVbsB58xGbEfzZyCa5765"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 26
+    },
+    {
+      "input": "改为模拟重启同一测试主机，保持不执行，展示修订后的草案。",
+      "assistant": "已将同一操作号的草案修订为**模拟重启**，动作已核对为目标动作（非隔离动作），仍处于草案状态、未提交。\n\n- 动作：模拟重启测试主机（`host-restart`），模拟草案\n- 目标：测试应用服务器 / mock-app，192.0.2.10（资产 ID 9106，ONLINE）\n- 参数：无额外参数\n- 操作号：`op_f9771da4ad244b4a9e94f4b6e566e689`\n\n按要求保持不执行：本轮只做草案修订与展示，未提交、未生效。如需提交，请在本会话单独发送“确认执行”，受控运行时才会绑定该草案并签名提交（SOC 审批与用户确认是两步）。\n\n说明：重启会短暂中断该主机上的业务，恢复方式为等待主机重启完成并确认其重新上线。\n\n过程备注：第一次修订仅按原意图保留了原动作（`host-unisolate`），第二次修订显式指定重启动作后，Workbench 才返回 `host-restart` 草案，故当前冻结的是 reboot 版本。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_UkcJHlL1t38wg87Vr3vu0460"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_SiydVbsB58xGbEfzZyCa5765"
+        },
+        {
+          "name": "mcp__emergency-action__revise_emergency_action",
+          "call_id": "call_00_5S0P31M9rY61XIPIxKwF8512"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_8Ji7PJmH5QXXWJZOVq2d2711"
+        },
+        {
+          "name": "mcp__emergency-action__revise_emergency_action",
+          "call_id": "call_00_ET_zL1C4Zsq099qgQBIxcFB2081"
+        },
+        {
+          "name": "mcp__emergency-action__revise_emergency_action",
+          "call_id": "call_00_TiO7dZeMMKk01PIunGCw7408"
+        }
+      ],
+      "tool_errors": [
+        {
+          "call_id": "call_00_5S0P31M9rY61XIPIxKwF8512",
+          "error": true,
+          "text": "Error: 应急工具必须先加载本轮应急指令 Skill"
+        }
+      ],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 28
+    },
+    {
+      "input": "取消这次草案，不要执行。",
+      "assistant": "草案已取消，未执行任何动作。\n\n- 结果：模拟重启草案（`host-restart`，目标 192.0.2.10 / 测试应用服务器）已作废，状态为 CANCELLED，未提交、未执行\n- 操作号：`op_f9771da4ad244b4a9e94f4b6e566e689`\n\n该操作号下不再有可确认草案；如需再次处置，需重新准备一个新的草案。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_UkcJHlL1t38wg87Vr3vu0460"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_SiydVbsB58xGbEfzZyCa5765"
+        },
+        {
+          "name": "mcp__emergency-action__revise_emergency_action",
+          "call_id": "call_00_5S0P31M9rY61XIPIxKwF8512"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_8Ji7PJmH5QXXWJZOVq2d2711"
+        },
+        {
+          "name": "mcp__emergency-action__revise_emergency_action",
+          "call_id": "call_00_ET_zL1C4Zsq099qgQBIxcFB2081"
+        },
+        {
+          "name": "mcp__emergency-action__revise_emergency_action",
+          "call_id": "call_00_TiO7dZeMMKk01PIunGCw7408"
+        },
+        {
+          "name": "mcp__emergency-action__cancel_emergency_action",
+          "call_id": "call_00_KmFwI0OdSfjdWD7OXrid0548"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_ET_GycEssflO4mN9i8h01aV2686"
+        },
+        {
+          "name": "mcp__emergency-action__cancel_emergency_action",
+          "call_id": "call_00_ET_dnJPfWqhEsw8mSGyYhlX7303"
+        }
+      ],
+      "tool_errors": [
+        {
+          "call_id": "call_00_5S0P31M9rY61XIPIxKwF8512",
+          "error": true,
+          "text": "Error: 应急工具必须先加载本轮应急指令 Skill"
+        },
+        {
+          "call_id": "call_00_KmFwI0OdSfjdWD7OXrid0548",
+          "error": true,
+          "text": "Error: 应急工具必须先加载本轮应急指令 Skill"
+        }
+      ],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 22
+    }
+  ],
+  "session_id": "session-f94e0c01-e615-400b-9f5d-1d549be52547",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

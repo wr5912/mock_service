@@ -1,0 +1,64 @@
+{
+  "recorded_at": "2026-10-15T08:12:18.597415+00:00",
+  "instance": "security-operations-expert-mock",
+  "request": "停止并删除此模拟实例，保留 HOME；Mock 服务继续运行。",
+  "before": {
+    "registration_exists": true,
+    "container_state": "running",
+    "home_volume": "dsh-dev-security-operations-expert-mock_dsh-dev-security-operations-expert-mock-home"
+  },
+  "commands": [
+    {
+      "action": "down",
+      "exit_code": 0,
+      "receipt": {
+        "name": "security-operations-expert-mock",
+        "project": "dsh-dev-security-operations-expert-mock",
+        "home_volume": "dsh-dev-security-operations-expert-mock_dsh-dev-security-operations-expert-mock-home",
+        "home_preserved": true,
+        "stopped": true,
+        "containers_removed": true,
+        "containers": []
+      }
+    },
+    {
+      "action": "delete",
+      "exit_code": 0,
+      "receipt": {
+        "name": "security-operations-expert-mock",
+        "project": "dsh-dev-security-operations-expert-mock",
+        "registration_dir": "/home/admin/.local/state/dsh-dev/security-operations-expert-mock",
+        "state": "absent",
+        "home_volume_before": "dsh-dev-security-operations-expert-mock_dsh-dev-security-operations-expert-mock-home",
+        "home_preserved_before": true,
+        "home_volume": "dsh-dev-security-operations-expert-mock_dsh-dev-security-operations-expert-mock-home",
+        "home_preserved": true,
+        "deleted": true,
+        "registration_deleted": true,
+        "containers_before": []
+      }
+    }
+  ],
+  "verification": {
+    "container_absent": true,
+    "project_containers_absent": true,
+    "registration_deleted": true,
+    "home_volume": "dsh-dev-security-operations-expert-mock_dsh-dev-security-operations-expert-mock-home",
+    "home_preserved": true,
+    "mock_services": [
+      {
+        "url": "http://127.0.0.1:53001/health",
+        "http_status": 200,
+        "status": "ok",
+        "service": "网络安全运营模拟数据 API"
+      },
+      {
+        "url": "http://127.0.0.1:53002/health",
+        "http_status": 200,
+        "status": "ok",
+        "service": "threat-intelligence"
+      }
+    ]
+  },
+  "boundary": "仅处理指定实例的容器与登记；未操作 eval、Mock 服务进程或 Elasticsearch。"
+}

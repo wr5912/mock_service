@@ -1,0 +1,105 @@
+{
+  "observed_at": "2026-10-15T07:17:02.649Z",
+  "instance": "security-operations-expert-mock",
+  "results": [
+    {
+      "server": "sec-ops",
+      "status": 200,
+      "tools": [
+        "search_graph_assets",
+        "get_graph_resolve_ip_host",
+        "get_soc_asset_by_asset_id",
+        "list_soc_asset",
+        "get_soc_asset_biz_systems",
+        "get_soc_asset_vulnerabilities",
+        "get_ingest_devices_by_asset_by_asset_id",
+        "get_graph_node_detail",
+        "get_graph_path_query",
+        "get_reachability_path_by_ip",
+        "get_graph_flow_host_pair_ports",
+        "get_reachability_cross_signal",
+        "get_graph_compliance_violations",
+        "get_graph_coverage",
+        "get_event_by_id"
+      ],
+      "resources": 0,
+      "resource_templates": 0
+    },
+    {
+      "server": "inspection",
+      "status": 200,
+      "tools": [
+        "list_executable_inspections",
+        "start_inspection",
+        "get_inspection_result"
+      ],
+      "resources": 0,
+      "resource_templates": 0
+    },
+    {
+      "server": "policy-configuration",
+      "status": 200,
+      "tools": [
+        "prepare_policy_configuration",
+        "get_policy_configuration_status",
+        "select_policy_configuration_candidate",
+        "get_policy_configuration_result",
+        "confirm_policy_configuration"
+      ],
+      "resources": 0,
+      "resource_templates": 0
+    },
+    {
+      "server": "emergency-action",
+      "status": 200,
+      "tools": [
+        "prepare_emergency_action",
+        "revise_emergency_action",
+        "get_emergency_action",
+        "list_emergency_actions",
+        "get_emergency_action_result",
+        "cancel_emergency_action"
+      ],
+      "resources": 0,
+      "resource_templates": 0
+    },
+    {
+      "server": "report",
+      "status": 200,
+      "tools": [
+        "save_persistence_result"
+      ],
+      "resources": 0,
+      "resource_templates": 0
+    },
+    {
+      "server": "soc-mock",
+      "status": 200,
+      "tools": [
+        "ai_soc_correlate__get_correlate_incident_by_incident_id",
+        "ai_soc_correlate__get_correlate_intel_check",
+        "ai_soc_correlate__get_correlate_reasoning_rules_by_rule_id",
+        "ai_soc_correlate__get_correlate_threat_intel",
+        "ai_soc_correlate__create_correlate_incident_judgement_fail",
+        "ai_soc_correlate__get_correlate_incident_judge_pending",
+        "ai_soc_correlate__create_incident_judgement_claim",
+        "ai_soc_correlate__update_incident_judgement_result",
+        "ai_soc_detect__get_detect_alert_by_alert_id",
+        "ai_soc_detect__list_detect_whitelist",
+        "ai_soc_event__search_event",
+        "ai_soc_graph__get_graph_enrich_topology_by_asset_id",
+        "ai_soc_graph__get_graph_flow_host_pair_ports",
+        "ai_soc_graph__get_graph_identity_asset_accounts",
+        "ai_soc_graph__get_graph_lm_login_sequence",
+        "ai_soc_ingest__get_ingest_devices_by_asset_by_asset_id",
+        "ai_soc_master__get_soc_asset_biz_systems",
+        "ai_soc_master__get_soc_asset_by_asset_id",
+        "ai_soc_master__get_soc_asset_importance"
+      ],
+      "resources": 0,
+      "resource_templates": 0
+    }
+  ],
+  "browser_errors": [],
+  "ok": true
+}

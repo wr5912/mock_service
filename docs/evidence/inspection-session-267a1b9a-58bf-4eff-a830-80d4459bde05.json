@@ -1,0 +1,23 @@
+{
+  "case": "inspection",
+  "observed_at": "2026-10-15T07:16:01Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请执行一次基础资产健康巡检，查询到完成结果并提供报告下载链接。",
+      "assistant": "",
+      "tool_calls": [],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "error",
+        "error": {
+          "message": "Request timed out.",
+          "code": "TIMEOUT"
+        }
+      },
+      "event_count": 26
+    }
+  ],
+  "session_id": "session-267a1b9a-58bf-4eff-a830-80d4459bde05",
+  "preset": "security-operations-expert"
+}

@@ -8,24 +8,24 @@
     "latest_analysis_job_id": "5456e9f7-be9a-4f52-8575-d3d68e8def29",
     "entity_summary": {
       "host": {
-        "uid": "MOCK-PC-000C29BABA354EA1",
-        "name": "MOCK-PC-000C29BABA354EA1"
+        "uid": "mock-host-05",
+        "name": "demo-workstation-05"
       },
       "user": {
-        "name": "admin"
+        "name": "demo_user"
       },
       "network": {
-        "dst_ip": null
+        "dst_ip": "192.0.2.5"
       },
       "process": {
         "pid": 7011,
         "uid": "7011_1767900110000",
         "file": {
-          "md5": "00000000000000000000000000abc00b",
-          "name": "net.exe",
-          "path": "C:\\Windows\\System32\\net.exe"
+          "md5": "00000000000000000000000000000005",
+          "name": "demo-status-service",
+          "path": "/demo/status/service-05"
         },
-        "name": "net.exe",
+        "name": "demo-status-service",
         "created_time": 1767900110000
       }
     },
@@ -47,13 +47,13 @@
     "id": "e68b3e2f-f238-4398-92a6-b5c6b5dc001c",
     "finding_id": "8531ebc5-fa4d-4a9d-bebc-5048960a750e",
     "analysis_job_id": "5456e9f7-be9a-4f52-8575-d3d68e8def29",
-    "verdict": "threat",
-    "confidence": 0.75,
-    "severity": "medium",
+    "verdict": "benign",
+    "confidence": 1.0,
+    "severity": "info",
     "summary": {
-      "engine_id": "builtin/cypher_rule",
-      "package_uri": "engine_packages/builtin/cypher_rule",
-      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_id": "local/basic-status",
+      "package_uri": "local/basic-status",
+      "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "engine_run_id": "02abc94b-9c50-40e7-9d3a-4961dc1611e4",
       "engine_version": "0.1.0",
       "evidence_count": 1
@@ -67,18 +67,18 @@
       "id": "60d06173-5938-43f7-98b9-4eadf62e810d",
       "evidence": {
         "file_id": "file--453c5f07-b8c1-59b9-96c8-d353102965a0",
-        "file_md5": "00000000000000000000000000abc00b",
-        "data_type": "network_activity",
-        "dst_value": "203.0.113.32",
-        "file_path": "C:\\Windows\\System32\\net.exe",
-        "host_name": "MOCK-PC-000C29BABA354EA1",
+        "file_md5": "00000000000000000000000000000005",
+        "data_type": "service_status",
+        "dst_value": "192.0.2.5",
+        "file_path": "/demo/status/service-05",
+        "host_name": "demo-workstation-05",
         "event_time": "1767903003000",
         "network_id": "network-traffic--8cde1c14-250e-52e2-afde-5315ffd5e1f9",
         "process_id": "process--90c902b1-a80d-5ac3-ab1f-53a521e23d18",
         "observed_id": "observed-data--99b275de-dfa8-5c55-87da-982d12c88581",
         "process_pid": 7011,
-        "process_name": "net.exe",
-        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29BABA354EA1",
+        "process_name": "demo-status-service",
+        "host_graph_key": "contract-fixture-es:host:mock-host-05",
         "process_created_time": 1767900110000
       },
       "request_id": "req_6da958c27f534f3294696b95ddb60888",
@@ -90,32 +90,21 @@
     "analysis_result_id": "e68b3e2f-f238-4398-92a6-b5c6b5dc001c",
     "status": "ready",
     "report": {
-      "title": "潜在发现命令执行威胁",
-      "attack_story": "攻击者可能通过 net.exe 执行发现命令，并尝试与外部 IP 203.0.113.32 建立网络连接，以收集系统信息或进行后续横向移动。",
+      "title": "演示主机 05 基础状态",
+      "attack_story": "",
       "key_evidence": [
-        "进程 net.exe (PID: 7011) 在 C:\\Windows\\System32\\net.exe 路径下运行",
-        "网络连接目标 IP: 203.0.113.32",
-        "关联攻击技术: T1059 (命令执行)",
-        "用户: admin"
+        "示例服务可用。",
+        "演示账号完成常规登录。"
       ],
-      "uncertainties": [
-        "缺乏 net.exe 具体执行命令的详细信息",
-        "目标 IP 203.0.113.32 的归属和意图未明确",
-        "证据仅包含单次网络活动，无法确认攻击链完整性"
-      ],
-      "executive_summary": "在主机 MOCK-PC-000C29BABA354EA1 上检测到 net.exe 进程的网络活动，目标 IP 为 203.0.113.32。该行为与执行战术（T1059）相关，判定为中等严重性威胁。",
-      "recommended_actions": [
-        "调查 net.exe 进程的启动参数和父进程",
-        "检查主机 MOCK-PC-000C29BABA3541EA1 上是否存在其他可疑活动",
-        "确认目标 IP 203.0.113.32 是否为已知恶意地址",
-        "审查 admin 用户的操作记录"
-      ],
-      "confidence_explanation": "基于规则匹配和单一证据，置信度为 0.75。证据指向明确的进程和网络行为，但缺乏上下文细节，因此置信度中等偏高。"
+      "uncertainties": [],
+      "executive_summary": "本记录仅用于展示基本资产和服务状态，所有值均为模拟值。",
+      "recommended_actions": [],
+      "confidence_explanation": "固定的本地基本数据，不对应真实事件判断。"
     },
-    "provider": "deepseek",
-    "model": "openai/deepseek-chat",
-    "prompt_version": "fast-threat-report-v1",
-    "input_hash": "5f0e06cb528d4d07d3ec9afc133f03f884bea8bb415955895a6a7af4c9b63ea7",
+    "provider": "local",
+    "model": "local-basic-mock",
+    "prompt_version": "basic-status-v1",
+    "input_hash": "9cf413fa7037fc9d60bcc6f47624aafb3359815ee92f51972dda834cad8be630",
     "error_summary": {},
     "request_id": "req_6da958c27f534f3294696b95ddb60888",
     "created_at": "2026-05-18T03:19:12.600682Z",
@@ -125,11 +114,11 @@
     {
       "id": "2f12341a-7c94-4214-bbf0-6b951f28e6be",
       "trace": {
-        "rule": "host_process_context_match",
-        "engine_id": "builtin/cypher_rule",
-        "engine_type": "cypher_rule",
-        "package_uri": "engine_packages/builtin/cypher_rule",
-        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "rule": "basic_service_status",
+        "engine_id": "local/basic-status",
+        "engine_type": "basic_status",
+        "package_uri": "local/basic-status",
+        "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "engine_version": "0.1.0",
         "evidence_count": 1
       },

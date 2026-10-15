@@ -1,37 +1,18 @@
-# threat-analysis-mock-data
+# Threat Analysis 基本状态模拟接口
 
-自包含的 Threat Analysis 外部查询接口 mock 数据包。
+该模块只提供本地基本资产与服务状态数据，不依赖外部模型、数据库或其他项目代码。
 
-提供接口：
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/api/external/detection-findings?limit=50` | 返回基本状态记录列表，limit 范围 1–200 |
+| GET | `/api/external/detection-findings/{finding_id}/analysis-result` | 返回列表中对应记录的基本分析结构 |
 
-```text
-GET /api/external/detection-findings
-GET /api/external/detection-findings/{finding_id}/analysis-result
-```
-
-## 独立启动
-
-把整个目录复制到任意位置后，在该目录内运行：
+主服务已经注册该 router，可直接随 `app.main:app` 使用。也可在项目根目录独立启动：
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 53001
+.venv/bin/uvicorn app.threat_analysis_mock_data.main:app --host 0.0.0.0 --port 53001
 ```
 
-## 挂到现有 FastAPI 应用
+独立入口同样提供 `/health`、`/docs` 和 `/openapi.json`。
 
-把整个目录复制到 `/home/admin/projects/mock_service/app/threat_analysis_mock_data` 后，在现有 FastAPI `app/main.py` 中加入：
-
-```python
-from app.threat_analysis_mock_data.router import router as threat_analysis_router
-
-app.include_router(threat_analysis_router)
-```
-
-如果目录名保持 `threat-analysis-mock-data`，Python 不能直接用常规 import 导入带连字符的包名；建议复制时改名为 `threat_analysis_mock_data`。
-
-## 数据说明
-
-- `data/detection-findings.json`：finding 列表。
-- `data/analysis-results/{finding_id}.json`：单条 finding 的聚合分析结果。
-
-所有数据均为本地 JSON 文件，不依赖数据库、Neo4j、Elasticsearch 或 threat-analysis 项目代码。
+`data/detection-findings.json` 保存六条记录；`data/analysis-results/` 保存相同稳定 ID 的结果。内容均为基本模拟值：进程为演示服务、级别为 info、结论为 benign，相关技术与原始模型内容留空，不表示真实运行证据。

@@ -1,0 +1,103 @@
+{
+  "case": "policy",
+  "observed_at": "2026-10-15T08:12:59Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请为测试应用服务器 192.0.2.10 到测试数据库服务器 192.0.2.20 开通 TCP 443 访问，指定测试防火墙 mock-firewall。先准备草案，不执行。",
+      "assistant": "### 基础模拟策略草案\n\n状态：DRAFT。\n\n配置预览：正常测试资产之间的访问配置，命令数组为空。\n\n```json\n{\"commands\": []}\n```\n\n仅更新 Mock 进程中的模拟状态，不下发设备配置。请在本会话单独发送“执行”。\n\n---\n\n- operationId：`op_1b3739c133be42a8837f93854e6d9d94`\n- taskId：`task_b75a7aed5af64ba98e88a5460d824549`\n- 草案意图：192.0.2.10 → 192.0.2.20，TCP/443，ADD（设备线索 `mock-firewall`）\n- 当前状态：`waiting_user` / `awaiting_confirmation` / `DRAFT`，`confirmation_required=true`\n\n说明：以上为 Workbench 返回的权威投影，DRAFT 就绪不等于策略已下发或已在设备生效；本轮未执行任何下发操作。需要下发时请在本会话单独发送“执行”，由受信确认插件绑定本草案并提交。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_0BV83k5JaVb7coqMlbay3732"
+        },
+        {
+          "name": "mcp__policy-configuration__prepare_policy_configuration",
+          "call_id": "call_00_6fFB8IJeI2H05RqergBj6664"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_XKm5g09l5gUeOFMVeoOh4101"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 32
+    },
+    {
+      "input": "执行",
+      "assistant": "模拟配置已完成。仅更新 Mock 状态，没有下发真实设备配置。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_0BV83k5JaVb7coqMlbay3732"
+        },
+        {
+          "name": "mcp__policy-configuration__prepare_policy_configuration",
+          "call_id": "call_00_6fFB8IJeI2H05RqergBj6664"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_XKm5g09l5gUeOFMVeoOh4101"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 5
+    },
+    {
+      "input": "查询刚才这次策略操作的最终结果。",
+      "assistant": "**最终结果：本次策略操作已终态完成（模拟）**\n\n模拟配置已完成。仅更新 Mock 状态，没有下发真实设备配置。\n\n结果要点（来自 Workbench 权威投影）：\n\n| 项目 | 值 |\n| --- | --- |\n| operationId | `op_1b3739c133be42a8837f93854e6d9d94` |\n| taskId | `task_b75a7aed5af64ba98e88a5460d824549` |\n| 意图 | 192.0.2.10 → 192.0.2.20，TCP/443，ADD |\n| operation_status / stage_code | `completed` / `completed` |\n| task_status | `SUCCEEDED` |\n| result_code | `SIMULATION_COMPLETED` |\n| execution.status | `SUCCEEDED`（`simulated: true`） |\n| failure_scope | `NONE` |\n| confirmation | `accepted: true`，receipt `receipt_aa548ac60f06482998526c443641a2b7` |\n| 选中候选 | `candidate-primary`（device_id 9200，测试防火墙，FORWARD/FIRST/COMPLETE） |\n\n事实与边界：以上为 Mock 进程内的模拟终态，`simulated=true`。本次操作未向真实设备下发任何配置，因此不能表述为防火墙策略已生效或已在设备上验证通过。\n\n后续如需核对，可用同一 operationId 继续查询；本轮未执行其他动作，也未产生新的草案。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_0BV83k5JaVb7coqMlbay3732"
+        },
+        {
+          "name": "mcp__policy-configuration__prepare_policy_configuration",
+          "call_id": "call_00_6fFB8IJeI2H05RqergBj6664"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_XKm5g09l5gUeOFMVeoOh4101"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_CY18dRoODMO4OaK9XERs0948"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_65QLe28uTtQ5RKgF2LX62498"
+        },
+        {
+          "name": "mcp__policy-configuration__get_policy_configuration_result",
+          "call_id": "call_00_ExQ2nrzf1PENVqI78lVz6166"
+        }
+      ],
+      "tool_errors": [
+        {
+          "call_id": "call_00_CY18dRoODMO4OaK9XERs0948",
+          "error": true,
+          "text": "Error: 策略工具必须先加载本轮策略配置 Skill"
+        }
+      ],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 22
+    }
+  ],
+  "session_id": "session-6204c591-605c-42f8-a072-e61233911632",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

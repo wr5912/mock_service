@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-10-15",
+  "imported_indices": 21,
+  "imported_records": 21,
+  "counts": {
+    "es_api_create_remote_thread": 1,
+    "es_api_event": 1,
+    "es_device_access": 1,
+    "es_driver_load": 1,
+    "es_file_access": 1,
+    "es_file_delete": 1,
+    "es_file_event": 1,
+    "es_file_rename": 1,
+    "es_file_tamper": 1,
+    "es_image_load": 1,
+    "es_network_connection": 1,
+    "es_network_event": 1,
+    "es_pipe_connect": 1,
+    "es_pipe_created": 1,
+    "es_process_cmdline": 1,
+    "es_process_creation": 1,
+    "es_registry_add": 1,
+    "es_registry_delete": 1,
+    "es_registry_set": 1,
+    "es_threat_event": 1,
+    "es_web_event": 1
+  },
+  "matches_reviewed_source": true,
+  "existing_system_indices_modified": false
+}

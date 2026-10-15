@@ -8,24 +8,24 @@
     "latest_analysis_job_id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
     "entity_summary": {
       "host": {
-        "uid": "MOCK-PC-000C29BEEF002",
-        "name": "MOCK-PC-000C29BEEF002"
+        "uid": "mock-host-04",
+        "name": "demo-workstation-04"
       },
       "user": {
-        "name": "tester4"
+        "name": "demo_user"
       },
       "network": {
-        "dst_ip": null
+        "dst_ip": "192.0.2.4"
       },
       "process": {
         "pid": 7088,
         "uid": "7088_1767900880000",
         "file": {
-          "md5": "00000000000000000000000000abc058",
-          "name": "ipconfig.exe",
-          "path": "C:\\Windows\\System32\\ipconfig.exe"
+          "md5": "00000000000000000000000000000004",
+          "name": "demo-status-service",
+          "path": "/demo/status/service-04"
         },
-        "name": "ipconfig.exe",
+        "name": "demo-status-service",
         "created_time": 1767900880000
       }
     },
@@ -47,13 +47,13 @@
     "id": "ae339845-0682-4c35-9f6f-4c3cdb6219cc",
     "finding_id": "05531ba0-c144-488b-81a7-b7b41d7f1d15",
     "analysis_job_id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
-    "verdict": "threat",
-    "confidence": 0.75,
-    "severity": "medium",
+    "verdict": "benign",
+    "confidence": 1.0,
+    "severity": "info",
     "summary": {
-      "engine_id": "builtin/cypher_rule",
-      "package_uri": "engine_packages/builtin/cypher_rule",
-      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_id": "local/basic-status",
+      "package_uri": "local/basic-status",
+      "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "engine_run_id": "91a5a104-02b3-4381-bb2e-6e1e83ebee4d",
       "engine_version": "0.1.0",
       "evidence_count": 1
@@ -67,18 +67,18 @@
       "id": "7c902cf7-8e7b-4f17-b949-1104b890338c",
       "evidence": {
         "file_id": "file--fad4cb7e-fe55-5753-9685-742fc36568a2",
-        "file_md5": "00000000000000000000000000abc058",
-        "data_type": "network_activity",
-        "dst_value": "198.51.100.62",
-        "file_path": "C:\\Windows\\System32\\ipconfig.exe",
-        "host_name": "MOCK-PC-000C29BEEF002",
+        "file_md5": "00000000000000000000000000000004",
+        "data_type": "service_status",
+        "dst_value": "192.0.2.4",
+        "file_path": "/demo/status/service-04",
+        "host_name": "demo-workstation-04",
         "event_time": "1767903016000",
         "network_id": "network-traffic--08d6a820-8d0c-5e3f-a98b-54ecc202f6f9",
         "process_id": "process--72ced679-53f9-5584-ad87-f53f14c0322d",
         "observed_id": "observed-data--6a7a0758-c3f5-5539-8b2a-4ac691def91d",
         "process_pid": 7088,
-        "process_name": "ipconfig.exe",
-        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29BEEF002",
+        "process_name": "demo-status-service",
+        "host_graph_key": "contract-fixture-es:host:mock-host-04",
         "process_created_time": 1767900880000
       },
       "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
@@ -90,31 +90,21 @@
     "analysis_result_id": "ae339845-0682-4c35-9f6f-4c3cdb6219cc",
     "status": "ready",
     "report": {
-      "title": "测试主机罕见外部连接告警",
-      "attack_story": "用户 tester4 在测试主机上运行 ipconfig.exe，该进程随后连接至罕见外部地址 198.51.100.62。可能为信息收集或命令执行（T1059）后的外连行为。",
+      "title": "演示主机 04 基础状态",
+      "attack_story": "",
       "key_evidence": [
-        "进程 ipconfig.exe（路径 C:\\Windows\\System32\\ipconfig.exe）发起连接",
-        "目标 IP: 198.51.100.62（外部地址）",
-        "主机: MOCK-PC-000C29BEEF002，用户: tester4",
-        "关联攻击技术: T1059（命令执行）"
+        "示例服务可用。",
+        "演示账号完成常规登录。"
       ],
-      "uncertainties": [
-        "证据仅包含单次网络连接，缺乏上下文（如连接时长、数据量）",
-        "未提供父进程信息，无法判断执行链"
-      ],
-      "executive_summary": "在主机 MOCK-PC-000C29BEEF002 上，进程 ipconfig.exe（PID 7088）于 2026-01-08 20:43:24 向外部 IP 198.51.100.62 发起网络连接。该行为被规则引擎识别为威胁，置信度中等（0.75），严重程度中等。",
-      "recommended_actions": [
-        "调查进程 ipconfig.exe 的父进程及启动参数",
-        "确认用户 tester4 的操作意图",
-        "检查目标 IP 198.51.100.62 的威胁情报",
-        "评估主机是否存在其他异常行为"
-      ],
-      "confidence_explanation": "基于规则匹配和单一证据，置信度中等（0.75），需进一步验证。"
+      "uncertainties": [],
+      "executive_summary": "本记录仅用于展示基本资产和服务状态，所有值均为模拟值。",
+      "recommended_actions": [],
+      "confidence_explanation": "固定的本地基本数据，不对应真实事件判断。"
     },
-    "provider": "deepseek",
-    "model": "openai/deepseek-chat",
-    "prompt_version": "fast-threat-report-v1",
-    "input_hash": "a7275eebe14c638c8fc098f6afa7113991f01178c4bb86a8c71f579dc56eb90e",
+    "provider": "local",
+    "model": "local-basic-mock",
+    "prompt_version": "basic-status-v1",
+    "input_hash": "fbf50dd310bf3e49c75407abeaa3b0440f18c09b275198b32ae51ca90462321e",
     "error_summary": {},
     "request_id": "req_2a2581d2a80c4f9eaab9ec1eda6fe045",
     "created_at": "2026-05-18T03:18:19.924114Z",
@@ -124,11 +114,11 @@
     {
       "id": "7cd9c621-f746-446f-afe1-36f52ce4cfea",
       "trace": {
-        "rule": "host_process_context_match",
-        "engine_id": "builtin/cypher_rule",
-        "engine_type": "cypher_rule",
-        "package_uri": "engine_packages/builtin/cypher_rule",
-        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "rule": "basic_service_status",
+        "engine_id": "local/basic-status",
+        "engine_type": "basic_status",
+        "package_uri": "local/basic-status",
+        "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "engine_version": "0.1.0",
         "evidence_count": 1
       },

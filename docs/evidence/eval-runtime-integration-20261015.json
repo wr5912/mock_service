@@ -1,0 +1,40 @@
+{
+  "observed_at": "2026-10-15T08:20:57.882146+00:00",
+  "instance": "security-operations-expert-eval",
+  "source": "experiment:EXP-security-operations-expert-019-rc442472a242a",
+  "image_id": "sha256:3907b02a066908dd67b20ad50bd593019a504b1ea8d988be35ebe7b34270d92b",
+  "source_and_image_preserved": true,
+  "harness_mounts": [
+    {
+      "Source": "/home/admin/work/ai-agent-harness/evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/managed",
+      "Destination": "/opt/dsh-managed",
+      "RW": false
+    },
+    {
+      "Source": "/home/admin/work/ai-agent-harness/evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/presets",
+      "Destination": "/opt/dsh-presets",
+      "RW": false
+    },
+    {
+      "Source": "/home/admin/work/ai-agent-harness/evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/workspace",
+      "Destination": "/work/harness/workspace",
+      "RW": false
+    }
+  ],
+  "home_volume": "dsh-dev-security-operations-expert-eval_dsh-dev-security-operations-expert-eval-home",
+  "home_preserved": true,
+  "port": 3081,
+  "mock_urls": {
+    "SOC_MCP_BASE_URL": "http://10.0.160.32:53001",
+    "REPORT_MCP_URL": "http://10.0.160.32:53001/mcp/report/",
+    "POLICY_CONFIGURATION_MCP_URL": "http://10.0.160.32:53001/mcp/policy-configuration/",
+    "EMERGENCY_WORKBENCH_URL": "http://10.0.160.32:53001"
+  },
+  "runtime_configuration_matches_private_source": true,
+  "credential_values_exported": false,
+  "hmr": {
+    "disabled_in_instance_home": true,
+    "enospc_log_observed": false
+  },
+  "future_recreation": "dsh-dev up and platform restart require the same runtime environment; ordinary docker restart preserves container environment"
+}

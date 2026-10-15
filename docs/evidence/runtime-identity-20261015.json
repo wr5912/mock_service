@@ -1,0 +1,54 @@
+{
+  "observed_at": "2026-10-15",
+  "instances": {
+    "security-operations-expert-mock": {
+      "name": "security-operations-expert-mock",
+      "image_id": "sha256:3907b02a066908dd67b20ad50bd593019a504b1ea8d988be35ebe7b34270d92b",
+      "started_at": "2026-10-15T07:19:16.508650386Z",
+      "home_volume": "dsh-dev-security-operations-expert-mock_dsh-dev-security-operations-expert-mock-home",
+      "candidate_mounts": [
+        {
+          "source": "evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/managed",
+          "destination": "/opt/dsh-managed",
+          "read_only": true
+        },
+        {
+          "source": "evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/workspace",
+          "destination": "/work/harness/workspace",
+          "read_only": true
+        },
+        {
+          "source": "evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/presets",
+          "destination": "/opt/dsh-presets",
+          "read_only": true
+        }
+      ]
+    },
+    "security-operations-expert-eval": {
+      "name": "security-operations-expert-eval",
+      "image_id": "sha256:3907b02a066908dd67b20ad50bd593019a504b1ea8d988be35ebe7b34270d92b",
+      "started_at": "2026-10-15T05:58:20.269980925Z",
+      "home_volume": "dsh-dev-security-operations-expert-eval_dsh-dev-security-operations-expert-eval-home",
+      "candidate_mounts": [
+        {
+          "source": "evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/presets",
+          "destination": "/opt/dsh-presets",
+          "read_only": true
+        },
+        {
+          "source": "evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/workspace",
+          "destination": "/work/harness/workspace",
+          "read_only": true
+        },
+        {
+          "source": "evolution/experiments/EXP-security-operations-expert-019-rc442472a242a/candidate/dsh/managed",
+          "destination": "/opt/dsh-managed",
+          "read_only": true
+        }
+      ]
+    }
+  },
+  "same_standard_image": true,
+  "independent_home": true,
+  "harness_git_diff_empty": true
+}

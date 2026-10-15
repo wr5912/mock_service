@@ -9,24 +9,24 @@
       "latest_analysis_job_id": "d22ed77b-ffa3-41c0-ac96-fea287cf21be",
       "entity_summary": {
         "host": {
-          "uid": "MOCK-PC-000C29BABA354EA1",
-          "name": "MOCK-PC-000C29BABA354EA1"
+          "uid": "mock-host-01",
+          "name": "demo-workstation-01"
         },
         "user": {
-          "name": "admin"
+          "name": "demo_user"
         },
         "network": {
-          "dst_ip": null
+          "dst_ip": "192.0.2.1"
         },
         "process": {
           "pid": 7005,
           "uid": "7005_1767900050000",
           "file": {
-            "md5": "00000000000000000000000000abc005",
-            "name": "schtasks.exe",
-            "path": "C:\\Windows\\System32\\schtasks.exe"
+            "md5": "00000000000000000000000000000001",
+            "name": "demo-status-service",
+            "path": "/demo/status/service-01"
           },
-          "name": "schtasks.exe",
+          "name": "demo-status-service",
           "created_time": 1767900050000
         }
       },
@@ -42,24 +42,24 @@
       "latest_analysis_job_id": "9800655d-5e72-4a28-8981-56de1d07c963",
       "entity_summary": {
         "host": {
-          "uid": "MOCK-PC-000C29DEAD001",
-          "name": "MOCK-PC-000C29DEAD001"
+          "uid": "mock-host-02",
+          "name": "demo-workstation-02"
         },
         "user": {
-          "name": "tester3"
+          "name": "demo_user"
         },
         "network": {
-          "dst_ip": null
+          "dst_ip": "192.0.2.2"
         },
         "process": {
           "pid": 7072,
           "uid": "7072_1767900720000",
           "file": {
-            "md5": "00000000000000000000000000abc048",
-            "name": "regsvr32.exe",
-            "path": "C:\\Windows\\System32\\regsvr32.exe"
+            "md5": "00000000000000000000000000000002",
+            "name": "demo-status-service",
+            "path": "/demo/status/service-02"
           },
-          "name": "regsvr32.exe",
+          "name": "demo-status-service",
           "created_time": 1767900720000
         }
       },
@@ -75,24 +75,24 @@
       "latest_analysis_job_id": "6ff971bb-e0c2-42a2-8df8-e5fcae37a6a4",
       "entity_summary": {
         "host": {
-          "uid": "MOCK-PC-000C29BABA354EA1",
-          "name": "MOCK-PC-000C29BABA354EA1"
+          "uid": "mock-host-03",
+          "name": "demo-workstation-03"
         },
         "user": {
-          "name": "admin"
+          "name": "demo_user"
         },
         "network": {
-          "dst_ip": null
+          "dst_ip": "192.0.2.3"
         },
         "process": {
           "pid": 7002,
           "uid": "7002_1767900020000",
           "file": {
-            "md5": "00000000000000000000000000abc002",
-            "name": "conhost.exe",
-            "path": "C:\\Windows\\System32\\conhost.exe"
+            "md5": "00000000000000000000000000000003",
+            "name": "demo-status-service",
+            "path": "/demo/status/service-03"
           },
-          "name": "conhost.exe",
+          "name": "demo-status-service",
           "created_time": 1767900020000
         }
       },
@@ -108,24 +108,24 @@
       "latest_analysis_job_id": "d09e9aeb-b359-4593-8bf3-7db31de02729",
       "entity_summary": {
         "host": {
-          "uid": "MOCK-PC-000C29BEEF002",
-          "name": "MOCK-PC-000C29BEEF002"
+          "uid": "mock-host-04",
+          "name": "demo-workstation-04"
         },
         "user": {
-          "name": "tester4"
+          "name": "demo_user"
         },
         "network": {
-          "dst_ip": null
+          "dst_ip": "192.0.2.4"
         },
         "process": {
           "pid": 7088,
           "uid": "7088_1767900880000",
           "file": {
-            "md5": "00000000000000000000000000abc058",
-            "name": "ipconfig.exe",
-            "path": "C:\\Windows\\System32\\ipconfig.exe"
+            "md5": "00000000000000000000000000000004",
+            "name": "demo-status-service",
+            "path": "/demo/status/service-04"
           },
-          "name": "ipconfig.exe",
+          "name": "demo-status-service",
           "created_time": 1767900880000
         }
       },
@@ -141,24 +141,24 @@
       "latest_analysis_job_id": "5456e9f7-be9a-4f52-8575-d3d68e8def29",
       "entity_summary": {
         "host": {
-          "uid": "MOCK-PC-000C29BABA354EA1",
-          "name": "MOCK-PC-000C29BABA354EA1"
+          "uid": "mock-host-05",
+          "name": "demo-workstation-05"
         },
         "user": {
-          "name": "admin"
+          "name": "demo_user"
         },
         "network": {
-          "dst_ip": null
+          "dst_ip": "192.0.2.5"
         },
         "process": {
           "pid": 7011,
           "uid": "7011_1767900110000",
           "file": {
-            "md5": "00000000000000000000000000abc00b",
-            "name": "net.exe",
-            "path": "C:\\Windows\\System32\\net.exe"
+            "md5": "00000000000000000000000000000005",
+            "name": "demo-status-service",
+            "path": "/demo/status/service-05"
           },
-          "name": "net.exe",
+          "name": "demo-status-service",
           "created_time": 1767900110000
         }
       },
@@ -174,24 +174,24 @@
       "latest_analysis_job_id": "6deb0b85-4224-4c54-9025-023805155ae4",
       "entity_summary": {
         "host": {
-          "uid": "MOCK-PC-000C29BABA354EA1",
-          "name": "MOCK-PC-000C29BABA354EA1"
+          "uid": "mock-host-06",
+          "name": "demo-workstation-06"
         },
         "user": {
-          "name": "admin"
+          "name": "demo_user"
         },
         "network": {
-          "dst_ip": null
+          "dst_ip": "192.0.2.6"
         },
         "process": {
           "pid": 6828,
           "uid": "6828_1767718768337",
           "file": {
-            "md5": "ceaa5817a65e914aa178b28f12359a46",
-            "name": "WINWORD.EXE",
-            "path": "C:\\Program Files (x86)\\Microsoft Office\\Office12\\WINWORD.EXE"
+            "md5": "00000000000000000000000000000006",
+            "name": "demo-status-service",
+            "path": "/demo/status/service-06"
           },
-          "name": "WINWORD.EXE",
+          "name": "demo-status-service",
           "created_time": 1767718768337
         }
       },

@@ -1,14 +1,11 @@
 from fastapi.testclient import TestClient
+import pytest
 
-from app.config import Settings, get_settings
 from app.main import app
 
 
 client = TestClient(app)
-
-
-def settings_without_api_key() -> Settings:
-    return Settings(DEEPSEEK_API_KEY=None)
+LIST_ROUTES = ["assets", "alerts", "incidents", "vulnerabilities", "indicators", "events"]
 
 
 def test_health() -> None:
@@ -18,20 +15,23 @@ def test_health() -> None:
     assert response.json()["status"] == "ok"
 
 
-def test_alerts_count_and_seed_are_stable() -> None:
-    first = client.get("/api/v1/alerts", params={"count": 3, "seed": 7})
-    second = client.get("/api/v1/alerts", params={"count": 3, "seed": 7})
+@pytest.mark.parametrize("route", LIST_ROUTES)
+def test_lists_count_and_seed_are_stable(route: str) -> None:
+    first = client.get(f"/api/v1/{route}", params={"count": 3, "seed": 7})
+    second = client.get(f"/api/v1/{route}", params={"count": 3, "seed": 7})
 
     assert first.status_code == 200
     assert len(first.json()) == 3
-    assert first.json()[0]["alert_id"] == "alert-0001"
     assert first.json() == second.json()
 
 
-def test_count_validation() -> None:
-    response = client.get("/api/v1/assets", params={"count": 201})
+@pytest.mark.parametrize("count", [0, 201, "neutral-validation-marker"])
+def test_count_validation_does_not_echo_input(count) -> None:
+    response = client.get("/api/v1/assets", params={"count": count})
 
     assert response.status_code == 422
+    assert "neutral-validation-marker" not in response.text
+    assert "input" not in response.json()
 
 
 def test_openapi_contains_docs() -> None:
@@ -41,13 +41,28 @@ def test_openapi_contains_docs() -> None:
     assert response.status_code == 200
     assert schema["info"]["title"] == "网络安全运营模拟数据 API"
     assert "/api/v1/alerts" in schema["paths"]
-    assert schema["paths"]["/api/v1/ai/scenarios"]["post"]["summary"] == "生成安全运营演练场景"
+    assert "基本" in schema["paths"]["/api/v1/ai/scenarios"]["post"]["summary"]
 
 
-def test_ai_scenario_requires_api_key() -> None:
-    app.dependency_overrides[get_settings] = settings_without_api_key
-    response = client.post("/api/v1/ai/scenarios", json={"topic": "勒索软件告警调查", "language": "zh"})
-    app.dependency_overrides.clear()
+@pytest.mark.parametrize("language", ["zh", "en"])
+def test_ai_scenario_is_local_and_does_not_echo_topic(language: str, monkeypatch) -> None:
+    def fail_network(*args, **kwargs):
+        pytest.fail("基本场景不应调用外部网络。")
 
-    assert response.status_code == 503
-    assert "DEEPSEEK_API_KEY" in response.json()["detail"]
+    monkeypatch.setattr("httpx.AsyncClient.request", fail_network)
+    first = client.post("/api/v1/ai/scenarios", json={"topic": "neutral-topic-marker", "language": language})
+    second = client.post("/api/v1/ai/scenarios", json={"topic": "another-topic-marker", "language": language})
+
+    assert first.status_code == second.status_code == 200
+    assert first.json() == second.json()
+    assert first.json()["model"] == "local-basic-mock"
+    assert "neutral-topic-marker" not in first.text
+
+
+def test_ai_scenario_validation_does_not_echo_input() -> None:
+    response = client.post(
+        "/api/v1/ai/scenarios", json={"topic": "基础资产状态", "language": "neutral-validation-marker"}
+    )
+
+    assert response.status_code == 422
+    assert "neutral-validation-marker" not in response.text

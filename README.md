@@ -1,207 +1,61 @@
-# 网络安全运营模拟数据 API
+# 基本运营模拟服务
 
-这是一个基于 Python 3 和 FastAPI 的模拟数据服务，用于给 SOC、SIEM、SOAR、EDR、漏洞管理、威胁情报和安全运营看板等系统提供联调与演示数据。
+本项目为安全运营产品联调提供本地基本数据，以及 `security-operations-expert` 所需的 HTTP API 和 MCP 服务。所有业务动作只更新模拟状态，不访问真实业务系统；无需模型或 API Key 生成数据。
 
-服务默认不依赖外部网络。只有 `/api/v1/ai/scenarios` 和独立威胁情报服务会在配置 `DEEPSEEK_API_KEY` 后调用 DeepSeek 生成内容。
+模拟内容仅包括示例资产、正常登录、基础连接、测试告警、配置状态和演示工单。进程内业务状态在服务重启后重置。
 
-## 快速启动
+## 启动
 
 ```bash
 uv venv .venv
-uv pip install -e ".[test]"
-.venv/bin/uvicorn app.main:app --reload --host 0.0.0.0 --port 53001
+uv pip install --python .venv/bin/python -e ".[test]"
+.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 53001
 ```
 
-启动后访问：
-
-- Swagger UI：<http://127.0.0.1:53001/docs>
-- ReDoc：<http://127.0.0.1:53001/redoc>
-- OpenAPI JSON：<http://127.0.0.1:53001/openapi.json>
+- HTTP 文档：<http://127.0.0.1:53001/docs>
+- 全部 API 规范：<http://127.0.0.1:53001/openapi.json>
+- 智能体业务 API 规范：<http://127.0.0.1:53001/api/v1/security-operations/openapi.json>
 - 健康检查：<http://127.0.0.1:53001/health>
 
-威胁情报服务是独立 Flask-RESTX 服务，单独启动：
+保留的独立基本简报服务：
 
 ```bash
 .venv/bin/python -m app.threat_intelligence
 ```
 
-默认访问地址：
+默认端口 `53002`，提供 `POST /generate`、`GET /health`、`GET /swagger.json` 和 `/docs`。通过进程环境变量 `THREAT_INTEL_HOST`、`THREAT_INTEL_PORT` 配置监听地址与端口，变量示例见 `.env.example`；该启动入口不自动加载 `.env`。两个服务均在对应终端按 `Ctrl+C` 停止。
 
-- 威胁情报生成接口：<http://127.0.0.1:53002/generate>
-- Swagger 2.0 JSON：<http://127.0.0.1:53002/swagger.json>
-- Swagger UI：<http://127.0.0.1:53002/docs>
-- 健康检查：<http://127.0.0.1:53002/health>
+完整 API/MCP 清单、MCP 管理界面配置、固定后端环境变量及验证边界见 [security-operations-expert 接入说明](docs/security-operations-expert接入.md)。
 
-## 环境变量
+## 基础 HTTP 数据
 
-复制 `.env.example` 为 `.env`，按需填写：
+主服务提供资产、测试告警、事件单、组件状态、示例指标、常规日志、看板和本地基本场景；完整路径以 `/docs` 为准。列表支持 `count=1..200` 和 `seed`：
 
 ```bash
-DEEPSEEK_API_KEY=
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_MODEL=deepseek-chat
+curl 'http://127.0.0.1:53001/api/v1/assets?count=3&seed=7'
+curl 'http://127.0.0.1:53001/api/v1/dashboard/summary?seed=7'
 ```
 
-不要把真实 API Key 写入代码或提交到 Git。
+原 `/api/v1/ai/scenarios` 与 `/generate` 入口保留，本地返回确定性的基本运营内容，不回显任意请求主题。原始兼容字段可为空，不提供攻击步骤、载荷、可执行命令或样本。
 
-## Elasticsearch 与 Kibana 容器
-
-项目提供 Elasticsearch `7.14.0` 单节点容器和 Kibana `7.14.0`，用于本地联调搜索、索引、日志类数据和可视化查询场景。
-
-首次启动前复制 Docker 环境变量模板：
+## Elasticsearch 与 Kibana
 
 ```bash
 cp docker/.env.example docker/.env
-```
-
-启动 ES：
-
-```bash
 cd docker
-docker compose up -d elasticsearch
+docker compose up -d elasticsearch kibana
 ```
 
-启动 Kibana：
+Elasticsearch 为 <http://127.0.0.1:59200>，Kibana 为 <http://127.0.0.1:55601>；仅供本地联调。ES 数据卷为 `docker/volume/elasticsearch/data`，不清理或覆盖系统索引。
+
+基本数据源和导入方法见 [ES 基本数据说明](mock_es_data_json/README.md)。旧数据归档已停止使用，无需 `git lfs pull`。
+
+在 `docker/` 执行 `docker compose down` 停止容器，不删除数据卷。
+
+## 验证
 
 ```bash
-cd docker
-docker compose up -d kibana
+.venv/bin/pytest -q
 ```
 
-访问与验证：
-
-- Elasticsearch HTTP 地址：<http://127.0.0.1:59200>
-- Elasticsearch Transport 端口：`59300`
-- Kibana 地址：<http://127.0.0.1:55601>
-- Elasticsearch 健康检查：
-
-```bash
-curl "http://127.0.0.1:59200/_cluster/health?pretty"
-```
-
-- Kibana 健康检查：
-
-```bash
-curl "http://127.0.0.1:55601/api/status"
-```
-
-如已导入 `mock_es_data_json` 中的 OCSF 攻击链数据，可在 Kibana 中创建 Data View：
-
-```bash
-curl -X POST "http://127.0.0.1:55601/api/index_patterns/index_pattern" \
-  -H "kbn-xsrf: true" \
-  -H "Content-Type: application/json" \
-  -d '{"index_pattern":{"title":"ocsf-attack-chain-*","timeFieldName":"time"}}'
-```
-
-创建后可在 Kibana 的 Discover 中选择 `ocsf-attack-chain-*` 查看数据。
-
-停止 ES 与 Kibana：
-
-```bash
-cd docker
-docker compose down
-```
-
-Elasticsearch 数据持久化目录为 `docker/volume/elasticsearch/data`。该目录只用于本地容器数据，不提交到 Git。
-
-## 导入 ES 数据
-
-项目内置 ES 数据包 `exports/sanitized.tar.gz`，首次拉取仓库后如未自动下载 LFS 文件，可执行：
-
-```bash
-git lfs pull
-```
-
-启动本地 ES 后，执行导入：
-
-```bash
-DEST_ES_URL=http://127.0.0.1:59200 \
-.venv/bin/python scripts/import_sanitized_es_data.py --replace
-```
-
-`DEST_ES_URL` 不设置时默认使用 `http://127.0.0.1:59200`。`--replace` 会删除并重建同名索引；如果 `exports/sanitized/` 已存在，传 `--overwrite-extract` 重新解压后导入：
-
-```bash
-DEST_ES_URL=http://127.0.0.1:59200 \
-.venv/bin/python scripts/import_sanitized_es_data.py --replace --overwrite-extract
-```
-
-如 ES 启用了用户名密码，可设置 `DEST_ES_USERNAME` / `DEST_ES_PASSWORD`。
-
-## API 清单
-
-| 方法 | 路径 | 说明 |
-| --- | --- | --- |
-| `GET` | `/health` | 服务健康检查 |
-| `GET` | `/api/v1/assets` | 生成资产列表 |
-| `GET` | `/api/v1/alerts` | 生成安全告警列表 |
-| `GET` | `/api/v1/incidents` | 生成安全事件单 |
-| `GET` | `/api/v1/vulnerabilities` | 生成漏洞列表 |
-| `GET` | `/api/v1/indicators` | 生成威胁情报 IOC |
-| `GET` | `/api/v1/events` | 生成原始安全日志 |
-| `GET` | `/api/v1/dashboard/summary` | 生成 SOC 看板汇总 |
-| `POST` | `/api/v1/ai/scenarios` | 调用 DeepSeek 生成安全运营演练场景 |
-
-所有列表接口都支持：
-
-- `count`：返回记录数，范围 `1-200`。
-- `seed`：随机种子。传入相同 `seed` 可得到稳定模拟数据，便于测试和截图复现。
-
-## 请求示例
-
-生成 3 条稳定告警：
-
-```bash
-curl "http://127.0.0.1:53001/api/v1/alerts?count=3&seed=7"
-```
-
-生成 SOC 看板汇总：
-
-```bash
-curl "http://127.0.0.1:53001/api/v1/dashboard/summary?seed=7"
-```
-
-调用 DeepSeek 生成演练场景：
-
-```bash
-curl -X POST "http://127.0.0.1:53001/api/v1/ai/scenarios" \
-  -H "Content-Type: application/json" \
-  -d '{"topic":"勒索软件告警调查","language":"zh"}'
-```
-
-如果未配置 `DEEPSEEK_API_KEY`，LLM 生成接口会返回 `503`，其他模拟数据接口不受影响。
-
-调用独立威胁情报服务生成模拟威胁情报：
-
-```bash
-curl -X POST "http://127.0.0.1:53002/generate" \
-  -H "Content-Type: application/json" \
-  -d '{"topic":"近期针对制造业的勒索软件活动","intelligence_type":"campaign","language":"zh","include_iocs":true}'
-```
-
-获取威胁情报接口 Swagger 2.0 文档：
-
-```bash
-curl "http://127.0.0.1:53002/swagger.json"
-```
-
-该文档由 Flask-RESTX 根据威胁情报接口模型自动生成。也可以访问 <http://127.0.0.1:53002/docs> 查看 Swagger UI。
-
-## 数据对象
-
-当前服务覆盖网络安全运营中最常用的数据对象：
-
-- 资产：主机名、IP、负责人、业务域、资产类型、风险分、标签。
-- 告警：标题、严重性、状态、来源、关联资产、MITRE ATT&CK 战术和技术。
-- 事件单：标题、严重性、处置状态、处理人、关联告警、受影响资产。
-- 漏洞：CVE、CVSS、组件、修复版本、暴露面和描述。
-- IOC：IP、域名、URL、哈希、邮箱、威胁类型、置信度和发现时间。
-- 原始事件：认证、网络、终端、云和应用日志。
-- 看板汇总：告警数、严重告警数、未关闭事件数、存在漏洞资产数和高频战术。
-
-## 测试
-
-```bash
-.venv/bin/pytest
-```
+接口合同、MCP 协议、基本数据约束和状态流程由测试覆盖。智能体业务验证须使用隔离实例、真实模型和实际工具回执；工具发现或 HTTP 成功不能代替业务闭环。

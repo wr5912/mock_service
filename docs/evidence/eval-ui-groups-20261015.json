@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-10-15T08:25:28.953Z",
+  "instance": "security-operations-expert-eval",
+  "checks": [
+    "report_enabled_for_group_with_zero_model_tools",
+    "selected_sec-ops_15",
+    "selected_inspection_3",
+    "selected_policy-configuration_4",
+    "selected_emergency-action_6",
+    "selected_report_1"
+  ],
+  "groups": "inspection-readonly\n2 个工具 · 0 个资源 · 0 个资源模板\nsec-ops\n15 个工具 · 0 个资源 · 0 个资源模板\ninspection\n3 个工具 · 0 个资源 · 0 个资源模板\npolicy-configuration\n4 个工具 · 0 个资源 · 0 个资源模板\nemergency-action\n6 个工具 · 0 个资源 · 0 个资源模板\nreport\n1 个工具 · 0 个资源 · 0 个资源模板\n＋ 新增分组",
+  "websocket": {
+    "sent": 10,
+    "received": 14
+  },
+  "browser_errors": [],
+  "token_configured": true
+}

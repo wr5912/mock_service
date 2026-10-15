@@ -1,0 +1,22 @@
+{
+  "downloads": [
+    {
+      "case": "inspection",
+      "session_id": "session-66175ec3-41cf-4ba7-aa79-9d2a74dc3369",
+      "status": 200,
+      "basic_html": true
+    },
+    {
+      "case": "threat-fast",
+      "session_id": "session-7a28409f-a86d-40af-8cd6-2c9b2432f687",
+      "status": 200,
+      "basic_html": true
+    },
+    {
+      "case": "threat-full",
+      "session_id": "session-401a5c14-7cae-4213-9c5c-4abf45870637",
+      "status": 200,
+      "basic_html": true
+    }
+  ]
+}

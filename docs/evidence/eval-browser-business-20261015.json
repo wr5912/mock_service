@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-10-15T08:27:28.219Z",
+  "instance": "security-operations-expert-eval",
+  "session_id": "session-6db23391-eae9-4153-95b2-535bb44db7dd",
+  "report_url": "http://10.0.160.32:53001/reports/report_8fa3b950fd944d0c9712cb3927528a91.html",
+  "download_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "websocket": {
+    "sent": 8,
+    "received": 8
+  },
+  "browser_errors": []
+}

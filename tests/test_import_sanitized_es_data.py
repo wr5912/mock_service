@@ -1,168 +1,143 @@
 from __future__ import annotations
 
-import io
 import json
-import tarfile
-from pathlib import Path
+
+import httpx
+import pytest
 
 from scripts.es_models import process_creation
 from scripts.import_sanitized_es_data import (
+    DEFAULT_DATA_PATH,
     DEFAULT_DEST_ES_URL,
     build_bulk_body,
+    build_parser,
+    bulk_import,
     create_index,
     dest_es_url_from_env,
-    extract_sanitized_archive,
-    index_name_from_file,
-    safe_tar_members,
+    import_sanitized_records,
+    load_basic_records,
+    load_model_modules,
     snake_case_index_body,
 )
-
-
-class FakeResponse:
-    def __init__(self, status_code: int, text: str = "") -> None:
-        self.status_code = status_code
-        self.text = text
-
-    def raise_for_status(self) -> None:
-        if self.status_code >= 400:
-            raise RuntimeError(self.text or f"HTTP {self.status_code}")
-
-
-class FakeClient:
-    def __init__(self, head_status: int = 200) -> None:
-        self.head_status = head_status
-        self.calls: list[tuple[str, str, object | None]] = []
-
-    def head(self, path: str) -> FakeResponse:
-        self.calls.append(("HEAD", path, None))
-        return FakeResponse(self.head_status)
-
-    def delete(self, path: str) -> FakeResponse:
-        self.calls.append(("DELETE", path, None))
-        return FakeResponse(200)
-
-    def put(self, path: str, json=None) -> FakeResponse:
-        self.calls.append(("PUT", path, json))
-        return FakeResponse(200)
-
-
-def test_index_name_comes_from_sanitized_file_name() -> None:
-    assert index_name_from_file(Path("exports/sanitized/es_process_creation.json")) == "es_process_creation"
 
 
 def test_dest_es_url_defaults_to_local_es(monkeypatch) -> None:
     monkeypatch.delenv("DEST_ES_URL", raising=False)
 
-    assert dest_es_url_from_env() == "http://127.0.0.1:59200"
-    assert dest_es_url_from_env() == DEFAULT_DEST_ES_URL
+    assert dest_es_url_from_env() == DEFAULT_DEST_ES_URL == "http://127.0.0.1:59200"
 
 
 def test_dest_es_url_allows_environment_override(monkeypatch) -> None:
-    monkeypatch.setenv("DEST_ES_URL", "http://remote-es:9200")
+    monkeypatch.setenv("DEST_ES_URL", "http://demo-es:9200")
 
-    assert dest_es_url_from_env() == "http://remote-es:9200"
-
-
-def make_archive(archive_path: Path, files: dict[str, str]) -> None:
-    with tarfile.open(archive_path, "w:gz") as tar:
-        for name, content in files.items():
-            data = content.encode("utf-8")
-            info = tarfile.TarInfo(name)
-            info.size = len(data)
-            tar.addfile(info, io.BytesIO(data))
+    assert dest_es_url_from_env() == "http://demo-es:9200"
 
 
-def test_extract_sanitized_archive_creates_expected_directory(tmp_path: Path) -> None:
-    archive_path = tmp_path / "sanitized.tar.gz"
-    extract_root = tmp_path / "exports"
-    make_archive(archive_path, {"sanitized/es_process_creation.json": '[{"host_ip": "192.168.1.2"}]'})
+def test_basic_source_covers_current_index_models() -> None:
+    records = load_basic_records()
 
-    extracted = extract_sanitized_archive(archive_path, extract_root, overwrite=False)
-
-    assert extracted == extract_root / "sanitized"
-    assert json.loads((extracted / "es_process_creation.json").read_text(encoding="utf-8")) == [
-        {"host_ip": "192.168.1.2"}
-    ]
+    assert DEFAULT_DATA_PATH.name == "basic_operations.json"
+    assert set(records) == set(load_model_modules())
+    assert len(records) == 21
+    assert all(len(rows) == 1 for rows in records.values())
 
 
-def test_extract_sanitized_archive_requires_overwrite_for_existing_directory(tmp_path: Path) -> None:
-    archive_path = tmp_path / "sanitized.tar.gz"
-    extract_root = tmp_path / "exports"
-    (extract_root / "sanitized").mkdir(parents=True)
-    make_archive(archive_path, {"sanitized/es_process_creation.json": "[]"})
+def test_dry_run_does_not_open_network(monkeypatch) -> None:
+    def fail_client(*args, **kwargs):
+        pytest.fail("dry-run 不应创建网络客户端。")
 
-    try:
-        extract_sanitized_archive(archive_path, extract_root, overwrite=False)
-    except SystemExit as exc:
-        assert "--overwrite-extract" in str(exc)
-    else:
-        raise AssertionError("Expected SystemExit")
+    monkeypatch.setattr("scripts.import_sanitized_es_data.httpx.Client", fail_client)
+    result = import_sanitized_records(build_parser().parse_args(["--dry-run"]))
 
-
-def test_extract_sanitized_archive_overwrites_existing_directory(tmp_path: Path) -> None:
-    archive_path = tmp_path / "sanitized.tar.gz"
-    extract_root = tmp_path / "exports"
-    old_file = extract_root / "sanitized" / "old.json"
-    old_file.parent.mkdir(parents=True)
-    old_file.write_text("[]", encoding="utf-8")
-    make_archive(archive_path, {"sanitized/es_process_creation.json": "[]"})
-
-    extracted = extract_sanitized_archive(archive_path, extract_root, overwrite=True)
-
-    assert not old_file.exists()
-    assert (extracted / "es_process_creation.json").exists()
+    assert result["dry_run"] is True
+    assert result["imported"] == 0
+    assert result["created_indices"] == []
+    assert sum(result["by_index"].values()) == 21
 
 
-def test_safe_tar_members_rejects_path_traversal(tmp_path: Path) -> None:
-    archive_path = tmp_path / "sanitized.tar.gz"
-    make_archive(archive_path, {"../evil.json": "[]"})
+def test_archive_flags_are_no_longer_accepted() -> None:
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(["--archive", "unused-local-file"])
 
-    with tarfile.open(archive_path, "r:gz") as tar:
-        try:
-            safe_tar_members(tar, tmp_path / "exports")
-        except SystemExit as exc:
-            assert "Unsafe archive member path" in str(exc)
-        else:
-            raise AssertionError("Expected SystemExit")
+
+@pytest.mark.parametrize("size", ["0", "-1", "neutral-validation-marker"])
+def test_batch_size_must_be_positive(size: str) -> None:
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(["--batch-size", size])
 
 
 def test_snake_case_index_body_renames_mapping_fields() -> None:
-    body = snake_case_index_body(process_creation)
-    properties = body["mappings"]["properties"]
+    properties = snake_case_index_body(process_creation)["mappings"]["properties"]
 
     assert "host_ip" in properties
     assert "HostIp" not in properties
-    assert "data" in properties
     assert "command_line" in properties["data"]["properties"]
     assert "CommandLine" not in properties["data"]["properties"]
 
 
-def test_build_bulk_body_imports_plain_snake_case_documents() -> None:
-    body = build_bulk_body("es_process_creation", [{"host_ip": "192.168.1.2"}])
+def test_build_bulk_body_imports_basic_documents() -> None:
+    body = build_bulk_body("es_process_creation", [{"host_ip": "192.0.2.10"}])
     lines = body.strip().splitlines()
 
     assert json.loads(lines[0]) == {"index": {"_index": "es_process_creation"}}
-    assert json.loads(lines[1]) == {"host_ip": "192.168.1.2"}
+    assert json.loads(lines[1]) == {"host_ip": "192.0.2.10"}
 
 
 def test_create_index_requires_replace_when_index_exists() -> None:
-    client = FakeClient(head_status=200)
+    calls = []
 
-    try:
-        create_index(client, "es_process_creation", process_creation, replace=False)
-    except RuntimeError as exc:
-        assert "Use --replace" in str(exc)
-    else:
-        raise AssertionError("Expected RuntimeError")
+    def handler(request):
+        calls.append(request.method)
+        return httpx.Response(200)
 
-    assert client.calls == [("HEAD", "/es_process_creation", None)]
+    with httpx.Client(base_url="http://demo-es", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(RuntimeError, match="Use --replace"):
+            create_index(client, "es_process_creation", process_creation, replace=False)
+    assert calls == ["HEAD"]
 
 
 def test_create_index_with_replace_deletes_and_recreates() -> None:
-    client = FakeClient(head_status=200)
+    calls = []
 
-    assert create_index(client, "es_process_creation", process_creation, replace=True) is True
+    def handler(request):
+        calls.append((request.method, request.url.path))
+        if request.method == "PUT":
+            assert json.loads(request.content)["mappings"]["properties"]["host_ip"]["type"] == "text"
+        return httpx.Response(200)
 
-    assert [method for method, _, _ in client.calls] == ["HEAD", "DELETE", "PUT"]
-    put_body = client.calls[-1][2]
-    assert put_body["mappings"]["properties"]["host_ip"]["type"] == "text"
+    with httpx.Client(base_url="http://demo-es", transport=httpx.MockTransport(handler)) as client:
+        assert create_index(client, "es_process_creation", process_creation, replace=True) is True
+    assert [method for method, _ in calls] == ["HEAD", "DELETE", "PUT"]
+
+
+def test_bulk_error_does_not_echo_upstream_content() -> None:
+    def handler(request):
+        return httpx.Response(200, json={"errors": True, "items": [{"index": {"error": "neutral-error-marker"}}]})
+
+    with httpx.Client(base_url="http://demo-es", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(RuntimeError) as error:
+            bulk_import(client, "es_process_creation", [{"host_ip": "192.0.2.10"}])
+    assert "neutral-error-marker" not in str(error.value)
+
+
+def test_full_import_uses_only_current_basic_business_indices(monkeypatch) -> None:
+    requests = []
+    real_client = httpx.Client
+
+    def handler(request):
+        requests.append(request)
+        if request.method == "HEAD":
+            return httpx.Response(404)
+        return httpx.Response(200, json={"errors": False})
+
+    monkeypatch.setattr(
+        "scripts.import_sanitized_es_data.httpx.Client",
+        lambda **kwargs: real_client(**kwargs, transport=httpx.MockTransport(handler)),
+    )
+    result = import_sanitized_records(build_parser().parse_args([]))
+
+    assert result["imported"] == 21
+    assert len(result["created_indices"]) == 21
+    assert not any(request.method == "DELETE" for request in requests)
+    assert all(request.url.path.startswith(("/es_", "/_bulk")) for request in requests)
+    assert len([request for request in requests if request.method == "POST"]) == 21

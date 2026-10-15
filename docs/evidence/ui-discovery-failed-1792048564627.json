@@ -1,0 +1,5 @@
+{
+  "observed_at": "2026-10-15T07:16:04.627Z",
+  "results": [],
+  "error": "locator.selectOption: Error: strict mode violation: getByLabel('服务器') resolved to 2 elements:\n    1) <button type=\"button\" class=\"n66vMG_iconButton\" aria-label=\"会话“请为测试应用服务器 192.0.2.10”的操作\">…</button> aka getByLabel('会话“请为测试应用服务器 192.0.2.10”的操作')\n    2) <select>…</select> aka getByLabel('服务器policy-')\n\nCall log:\n\u001b[2m  - waiting for getByLabel('服务器')\u001b[22m\n"
+}

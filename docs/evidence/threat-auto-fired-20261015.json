@@ -1,0 +1,40 @@
+{
+  "observed_at": "2026-10-15T07:36:41Z",
+  "session_id": "session-0250574c-d811-4850-845b-21a33673712e",
+  "schedule_id": "schedule-bd6f1a59-eaae-4a92-8622-998bcf144a9e",
+  "history": {
+    "id": "schedule-bd6f1a59-eaae-4a92-8622-998bcf144a9e",
+    "records": [
+      {
+        "scheduledAt": "2026-10-15T07:35:00.413Z",
+        "deliveredAt": "2026-10-15T07:35:00.422Z",
+        "messageId": "62792691-3ca3-422d-952f-17a88783f0ad",
+        "prompt": "{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}"
+      }
+    ],
+    "earlierRecordsUnavailable": false,
+    "earlierRecordsPruned": false,
+    "retention": {
+      "days": 30,
+      "records": 200
+    }
+  },
+  "pending_tool_results": [
+    {
+      "role": "tool",
+      "source": {
+        "kind": "tool",
+        "callId": "call_00_8svxyxr8akeuayEwk1LG0110"
+      },
+      "toolCallId": "call_00_8svxyxr8akeuayEwk1LG0110",
+      "content": [
+        {
+          "type": "text",
+          "text": "自动威胁研判批次完成：发现 0 条，尝试 0 条，完成 0 条，锁定跳过 0 条，未完成 0 条。"
+        }
+      ],
+      "isError": false,
+      "id": "393e8f49-ff3c-4fcf-848f-19043e9a6eae"
+    }
+  ]
+}

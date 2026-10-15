@@ -1,82 +1,84 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from typing import get_args
 
-from app.config import Settings
-from app.models import ThreatIntelligenceResponse
+import pytest
+
+from app.models import ThreatIntelligenceType
 from app.threat_intelligence import create_threat_intelligence_app
 
 
-def settings_without_api_key() -> Settings:
-    return Settings(DEEPSEEK_API_KEY=None)
-
-
-def test_threat_intelligence_requires_api_key(monkeypatch) -> None:
-    monkeypatch.setattr("app.threat_intelligence.get_settings", settings_without_api_key)
-    client = create_threat_intelligence_app().test_client()
-
-    response = client.post(
-        "/generate",
-        json={"topic": "近期针对制造业的勒索软件活动", "intelligence_type": "campaign", "language": "zh"},
-    )
-
-    assert response.status_code == 503
-    assert "DEEPSEEK_API_KEY" in response.get_json()["message"]
-
-
 def test_threat_intelligence_health() -> None:
-    client = create_threat_intelligence_app().test_client()
-
-    response = client.get("/health")
+    response = create_threat_intelligence_app().test_client().get("/health")
 
     assert response.status_code == 200
     assert response.get_json()["status"] == "ok"
 
 
-def test_threat_intelligence_generate_success(monkeypatch) -> None:
-    async def fake_generate(settings, request):
-        return ThreatIntelligenceResponse(
-            model="deepseek-chat",
-            topic=request.topic,
-            intelligence_type=request.intelligence_type,
-            generated_at=datetime.now(timezone.utc),
-            title="制造业勒索软件活动模拟简报",
-            summary="这是用于联调的模拟威胁情报。",
-            severity="high",
-            confidence=82,
-            threat_actor="Mock-Ransomware-Group",
-            ttps=["T1059 Command and Scripting Interpreter"],
-            indicators=[
-                {
-                    "type": "domain",
-                    "value": "update-check.example",
-                    "threat_type": "c2",
-                    "confidence": 80,
-                    "description": "模拟 C2 域名。",
-                }
-            ],
-            recommendations=["在 SIEM 中添加模拟 IOC 规则。"],
-            raw_content='{"title":"制造业勒索软件活动模拟简报"}',
-        )
+@pytest.mark.parametrize("intelligence_type", get_args(ThreatIntelligenceType))
+def test_threat_intelligence_is_local_basic_data(intelligence_type, monkeypatch) -> None:
+    def fail_network(*args, **kwargs):
+        pytest.fail("基本数据接口不应调用外部网络。")
 
-    monkeypatch.setattr("app.threat_intelligence.generate_threat_intelligence", fake_generate)
+    monkeypatch.setattr("httpx.AsyncClient.request", fail_network)
     client = create_threat_intelligence_app().test_client()
-
     response = client.post(
         "/generate",
-        json={"topic": "近期针对制造业的勒索软件活动", "intelligence_type": "campaign", "language": "zh"},
+        json={"topic": "neutral-topic-marker", "intelligence_type": intelligence_type, "language": "zh"},
     )
 
     assert response.status_code == 200
     payload = response.get_json()
-    assert payload["title"] == "制造业勒索软件活动模拟简报"
-    assert payload["indicators"][0]["value"] == "update-check.example"
+    assert payload["model"] == "local-basic-mock"
+    assert payload["intelligence_type"] == "situational"
+    assert payload["topic"] == "基础资产状态"
+    assert payload["threat_actor"] is None
+    assert payload["ttps"] == []
+    assert payload["raw_content"] == ""
+    assert payload["recommendations"] == []
+    assert payload["indicators"][0]["threat_type"] == "none"
+    assert "neutral-topic-marker" not in response.get_data(as_text=True)
+
+
+def test_threat_intelligence_language_and_include_iocs() -> None:
+    client = create_threat_intelligence_app().test_client()
+    response = client.post("/generate", json={"topic": "基础状态", "language": "en", "include_iocs": False})
+    repeated = client.post("/generate", json={"topic": "另一主题", "language": "en", "include_iocs": False})
+
+    assert response.status_code == 200
+    assert response.get_json() == repeated.get_json()
+    assert response.get_json()["topic"] == "Basic asset status"
+    assert response.get_json()["indicators"] == []
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"topic": "基础状态", "language": "neutral-validation-marker"},
+        {"topic": ["neutral-validation-marker"]},
+        {"topic": "基础状态", "intelligence_type": "neutral-validation-marker"},
+        ["neutral-validation-marker"],
+    ],
+)
+def test_threat_intelligence_errors_do_not_echo_input(payload) -> None:
+    response = create_threat_intelligence_app().test_client().post("/generate", json=payload)
+
+    assert response.status_code == 400
+    assert response.get_json() == {"message": "请求参数校验失败。"}
+    assert "neutral-validation-marker" not in response.get_data(as_text=True)
+
+
+def test_threat_intelligence_malformed_json_is_generic() -> None:
+    response = create_threat_intelligence_app().test_client().post(
+        "/generate", data="neutral-validation-marker", content_type="application/json"
+    )
+
+    assert response.status_code == 400
+    assert "neutral-validation-marker" not in response.get_data(as_text=True)
 
 
 def test_threat_intelligence_swagger2_document() -> None:
-    client = create_threat_intelligence_app().test_client()
-
-    response = client.get("/swagger.json")
+    response = create_threat_intelligence_app().test_client().get("/swagger.json")
     schema = response.get_json()
 
     assert response.status_code == 200

@@ -1,0 +1,47 @@
+{
+  "case": "inspection",
+  "observed_at": "2026-10-15T08:12:59Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请执行一次基础资产健康巡检，查询到完成结果并提供报告下载链接。",
+      "assistant": "巡检已完成，报告就绪。\n\n**结论：`NORMAL`（正常）** — 例行检查正常，测试资产与采集连接均在线。\n\n| 项目 | 值 |\n|---|---|\n| 巡检名称 | 基础资产健康巡检（`mock-health-inspection` v1） |\n| Run ID | `inspection_5bf8eb36bbec45a08b06e38819bbca5e` |\n| 范围 | 当前全部测试资产（3 个） |\n| 设备/资产数 | 3 / 3 |\n| 结论状态 | `NORMAL` |\n| 业务摘要 | 例行检查正常，测试资产与采集连接均在线。 |\n\n巡检项明细（各 3）：\n\n- 资产在线状态：`NORMAL`\n- 采集连接状态：`NORMAL`\n\n报告正文（服务返回原文）：\n\n> ### 基础资产健康巡检\n> \n> 测试资产在线，采集连接正常。仅提供基础模拟数据。\n\n**报告下载链接（服务返回的原地址）：**\n\nhttp://127.0.0.1:53001/reports/report_7379f570ef754c66b7864ee4b61bdad6.html\n\n**过程与未知项：**\n\n- 本次为一次性即时巡检：先查询可执行目录（仅 1 个已发布且启用的模板，名称与\"基础资产健康巡检\"匹配），选定后以 `requestId=inspection-20261015-basic-health-001` 发起，随后用返回的 `runId` 轮询至完成；期间复位用了同一 `runId`，未重复发起。\n- 数据为服务标注的 `simulated: true` 基础模拟数据，仅覆盖目录描述的测试资产范围，不代表生产资产结论。\n- 未执行任何处置或整改动作；如需持续监控，可另行授权创建周期巡检提醒（尚未创建）。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_XpuEKPDYGNyoUpHXov5D0976"
+        },
+        {
+          "name": "mcp__inspection__list_executable_inspections",
+          "call_id": "call_01_Jbu7cbsLFn3LhVBYLmMv8671"
+        },
+        {
+          "name": "mcp__inspection__start_inspection",
+          "call_id": "call_00_lWBunOiQYV2PPgraoOIq0814"
+        },
+        {
+          "name": "mcp__inspection__get_inspection_result",
+          "call_id": "call_00_iaGAyJGDOzeiXTrgNcSN1403"
+        },
+        {
+          "name": "mcp__inspection__get_inspection_result",
+          "call_id": "call_00_YmNDAMBZDKZhnecDgNGy1552"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 40
+    }
+  ],
+  "session_id": "session-d6a53ee4-d052-48c5-9725-2dfbf577d3b9",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

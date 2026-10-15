@@ -1,0 +1,206 @@
+{
+  "observed_at": "2026-10-15T08:27:36.294316+00:00",
+  "instance": "security-operations-expert-eval",
+  "base_url": "http://10.0.160.32:3081/assistant/",
+  "verification_scope": "实际保存的工具与资源分组端点；不创建智能体Session，不启动巡检或准备策略/应急操作。报告组仅保存一份固定基本HTML。",
+  "groups": [
+    {
+      "id": "inspection-readonly",
+      "endpoint": "http://10.0.160.32:3081/assistant/mcp/groups/inspection-readonly",
+      "expected_tool_count": 2,
+      "missing_bearer_http_status": 401,
+      "protocol_version": "2025-11-25",
+      "server_info": {
+        "name": "inspection-readonly",
+        "version": "0.1.0"
+      },
+      "initialized_notification_http_status": 202,
+      "tool_count": 2,
+      "tool_names": [
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__get_inspection_result"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "call": {
+        "tool_name": "mcp__inspection__list_executable_inspections",
+        "is_error": false,
+        "business_code": 200,
+        "text_matches_structured_content": true,
+        "data_shape": "dict",
+        "data_size": 2
+      }
+    },
+    {
+      "id": "sec-ops",
+      "endpoint": "http://10.0.160.32:3081/assistant/mcp/groups/sec-ops",
+      "expected_tool_count": 15,
+      "missing_bearer_http_status": 401,
+      "protocol_version": "2025-11-25",
+      "server_info": {
+        "name": "sec-ops",
+        "version": "0.1.0"
+      },
+      "initialized_notification_http_status": 202,
+      "tool_count": 15,
+      "tool_names": [
+        "mcp__sec-ops__search_graph_assets",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_event_by_id"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "call": {
+        "tool_name": "mcp__sec-ops__list_soc_asset",
+        "is_error": false,
+        "business_code": 200,
+        "text_matches_structured_content": true,
+        "data_shape": "dict",
+        "data_size": 2
+      }
+    },
+    {
+      "id": "inspection",
+      "endpoint": "http://10.0.160.32:3081/assistant/mcp/groups/inspection",
+      "expected_tool_count": 3,
+      "missing_bearer_http_status": 401,
+      "protocol_version": "2025-11-25",
+      "server_info": {
+        "name": "inspection",
+        "version": "0.1.0"
+      },
+      "initialized_notification_http_status": 202,
+      "tool_count": 3,
+      "tool_names": [
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__inspection__get_inspection_result"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "call": {
+        "tool_name": "mcp__inspection__list_executable_inspections",
+        "is_error": false,
+        "business_code": 200,
+        "text_matches_structured_content": true,
+        "data_shape": "dict",
+        "data_size": 2
+      }
+    },
+    {
+      "id": "policy-configuration",
+      "endpoint": "http://10.0.160.32:3081/assistant/mcp/groups/policy-configuration",
+      "expected_tool_count": 4,
+      "missing_bearer_http_status": 401,
+      "protocol_version": "2025-11-25",
+      "server_info": {
+        "name": "policy-configuration",
+        "version": "0.1.0"
+      },
+      "initialized_notification_http_status": 202,
+      "tool_count": 4,
+      "tool_names": [
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "mcp__policy-configuration__get_policy_configuration_result"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "call": {
+        "tool_name": "mcp__policy-configuration__get_policy_configuration_result",
+        "is_error": false,
+        "business_code": "200",
+        "text_matches_structured_content": true,
+        "operation_id": "op_1b3739c133be42a8837f93854e6d9d94",
+        "task_status": "SUCCEEDED",
+        "operation_status": "completed",
+        "stage_code": "completed"
+      }
+    },
+    {
+      "id": "emergency-action",
+      "endpoint": "http://10.0.160.32:3081/assistant/mcp/groups/emergency-action",
+      "expected_tool_count": 6,
+      "missing_bearer_http_status": 401,
+      "protocol_version": "2025-11-25",
+      "server_info": {
+        "name": "emergency-action",
+        "version": "0.1.0"
+      },
+      "initialized_notification_http_status": 202,
+      "tool_count": 6,
+      "tool_names": [
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__cancel_emergency_action"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "call": {
+        "tool_name": "mcp__emergency-action__list_emergency_actions",
+        "is_error": false,
+        "business_code": "200",
+        "text_matches_structured_content": true,
+        "data_shape": "dict",
+        "data_size": 2
+      }
+    },
+    {
+      "id": "report",
+      "endpoint": "http://10.0.160.32:3081/assistant/mcp/groups/report",
+      "expected_tool_count": 1,
+      "missing_bearer_http_status": 401,
+      "protocol_version": "2025-11-25",
+      "server_info": {
+        "name": "report",
+        "version": "0.1.0"
+      },
+      "initialized_notification_http_status": 202,
+      "tool_count": 1,
+      "tool_names": [
+        "mcp__report__save_persistence_result"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "call": {
+        "tool_name": "mcp__report__save_persistence_result",
+        "is_error": false,
+        "business_code": 200,
+        "text_matches_structured_content": true,
+        "report_id": "report_ad95950cd7ec4518917c46c788414d49",
+        "download_url": "http://10.0.160.32:53001/reports/report_ad95950cd7ec4518917c46c788414d49.html",
+        "download_http_status": 200,
+        "download_content_type": "text/html; charset=utf-8",
+        "download_contains_basic_mock_text": true
+      }
+    }
+  ],
+  "effective_configuration": {
+    "revision": 3,
+    "report_enabled": true,
+    "report_model_selection": [],
+    "soc_openapi_enabled": false,
+    "token_configured": true,
+    "backend_environment_unchanged_by_this_verification": true
+  },
+  "configuration_unchanged_by_verification": true,
+  "model_tool_count_from_saved_selection_and_verified_discovery": 28,
+  "model_tool_count_note": "28由4类模型服务已保存的选择与实际分组名单核对得到；report已启用但selected空列表，不向Agent暴露工具。本次未另建模型Session。",
+  "result": "passed"
+}

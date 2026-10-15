@@ -1,0 +1,394 @@
+{
+  "es_api_create_remote_thread": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "process_id": "1001"
+      }
+    }
+  ],
+  "es_api_event": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "type": "status"
+      }
+    }
+  ],
+  "es_device_access": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_driver_load": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_file_access": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "command_line": "",
+        "parent_command_line": "",
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_file_delete": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_file_event": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "command_line": "",
+        "parent_command_line": "",
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_file_rename": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_file_tamper": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "type": "status",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_image_load": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "command_line": "",
+        "parent_command_line": "",
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_network_connection": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "type": "status"
+      }
+    }
+  ],
+  "es_network_event": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "data": {
+        "process_id": "1001",
+        "msg": "示例服务状态正常。",
+        "type": "status"
+      }
+    }
+  ],
+  "es_pipe_connect": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_pipe_created": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_process_cmdline": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_process_creation": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "command_line": "",
+        "parent_command_line": "",
+        "image": "/demo/status/service",
+        "parent_image": "/demo/status/parent",
+        "process_id": "1001",
+        "parent_process_id": "1000",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_registry_add": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_registry_delete": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_registry_set": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ],
+  "es_threat_event": [
+    {
+      "host_mac": "02:00:00:00:00:01",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "computer_name": "demo-workstation-01",
+      "create_time": 1767225600000,
+      "access_domain": "status.example.com",
+      "access_ip": "192.0.2.20",
+      "confidence": 0,
+      "ioas": "",
+      "iocs": ""
+    }
+  ],
+  "es_web_event": [
+    {
+      "host_id": "mock-host-01",
+      "host_ip": "192.0.2.10",
+      "host_mac": "02:00:00:00:00:01",
+      "time_stamp": "1767225600000",
+      "data_type": "basic_status",
+      "data_sub_type": "demo",
+      "pid_id": "mock-process-01",
+      "ppid_id": "mock-parent-01",
+      "data": {
+        "image": "/demo/status/service",
+        "process_id": "1001",
+        "user": "demo_user",
+        "is_black": "false"
+      }
+    }
+  ]
+}

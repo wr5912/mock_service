@@ -1,0 +1,5 @@
+{
+  "observed_at": "2026-10-15T08:13:14.771Z",
+  "results": [],
+  "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('智能体运行概览', { exact: true }) to be visible\u001b[22m\n"
+}

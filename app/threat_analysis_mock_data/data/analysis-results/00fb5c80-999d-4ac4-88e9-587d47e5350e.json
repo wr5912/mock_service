@@ -8,24 +8,24 @@
     "latest_analysis_job_id": "d22ed77b-ffa3-41c0-ac96-fea287cf21be",
     "entity_summary": {
       "host": {
-        "uid": "MOCK-PC-000C29BABA354EA1",
-        "name": "MOCK-PC-000C29BABA354EA1"
+        "uid": "mock-host-01",
+        "name": "demo-workstation-01"
       },
       "user": {
-        "name": "admin"
+        "name": "demo_user"
       },
       "network": {
-        "dst_ip": null
+        "dst_ip": "192.0.2.1"
       },
       "process": {
         "pid": 7005,
         "uid": "7005_1767900050000",
         "file": {
-          "md5": "00000000000000000000000000abc005",
-          "name": "schtasks.exe",
-          "path": "C:\\Windows\\System32\\schtasks.exe"
+          "md5": "00000000000000000000000000000001",
+          "name": "demo-status-service",
+          "path": "/demo/status/service-01"
         },
-        "name": "schtasks.exe",
+        "name": "demo-status-service",
         "created_time": 1767900050000
       }
     },
@@ -47,13 +47,13 @@
     "id": "d7e89c8e-2305-4b69-9a69-cf1a6e040fe1",
     "finding_id": "00fb5c80-999d-4ac4-88e9-587d47e5350e",
     "analysis_job_id": "d22ed77b-ffa3-41c0-ac96-fea287cf21be",
-    "verdict": "threat",
-    "confidence": 0.75,
-    "severity": "medium",
+    "verdict": "benign",
+    "confidence": 1.0,
+    "severity": "info",
     "summary": {
-      "engine_id": "builtin/cypher_rule",
-      "package_uri": "engine_packages/builtin/cypher_rule",
-      "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+      "engine_id": "local/basic-status",
+      "package_uri": "local/basic-status",
+      "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "engine_run_id": "6d24d06e-5b2c-4889-8058-0fecec301d03",
       "engine_version": "0.1.0",
       "evidence_count": 1
@@ -67,18 +67,18 @@
       "id": "1193553e-a0f5-4dd1-a338-ee19ecb47726",
       "evidence": {
         "file_id": "file--25743b66-c621-5236-b7ba-032eaea45118",
-        "file_md5": "00000000000000000000000000abc005",
-        "data_type": "network_activity",
-        "dst_value": "198.51.100.22",
-        "file_path": "C:\\Windows\\System32\\schtasks.exe",
-        "host_name": "MOCK-PC-000C29BABA354EA1",
+        "file_md5": "00000000000000000000000000000001",
+        "data_type": "service_status",
+        "dst_value": "192.0.2.1",
+        "file_path": "/demo/status/service-01",
+        "host_name": "demo-workstation-01",
         "event_time": "1767903001000",
         "network_id": "network-traffic--48957e0c-c1bb-5778-bb5e-77b11bb545ff",
         "process_id": "process--0cd04402-27b5-5e07-b48e-d05f5156406e",
         "observed_id": "observed-data--9e1be39e-c22c-5f2c-a468-2262d06647fe",
         "process_pid": 7005,
-        "process_name": "schtasks.exe",
-        "host_graph_key": "contract-fixture-es:host:MOCK-PC-000C29BABA354EA1",
+        "process_name": "demo-status-service",
+        "host_graph_key": "contract-fixture-es:host:mock-host-01",
         "process_created_time": 1767900050000
       },
       "request_id": "req_4ef57e4dac634a9f83f033e576f018ad",
@@ -90,31 +90,21 @@
     "analysis_result_id": "d7e89c8e-2305-4b69-9a69-cf1a6e040fe1",
     "status": "ready",
     "report": {
-      "title": "异常计划任务进程活动",
-      "attack_story": "攻击者可能利用计划任务（schtasks.exe）在受控主机上执行恶意操作。该进程由用户 admin 启动，连接至外部 IP 198.51.100.22，暗示可能存在远程文件下载或命令执行行为，符合 T1105 技术特征。",
+      "title": "演示主机 01 基础状态",
+      "attack_story": "",
       "key_evidence": [
-        "主机 MOCK-PC-000C29BABA354EA1 上进程 schtasks.exe (PID 7005) 于 2026-01-08 20:43:21 UTC 被创建",
-        "进程文件路径: C:\\Windows\\System32\\schtasks.exe，MD5: 00000000000000000000000000abc005",
-        "网络活动目标 IP: 198.51.100.22",
-        "关联攻击技术: T1105 (远程文件拷贝)，战术: 命令与控制"
+        "示例服务可用。",
+        "演示账号完成常规登录。"
       ],
-      "uncertainties": [
-        "证据仅包含单次进程创建和网络连接，缺乏后续行为数据，无法确认攻击是否成功",
-        "未提供文件或网络流量的详细分析，无法判断远程 IP 的真实意图"
-      ],
-      "executive_summary": "在主机 MOCK-PC-000C29BABA354EA1 上检测到异常的计划任务进程活动。进程 schtasks.exe (PID 7005) 被创建并执行，该行为与命令与控制战术中的 T1105 技术（远程文件拷贝）相关联。分析结果判定为威胁，置信度中等（0.75），严重程度中等。",
-      "recommended_actions": [
-        "立即调查主机 MOCK-PC-000C29BABA354EA1 上的 schtasks.exe 进程行为",
-        "检查计划任务配置，确认是否存在恶意任务",
-        "分析网络连接 198.51.100.22 的通信内容，排查数据外泄或恶意软件下载",
-        "审查用户 admin 的账户活动，确认是否存在权限滥用"
-      ],
-      "confidence_explanation": "置信度 0.75 基于明确的进程行为与已知攻击技术 T1105 的匹配，但证据数量有限且缺乏深度分析，因此为中等置信度。"
+      "uncertainties": [],
+      "executive_summary": "本记录仅用于展示基本资产和服务状态，所有值均为模拟值。",
+      "recommended_actions": [],
+      "confidence_explanation": "固定的本地基本数据，不对应真实事件判断。"
     },
-    "provider": "deepseek",
-    "model": "openai/deepseek-chat",
-    "prompt_version": "fast-threat-report-v1",
-    "input_hash": "9e6ec9348225bf5e379887c64b56c4c8925671dd26179bb3822be49010e2c9a3",
+    "provider": "local",
+    "model": "local-basic-mock",
+    "prompt_version": "basic-status-v1",
+    "input_hash": "dec16194b57389c81e2ca95bbd32276e3a912cbe3ce8651d44d6d5bf6a77a596",
     "error_summary": {},
     "request_id": "req_4ef57e4dac634a9f83f033e576f018ad",
     "created_at": "2026-05-18T03:18:47.641777Z",
@@ -124,11 +114,11 @@
     {
       "id": "0b4625b6-952c-41b4-a8e6-d5726e404f38",
       "trace": {
-        "rule": "host_process_context_match",
-        "engine_id": "builtin/cypher_rule",
-        "engine_type": "cypher_rule",
-        "package_uri": "engine_packages/builtin/cypher_rule",
-        "package_hash": "31d308168731486772bebac8eda705dff7ebd5b707b72a05a2d4b75553052592",
+        "rule": "basic_service_status",
+        "engine_id": "local/basic-status",
+        "engine_type": "basic_status",
+        "package_uri": "local/basic-status",
+        "package_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "engine_version": "0.1.0",
         "evidence_count": 1
       },

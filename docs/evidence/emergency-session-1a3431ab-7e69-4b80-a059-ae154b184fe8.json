@@ -1,0 +1,91 @@
+{
+  "case": "emergency",
+  "observed_at": "2026-10-15T07:21:04Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请为测试主机 192.0.2.10 准备解除隔离的模拟草案，先给我看草案。",
+      "assistant": "已按你的要求准备“解除隔离”模拟草案，Workbench 已冻结，动作方向与你的原话一致（解除，而非再次封禁）。\n\n**草案摘要（模拟，未执行）**\n- 动作：解除测试主机隔离（`host-unisolate`）\n- 目标：192.0.2.10（测试应用服务器 / mock-app，资产 ID 9106）\n- 操作号：`op_d7ab2c82720d492789cfcdde14f5fe37`\n- 参数：无额外参数（不含源 IP、端口、账号）\n- 当前状态：待确认，尚未提交、未审批\n\n如需确认，请在本会话单独发送“确认执行”。用户确认与 SOC 审批是两步，确认受理不代表已生效；需要调整目标或动作时告诉我，我会修订草案。\n\n影响说明：解除隔离会恢复该主机的网络连通性，通常比继续隔离更易恢复；本轮仅为模拟草案，未对任何真实设备下发指令。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_osuDPBaFoSV2Vr9mOVuW8591"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_mqDxAECPU2bSx9hWzMq29450"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 26
+    },
+    {
+      "input": "确认执行",
+      "assistant": "执行结果：成功\n操作号：op_d7ab2c82720d492789cfcdde14f5fe37；SOC 执行号：mock_execution_185f0491ae1a4199ae1655866608df80",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_osuDPBaFoSV2Vr9mOVuW8591"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_mqDxAECPU2bSx9hWzMq29450"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 5
+    },
+    {
+      "input": "查询刚才这次应急操作的最终结果。",
+      "assistant": "执行结果：成功\n操作号：op_d7ab2c82720d492789cfcdde14f5fe37；SOC 执行号：mock_execution_185f0491ae1a4199ae1655866608df80",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_osuDPBaFoSV2Vr9mOVuW8591"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_mqDxAECPU2bSx9hWzMq29450"
+        },
+        {
+          "name": "mcp__emergency-action__get_emergency_action_result",
+          "call_id": "call_00_In1s623S11HHlJ0KDUPS4519"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_njo8BP73ASQN1oqAEdoY6780"
+        },
+        {
+          "name": "mcp__emergency-action__get_emergency_action_result",
+          "call_id": "call_00_ET_oTTa02LUOM0DGOgE5ZvB6418"
+        }
+      ],
+      "tool_errors": [
+        {
+          "call_id": "call_00_In1s623S11HHlJ0KDUPS4519",
+          "error": true,
+          "text": "Error: 应急工具必须先加载本轮应急指令 Skill"
+        }
+      ],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 22
+    }
+  ],
+  "session_id": "session-1a3431ab-7e69-4b80-a059-ae154b184fe8",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

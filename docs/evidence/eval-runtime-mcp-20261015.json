@@ -1,0 +1,301 @@
+{
+  "observed_at": "2026-10-15T08:21:07.669037+00:00",
+  "instance": "security-operations-expert-eval",
+  "base_url": "http://10.0.160.32:3081/assistant/",
+  "runtime": {
+    "running": true,
+    "started_at": "2026-10-15T08:19:16.759740505Z",
+    "image_id": "sha256:3907b02a066908dd67b20ad50bd593019a504b1ea8d988be35ebe7b34270d92b",
+    "network_mode": "host",
+    "home_volume": "dsh-dev-security-operations-expert-eval_dsh-dev-security-operations-expert-eval-home",
+    "backend_environment_checked_count": 10,
+    "backend_environment_present": true,
+    "backend_urls_use_lan": true,
+    "hmr_disabled_in_home_profile": true
+  },
+  "effective_configuration": {
+    "namespace": "mcp-session-manager",
+    "revision": 1,
+    "connections": [
+      {
+        "id": "policy-configuration",
+        "server_name": "policy-configuration",
+        "enabled": true,
+        "connection_type": "mcp",
+        "address": "http://10.0.160.32:53001/mcp/policy-configuration/",
+        "tool_mode": "selected"
+      },
+      {
+        "id": "emergency-action",
+        "server_name": "emergency-action",
+        "enabled": true,
+        "connection_type": "mcp",
+        "address": "http://10.0.160.32:53001/mcp/emergency-action/",
+        "tool_mode": "all"
+      },
+      {
+        "id": "sec-ops",
+        "server_name": "sec-ops",
+        "enabled": true,
+        "connection_type": "mcp",
+        "address": "http://10.0.160.32:53001/mcp/sec-ops/",
+        "tool_mode": "selected"
+      },
+      {
+        "id": "inspection",
+        "server_name": "inspection",
+        "enabled": true,
+        "connection_type": "mcp",
+        "address": "http://10.0.160.32:53001/mcp/inspection/",
+        "tool_mode": "all"
+      },
+      {
+        "id": "report",
+        "server_name": "report",
+        "enabled": false,
+        "connection_type": "mcp",
+        "address": "http://10.0.160.32:53001/mcp/report/",
+        "tool_mode": "all"
+      },
+      {
+        "id": "soc-mock",
+        "server_name": "soc-mock",
+        "enabled": false,
+        "connection_type": "openapi",
+        "address": "http://10.0.160.32:53001/api/v1/security-operations/openapi.json",
+        "tool_mode": "all"
+      }
+    ],
+    "readback_revision_unchanged": true
+  },
+  "discovery": [
+    {
+      "server_id": "policy-configuration",
+      "http_status": 200,
+      "discovered_tool_count": 5,
+      "discovered_tool_names": [
+        "prepare_policy_configuration",
+        "get_policy_configuration_status",
+        "select_policy_configuration_candidate",
+        "get_policy_configuration_result",
+        "confirm_policy_configuration"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "model_allowed_tool_count": 4,
+      "model_allowed_tool_names": [
+        "prepare_policy_configuration",
+        "get_policy_configuration_status",
+        "select_policy_configuration_candidate",
+        "get_policy_configuration_result"
+      ]
+    },
+    {
+      "server_id": "emergency-action",
+      "http_status": 200,
+      "discovered_tool_count": 6,
+      "discovered_tool_names": [
+        "prepare_emergency_action",
+        "revise_emergency_action",
+        "get_emergency_action",
+        "list_emergency_actions",
+        "get_emergency_action_result",
+        "cancel_emergency_action"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "model_allowed_tool_count": 6,
+      "model_allowed_tool_names": [
+        "prepare_emergency_action",
+        "revise_emergency_action",
+        "get_emergency_action",
+        "list_emergency_actions",
+        "get_emergency_action_result",
+        "cancel_emergency_action"
+      ]
+    },
+    {
+      "server_id": "sec-ops",
+      "http_status": 200,
+      "discovered_tool_count": 15,
+      "discovered_tool_names": [
+        "search_graph_assets",
+        "get_graph_resolve_ip_host",
+        "get_soc_asset_by_asset_id",
+        "list_soc_asset",
+        "get_soc_asset_biz_systems",
+        "get_soc_asset_vulnerabilities",
+        "get_ingest_devices_by_asset_by_asset_id",
+        "get_graph_node_detail",
+        "get_graph_path_query",
+        "get_reachability_path_by_ip",
+        "get_graph_flow_host_pair_ports",
+        "get_reachability_cross_signal",
+        "get_graph_compliance_violations",
+        "get_graph_coverage",
+        "get_event_by_id"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "model_allowed_tool_count": 15,
+      "model_allowed_tool_names": [
+        "search_graph_assets",
+        "get_graph_resolve_ip_host",
+        "get_soc_asset_by_asset_id",
+        "list_soc_asset",
+        "get_soc_asset_biz_systems",
+        "get_soc_asset_vulnerabilities",
+        "get_ingest_devices_by_asset_by_asset_id",
+        "get_graph_node_detail",
+        "get_graph_path_query",
+        "get_reachability_path_by_ip",
+        "get_graph_flow_host_pair_ports",
+        "get_reachability_cross_signal",
+        "get_graph_compliance_violations",
+        "get_graph_coverage",
+        "get_event_by_id"
+      ]
+    },
+    {
+      "server_id": "inspection",
+      "http_status": 200,
+      "discovered_tool_count": 3,
+      "discovered_tool_names": [
+        "list_executable_inspections",
+        "start_inspection",
+        "get_inspection_result"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "model_allowed_tool_count": 3,
+      "model_allowed_tool_names": [
+        "list_executable_inspections",
+        "start_inspection",
+        "get_inspection_result"
+      ]
+    },
+    {
+      "server_id": "report",
+      "http_status": 200,
+      "discovered_tool_count": 1,
+      "discovered_tool_names": [
+        "save_persistence_result"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "model_allowed_tool_count": 0,
+      "model_allowed_tool_names": []
+    },
+    {
+      "server_id": "soc-mock",
+      "http_status": 200,
+      "discovered_tool_count": 19,
+      "discovered_tool_names": [
+        "ai_soc_correlate__get_correlate_incident_by_incident_id",
+        "ai_soc_correlate__get_correlate_intel_check",
+        "ai_soc_correlate__get_correlate_reasoning_rules_by_rule_id",
+        "ai_soc_correlate__get_correlate_threat_intel",
+        "ai_soc_correlate__create_correlate_incident_judgement_fail",
+        "ai_soc_correlate__get_correlate_incident_judge_pending",
+        "ai_soc_correlate__create_incident_judgement_claim",
+        "ai_soc_correlate__update_incident_judgement_result",
+        "ai_soc_detect__get_detect_alert_by_alert_id",
+        "ai_soc_detect__list_detect_whitelist",
+        "ai_soc_event__search_event",
+        "ai_soc_graph__get_graph_enrich_topology_by_asset_id",
+        "ai_soc_graph__get_graph_flow_host_pair_ports",
+        "ai_soc_graph__get_graph_identity_asset_accounts",
+        "ai_soc_graph__get_graph_lm_login_sequence",
+        "ai_soc_ingest__get_ingest_devices_by_asset_by_asset_id",
+        "ai_soc_master__get_soc_asset_biz_systems",
+        "ai_soc_master__get_soc_asset_by_asset_id",
+        "ai_soc_master__get_soc_asset_importance"
+      ],
+      "resource_count": 0,
+      "resource_template_count": 0,
+      "model_allowed_tool_count": 0,
+      "model_allowed_tool_names": []
+    }
+  ],
+  "model_tool_exposure": {
+    "source": "已保存有效配置与真实发现列表，按019 MCP manager的tools.mode与enabled合同核对；本次未另建模型Session",
+    "tool_count": 28,
+    "tool_names": [
+      "mcp__policy-configuration__prepare_policy_configuration",
+      "mcp__policy-configuration__get_policy_configuration_status",
+      "mcp__policy-configuration__select_policy_configuration_candidate",
+      "mcp__policy-configuration__get_policy_configuration_result",
+      "mcp__emergency-action__prepare_emergency_action",
+      "mcp__emergency-action__revise_emergency_action",
+      "mcp__emergency-action__get_emergency_action",
+      "mcp__emergency-action__list_emergency_actions",
+      "mcp__emergency-action__get_emergency_action_result",
+      "mcp__emergency-action__cancel_emergency_action",
+      "mcp__sec-ops__search_graph_assets",
+      "mcp__sec-ops__get_graph_resolve_ip_host",
+      "mcp__sec-ops__get_soc_asset_by_asset_id",
+      "mcp__sec-ops__list_soc_asset",
+      "mcp__sec-ops__get_soc_asset_biz_systems",
+      "mcp__sec-ops__get_soc_asset_vulnerabilities",
+      "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+      "mcp__sec-ops__get_graph_node_detail",
+      "mcp__sec-ops__get_graph_path_query",
+      "mcp__sec-ops__get_reachability_path_by_ip",
+      "mcp__sec-ops__get_graph_flow_host_pair_ports",
+      "mcp__sec-ops__get_reachability_cross_signal",
+      "mcp__sec-ops__get_graph_compliance_violations",
+      "mcp__sec-ops__get_graph_coverage",
+      "mcp__sec-ops__get_event_by_id",
+      "mcp__inspection__list_executable_inspections",
+      "mcp__inspection__start_inspection",
+      "mcp__inspection__get_inspection_result"
+    ],
+    "trusted_policy_confirmation_excluded": true,
+    "report_and_soc_diagnostics_excluded": true
+  },
+  "readonly_inspection_call": {
+    "endpoint": "http://10.0.160.32:53001/mcp/inspection/",
+    "protocol": "2025-11-25",
+    "initialize_status": 200,
+    "initialized_notification_status": 202,
+    "call_status": 200,
+    "tool_name": "list_executable_inspections",
+    "result": {
+      "code": 200,
+      "message": "基础模拟数据",
+      "data": {
+        "items": [
+          {
+            "taskId": "mock-health-inspection",
+            "definitionVersion": 1,
+            "name": "基础资产健康巡检",
+            "description": "检查当前资产清单中的全部测试资产。",
+            "scopeLabel": "当前全部测试资产",
+            "inspectionItems": [
+              {
+                "id": "availability",
+                "name": "资产在线状态"
+              },
+              {
+                "id": "collection",
+                "name": "采集连接状态"
+              }
+            ],
+            "status": "PUBLISHED",
+            "enabled": true
+          }
+        ],
+        "total": 1
+      }
+    },
+    "text_equals_structured_content": true
+  },
+  "hmr_probe_boundary": {
+    "ENOSPC_observed_in_container_logs": false,
+    "previous_container_log_lines": 0,
+    "note": "首次浏览器保存确认因WebSocket未就绪超时；仅在eval HOME顶层禁用HMR后，由root重建并验证浏览器保存与刷新回读恢复。没有ENOSPC日志证据，不将其写成已确认根因。"
+  },
+  "mutations_in_this_verification": [
+    "仅保存本验证记录；未修改运行配置、重启实例、创建Session或周期任务。"
+  ]
+}

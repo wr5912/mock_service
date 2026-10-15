@@ -1,0 +1,31 @@
+{
+  "case": "threat-auto",
+  "observed_at": "2026-10-15T07:32:54Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "开启自动威胁研判，使用标准的每120秒心跳和每次一条的方式。只验证首次心跳，完成后我们会删除任务。",
+      "assistant": "已创建自动威胁研判任务，参数为标准的每 120 秒心跳、每次一条。\n\n| 项目 | 值 |\n|---|---|\n| 标题 | 自动威胁研判 |\n| Schedule ID | `schedule-bd6f1a59-eaae-4a92-8622-998bcf144a9e` |\n| 周期 | 每 120 秒（`everySeconds: 120`） |\n| 首次投递时间 | 2026-10-15T07:35:00.413Z |\n| 载荷 | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n| 状态 | scheduled（host 投递） |\n\n说明与边界：\n\n- 该载荷只由本地受信 Schedule 桥解析，桥接后固定调用 `analyze_pending_threat_incidents`，每次心跳只研判一条事件；上一条仍在运行时会跳过本次心跳、不排队。\n- 目前只是**任务已创建并排定首次投递**，尚不能声称首次心跳已投递或研判已完成。首次心跳到期后会出现对应的工具结果，届时我会以带**事件 ID** 和 **Run ID** 的结果回报；这才是\"首次心跳验证通过\"的依据。\n- 若首次心跳没有产生工具结果（例如桥未触发或无可认领事件），我会如实说明，不会以提醒投递代替研判结果。\n\n后续如需停止：你确认首次心跳结果后，我按你的要求用 `schedule_list` 找到该任务并删除，仅停止后续心跳。删除不会中止当时正在执行的研判。",
+      "tool_calls": [
+        {
+          "name": "schedule_create",
+          "call_id": "call_00_pnmb62M8neEQuyCZ9Uj26475"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 20
+    }
+  ],
+  "session_id": "session-0250574c-d811-4850-845b-21a33673712e",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

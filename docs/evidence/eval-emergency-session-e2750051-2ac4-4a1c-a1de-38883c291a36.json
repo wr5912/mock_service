@@ -1,0 +1,91 @@
+{
+  "case": "emergency",
+  "observed_at": "2026-10-15T08:13:08Z",
+  "source": "EXP-security-operations-expert-019-rc442472a242a",
+  "turns": [
+    {
+      "input": "请为测试主机 192.0.2.10 准备解除隔离的模拟草案，先给我看草案。",
+      "assistant": "草案已就绪，请核对：\n\n- 动作：解除测试主机隔离（`host-unisolate`）\n- 目标：192.0.2.10（测试应用服务器，hostname `mock-app`，资产 ID 9106，当前状态 ONLINE）\n- 参数：无（整机解除隔离，不带端口）\n- 操作号：`op_9bb9c95c4a7c4840aeb7c1be5ab9686f`\n- 当前状态：READY（已冻结，未提交、未申请审批，模拟草案）\n\n如需确认，请在本会话单独发送“确认执行”。确认由受控运行时签名提交，受理不等于设备已生效；本轮尚未提交任何动作。",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_AFSQ7ARyk4ie7SS22SIX6490"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_7VVD0hJFAPDsTU1Riix89549"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 26
+    },
+    {
+      "input": "确认执行",
+      "assistant": "执行结果：成功\n操作号：op_9bb9c95c4a7c4840aeb7c1be5ab9686f；SOC 执行号：mock_execution_a0afba291796471fbdd2e1fff67554fe",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_AFSQ7ARyk4ie7SS22SIX6490"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_7VVD0hJFAPDsTU1Riix89549"
+        }
+      ],
+      "tool_errors": [],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 5
+    },
+    {
+      "input": "查询刚才这次应急操作的最终结果。",
+      "assistant": "执行结果：成功\n操作号：op_9bb9c95c4a7c4840aeb7c1be5ab9686f；SOC 执行号：mock_execution_a0afba291796471fbdd2e1fff67554fe",
+      "tool_calls": [
+        {
+          "name": "skill",
+          "call_id": "call_00_AFSQ7ARyk4ie7SS22SIX6490"
+        },
+        {
+          "name": "mcp__emergency-action__prepare_emergency_action",
+          "call_id": "call_00_7VVD0hJFAPDsTU1Riix89549"
+        },
+        {
+          "name": "mcp__emergency-action__get_emergency_action_result",
+          "call_id": "call_00_UG4Gl6JcdffIGRWk46lK5570"
+        },
+        {
+          "name": "skill",
+          "call_id": "call_00_X61UyTDSea9UOKDLXZBQ6561"
+        },
+        {
+          "name": "mcp__emergency-action__get_emergency_action_result",
+          "call_id": "call_00_ET_kPhLnYbAglKeKLriUh746528"
+        }
+      ],
+      "tool_errors": [
+        {
+          "call_id": "call_00_UG4Gl6JcdffIGRWk46lK5570",
+          "error": true,
+          "text": "Error: 应急工具必须先加载本轮应急指令 Skill"
+        }
+      ],
+      "turn_reason": {
+        "kind": "completed"
+      },
+      "event_count": 22
+    }
+  ],
+  "session_id": "session-e2750051-2ac4-4a1c-a1de-38883c291a36",
+  "preset": "security-operations-expert",
+  "model_route": {
+    "selected": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-10-15T08:19:35.799Z",
+  "instance": "security-operations-expert-eval",
+  "checks": [
+    "browser_saved_four_enabled_model_connections_and_two_disabled_diagnostic_connections",
+    "browser_reload_readback_all_six_connections"
+  ],
+  "browser_errors": []
+}
