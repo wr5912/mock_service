@@ -1,0 +1,77 @@
+{
+  "observed_at": "2026-10-15T09:00:01.351054+00:00",
+  "platform_url": "http://10.0.160.32:3090/hap/",
+  "pid": 83085,
+  "restarted": false,
+  "default_model": {
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "reasoningEffort": "off"
+  },
+  "provider_reasoning_effort": "off",
+  "credentials": {
+    "DEEPSEEK_API_KEY": {
+      "configured": true,
+      "source": "file",
+      "writable": true
+    },
+    "LOCAL_LLM_API_KEY": {
+      "configured": true,
+      "source": "file",
+      "writable": true
+    }
+  },
+  "local_provider": {
+    "id": "local-qwen",
+    "model_ids": [
+      "[redacted]"
+    ],
+    "base_url_matches_provided_value": true,
+    "credential_ref": "LOCAL_LLM_API_KEY",
+    "model_called": false,
+    "configuration_saved": true
+  },
+  "session": {
+    "id": "session-eed4afb4-1179-4f65-9c89-1ccce5acb92e",
+    "model_selected_explicitly": false,
+    "request_models": [
+      {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off"
+      }
+    ],
+    "turn_ended": true,
+    "turn_end_data": {
+      "turn": 1,
+      "reason": {
+        "kind": "completed"
+      }
+    },
+    "assistant_event_count": 1,
+    "assistant_text": "你好，很高兴为你服务！",
+    "assistant_source": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash"
+    }
+  },
+  "mcp_configuration_unchanged": true,
+  "composition_unchanged": true,
+  "reasoning_verification": {
+    "actual_session_request_header_effort": "off",
+    "sdk_wire_mapping": "off maps to thinking.type=disabled",
+    "wire_payload_captured": false
+  },
+  "mcp_regression": {
+    "published_tool_discovered": true,
+    "tool_name": "query_asset_related_alerts",
+    "call_succeeded": true,
+    "asset_id": 9106,
+    "alert_group_count": 1,
+    "step_http_statuses": [
+      200,
+      200
+    ]
+  },
+  "result": "passed"
+}

@@ -110,7 +110,7 @@ Mock 只处理已声明对象和基础模拟状态，不连接真实设备，不
 
 首次隔离验证使用 `security-operations-expert-mock`，与原实例共用标准镜像，使用独立 HOME 和只读 Candidate；[身份核对](evidence/runtime-identity-20261015.json)。当次验证未改动原实例与 Harness 资产。该验证实例随后按用户要求停止并删除，HOME 卷保留；[删除回执](evidence/mock-instance-deleted-20261015.json)。
 
-原默认 `local-qwen` 连接超时，失败记录保留；上述成功 Session 使用既有 `deepseek-official/deepseek-flash`（界面显示 `DeepSeek-V41-Flash`）。打开新的业务 Session 时也应在模型选择器选择这一已验证模型，默认模型配置保持原样。策略及应急后续轮次曾被原 Guard 要求重新加载 Skill，模型恢复后完成，未修改 Guard 放行规则。
+首次隔离验证时，默认 `local-qwen` 连接超时，失败记录保留；上述成功 Session 手动选择既有 `deepseek-official/deepseek-flash`（界面显示 `DeepSeek-V41-Flash`），当次默认配置未改。随后统一的模型默认值见下文。策略及应急后续轮次曾被原 Guard 要求重新加载 Skill，模型恢复后完成，未修改 Guard 放行规则。
 
 本机文件监听资源不足曾使隔离实例的 HMR 启动失败，进而阻止主对话 WebSocket 就绪。仅在该实例 HOME 的 `profiles/web/cordis.patch.yml` 禁用原生 `hmr` 开发热重载并重启后，已验证真实浏览器双向帧、Session 列表、历史结果和续查；未修改宿主限制或业务插件源码。
 
@@ -141,7 +141,7 @@ Mock 应急确认核对载荷与草案绑定，不验证生产签名；回执保
 
 本轮另以实例原有客户端完成 SOC 事件读取、待研判查询和基本报告保存下载；[后端检查](evidence/eval-soc-backend-20261015.json)。该检查未重新认领已完成事件，不能代替本实例新的一次完整研判；首次隔离实例的完整研判证据仍见前文。
 
-实例重建后曾出现 WebSocket 重连；仅在该实例 HOME 禁用原生开发 HMR 后恢复界面保存和刷新。当前容器没有提供可确认 ENOSPC 的日志，不将首次隔离实例的日志原因直接用于本次归因。模型继续使用既有 `deepseek-official/deepseek-flash`；新会话请选择 `DeepSeek-V41-Flash`。
+实例重建后曾出现 WebSocket 重连；仅在该实例 HOME 禁用原生开发 HMR 后恢复界面保存和刷新。当前容器没有提供可确认 ENOSPC 的日志，不将首次隔离实例的日志原因直接用于本次归因。
 
 普通 `docker restart security-operations-expert-eval` 保留容器已有环境。平台“重启”及 `dsh-dev up --replace` 会重建容器，必须再次提供上表运行环境；现有实例登记只保存变量名，不自动恢复变量值。原配置和必要启动环境已在本机私有目录备份，凭据未写入本文或证据。
 
@@ -162,3 +162,11 @@ Mock 应急确认核对载荷与草案绑定，不验证生产签名；回执保
 [连接与发现记录](evidence/platform-composition-connection-20261015.json)确认规范回读和两种能力；[实际执行记录](evidence/platform-composition-20261015.json)与[发布后页面](evidence/platform-composition-20261015.png)确认页面草稿和发布版查询资产 `9106` 均完成两个 GET，业务与 HTTP 均为 `200`。平台 MCP 入口 `/hap/api/harness-platform/mcp` 使用平台登录认证，实际调用 `query_asset_related_alerts`、参数 `{"asset":"9107","limit":5}` 返回该资产的一个基本告警分组；未知资产 `9999` 返回 404，第二步正确跳过。此结果仅为基础模拟数据，不表示真实告警验收。
 
 本次主 Mock 为加载新接口已重启，旧报告链接属于重启前的运行结果；平台与智能体的连接配置保留。重启后已用现有智能体新 Session 完成一次巡检并实际下载新报告；[重新生成报告的记录](evidence/eval-after-composition-inspection-20261015.json)。新增接口及原有接口全量测试共 114 项通过，原 SOC 专用规范仍只有 19 个 POST 操作。
+
+## 模型默认值
+
+平台与现有智能体的新 Session 均默认 `deepseek-official/deepseek-flash`，推理强度为 `off`，不再需要手动选模。平台通过原生设置与受控凭据服务保存；智能体通过 Runtime 适配器最后加载的 `runtime-model.patch.yml` 覆盖旧 Candidate 默认值，业务 Harness 文件不改。
+
+[平台新会话](evidence/platform-default-model-20261015.json)与[智能体新会话](evidence/eval-default-model-20261015.json)均未调用 `selectModel`，实际请求记录为上述模型与 `off`，最小问候完成；[最终配置核对](evidence/runtime-default-model-final-20261015.json)确认专用 Runtime 覆盖为唯一 Agent 默认源，MCP 与 13 项模型及 Mock 后端环境配置保留。未截获外部 HTTP 请求体，推理设置由实际 Session 请求记录及当前 SDK 映射核对。
+
+模型凭据通过本地忽略的 `platform/credentials/models.llm-api-key`、运行环境或 Runtime 受控凭据服务提供，不进入 Git、普通日志或这些验证记录。本服务继续只生成本地基本模拟数据，不使用这些模型凭据。后续新实例也会加载统一 Runtime 默认覆盖；平台组合编排仍直接调用只读 Mock 接口。

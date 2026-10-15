@@ -1,0 +1,90 @@
+{
+  "observed_at": "2026-10-15T09:09:09Z",
+  "result": "passed",
+  "scope": "最终整合只读核对；未重启、未新建 Session、未发起模型调用，未读取凭据值，未修改原始证据。",
+  "agent_default_source": {
+    "path": "runtime/adapters/dsh-container/runtime-model.patch.yml",
+    "sha256": "af6d49c46c04db2df589b4953200993f730ffb8a753a6d6d2827a8ddfc20afe4",
+    "default": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off"
+    },
+    "provider_settings": {
+      "thinking": "disabled",
+      "reasoningEffort": "off"
+    },
+    "evaluation_registry_duplicates_removed": true
+  },
+  "runtime": {
+    "instance": "security-operations-expert-eval",
+    "container_id": "7ed7ee829b97bfa2766fa825b5f019f6ffcab7adffafe73ddcd259d053007b8a",
+    "running": true,
+    "command": [
+      "--profile",
+      "web",
+      "--patch",
+      "/opt/dsh-managed/security-operations-expert.patch.yml",
+      "--patch",
+      "/opt/dsh-adapter/evaluation-registry.patch.yml",
+      "--patch",
+      "/opt/dsh-adapter/verification-home-controls/web-base-path.patch.yml",
+      "--patch",
+      "/opt/dsh-adapter/verification-home-controls/web-unsafe-no-auth.patch.yml",
+      "--patch",
+      "/opt/dsh-adapter/verification-home-controls/web-skip-testing-notice.patch.yml",
+      "--patch",
+      "/opt/dsh-adapter/verification-home-controls/lan-listen.patch.yml",
+      "--patch",
+      "/opt/dsh-adapter/runtime-model.patch.yml",
+      "--no-open",
+      "--port",
+      "3081"
+    ],
+    "last_patch": "/opt/dsh-adapter/runtime-model.patch.yml",
+    "last_patch_is_runtime_default_source": true,
+    "loaded_after_candidate": true,
+    "same_container_as_verified_session": true,
+    "mcp_group_count": 6,
+    "mcp_server_count": 6,
+    "mcp_six_group_layout_preserved": true,
+    "all_13_environment_values_preserved": true,
+    "environment_evidence_basis": "引用前次逐值核验的10项Mock后端和3项模型配置结果；当前容器ID相同，Docker Env在该容器创建后不可原地修改。本次不重新读取Env或凭据值。"
+  },
+  "settings_readback": {
+    "agent-default-model": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off"
+    },
+    "llm-deepseek": {
+      "thinking": "disabled",
+      "reasoningEffort": "off"
+    }
+  },
+  "historical_new_session_verification": {
+    "evidence": "docs/evidence/eval-default-model-20261015.json",
+    "sha256": "79a2396d2342efec746995d0d903a7bee00ae6549467b9f2473482e6a543e11a",
+    "session_id": "session-fc55ff87-ffbe-4eae-b198-f74918ee8783",
+    "select_model_rpc_called": false,
+    "effective_request_models": [
+      {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off"
+      }
+    ],
+    "turn_reason": "completed",
+    "note": "原始证据完整保留；其configuration.source记录当时实施来源，最终有效默认来源以本文件和当前CLI最后加载的runtime-model.patch.yml为准。"
+  },
+  "platform_default_source": {
+    "path": "platform/plugin/cordis.patch.yml",
+    "sha256": "dd86c0eb36f49d2ed9300f84c8d527506a5cf2e261b6bb0fdbc62bb7a2eab69e",
+    "default": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off"
+    },
+    "verification_evidence": "docs/evidence/platform-default-model-20261015.json"
+  }
+}

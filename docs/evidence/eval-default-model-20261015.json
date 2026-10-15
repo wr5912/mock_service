@@ -1,0 +1,83 @@
+{
+  "observed_at": "2026-10-15T09:05:28Z",
+  "instance": "security-operations-expert-eval",
+  "url": "http://127.0.0.1:3081/assistant/",
+  "source_id": "experiment:EXP-security-operations-expert-019-rc442472a242a",
+  "configuration": {
+    "source": "runtime/adapters/dsh-container/evaluation-registry.patch.yml",
+    "sha256": "7968c495c141938410670317acc94c4ba60f4d5d31b9aa3cffbcbd6c2fc5b251",
+    "mounted_read_only": true,
+    "loaded_after_candidate": true,
+    "requested_default": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off"
+    },
+    "provider_reasoning_effort": "off",
+    "native_update_rejected_due_to_higher_priority_overlay": true,
+    "candidate_modified": false,
+    "image_modified": false,
+    "container_environment_modified_by_this_task": false
+  },
+  "tests": {
+    "command": "/home/admin/work/mock_service/.venv/bin/python -m unittest discover -s runtime/adapters/dsh-container -p test_dsh_dev.py -v",
+    "passed": 99,
+    "failed": 0
+  },
+  "runtime": {
+    "restart_command_executed": "docker restart security-operations-expert-eval",
+    "initial_container_id": "775a1f99e17e59ba014ac75df5f0b48b83068fb9a66add3ee0e4071f12785fb6",
+    "verified_container_id": "7ed7ee829b97bfa2766fa825b5f019f6ffcab7adffafe73ddcd259d053007b8a",
+    "concurrent_container_replacement_detected": true,
+    "note": "重启验收期间观察到容器 ID 变化；本任务未执行 up 或 recreate，因此不声称同容器保留。随后在当前容器完成独立配置及会话验收。",
+    "image": "ai-agent-harness/dsh:21638c563-54f335ef05ac@sha256:3907b02a066908dd67b20ad50bd593019a504b1ea8d988be35ebe7b34270d92b",
+    "backend_environment_count": 10,
+    "all_backend_environment_values_match_private_backup": true,
+    "model_environment_count": 3,
+    "all_model_environment_values_match_current_local_credentials": true,
+    "mcp_groups": 6,
+    "mcp_servers": 6,
+    "home_mounts": [
+      {
+        "type": "volume",
+        "name": "dsh-dev-security-operations-expert-eval_dsh-dev-security-operations-expert-eval-home",
+        "destination": "/var/lib/dsh"
+      }
+    ],
+    "running": true
+  },
+  "settings_readback": {
+    "agent-default-model": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off"
+    },
+    "llm-deepseek": {
+      "reasoningEffort": "off"
+    },
+    "catalog_default": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off"
+    }
+  },
+  "new_session_verification": {
+    "session_id": "session-fc55ff87-ffbe-4eae-b198-f74918ee8783",
+    "agent_preset": "security-operations-expert",
+    "select_model_rpc_called": false,
+    "effective_request_models": [
+      {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off"
+      }
+    ],
+    "effective_reasoning_effort": "off",
+    "assistant": "默认模型验证完成",
+    "turn_reason": "completed",
+    "reasoning_blocks": 0,
+    "tool_call_count": 0,
+    "tool_error_count": 0
+  },
+  "result": "passed"
+}
