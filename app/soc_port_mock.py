@@ -654,4 +654,3 @@ def create_app(service_id: str | None = None) -> FastAPI:
 
 
 app = create_app(os.environ.get("SOC_MOCK_SERVICE_ID") or "ai-soc-framework")
-

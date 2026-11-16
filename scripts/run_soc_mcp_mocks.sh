@@ -36,4 +36,3 @@ for service in "${!ports[@]}"; do
   printf '%s %s %s\n' "$pid" "${fields[19]}" "$port" >"$pid_file"
   echo "started $service session=$session pid=$pid http://127.0.0.1:$port"
 done
-

@@ -49,4 +49,3 @@ for pid_file in .local/soc-mocks/*.pid; do
   echo "stopped $service pid=$pid"
   rm -f "$pid_file"
 done
-
