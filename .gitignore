@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+.local/
 exports/*.json
 exports/**/*.json
 exports/sanitized/

@@ -28,6 +28,43 @@ uv pip install --python .venv/bin/python -e ".[test]"
 
 完整 API/MCP 清单、MCP 管理界面配置、平台组合编排接入、固定后端环境变量及验证边界见 [security-operations-expert 接入说明](docs/security-operations-expert接入.md)。
 
+## 8 个 SOC MCP 服务的本地模拟
+
+启动脚本会在 `127.0.0.1` 使用原端口启动 8 个独立模拟服务：
+
+```bash
+scripts/run_soc_mcp_mocks.sh
+```
+
+| 服务 | 本地地址 |
+| --- | --- |
+| `ai-soc-framework` | `http://127.0.0.1:18080` |
+| `ai-soc-ingest` | `http://127.0.0.1:18081` |
+| `ai-soc-response` | `http://127.0.0.1:18083` |
+| `ai-soc-detect` | `http://127.0.0.1:18084` |
+| `ai-soc-correlate` | `http://127.0.0.1:18085` |
+| `ai-soc-master` | `http://127.0.0.1:18087` |
+| `ai-soc-graph` | `http://127.0.0.1:18088` |
+| `ai-soc-event` | `http://127.0.0.1:8083` |
+
+每个服务提供 `/health`、`/v3/api-docs/mcp` 和 `/mcp/`。响应只包含固定无害的本地测试数据，标记为 `simulated=true`、`sideEffect=false`，不调用外部系统。OpenAPI 地址使用当前请求的主机、端口和挂载前缀。
+
+平台数据仓库中的原始 `mcp/manager.json` 不会被覆盖。需要本地联调时，只替换目标 IP，端口和路径保持不变：
+
+```bash
+.venv/bin/python scripts/render_local_mcp_manager.py \
+  --source /path/to/harness-engineering-platform-data/mcp/manager.json \
+  --output /path/to/local-data/mcp/manager.json
+```
+
+停止 8 个服务：
+
+```bash
+scripts/stop_soc_mcp_mocks.sh
+```
+
+停止入口仅终止启动记录所对应、仍监听目标端口的同一 SOC 进程；无法确认归属时提醒并保留记录。
+
 ## 基础 HTTP 数据
 
 主服务提供资产、测试告警、事件单、组件状态、示例指标、常规日志、看板和本地基本场景；完整路径以 `/docs` 为准。列表支持 `count=1..200` 和 `seed`：
