@@ -8,6 +8,7 @@ class Settings(BaseSettings):
 
     app_name: str = "网络安全运营模拟数据 API"
     app_version: str = "0.1.0"
+    mock_control_enabled: bool = False
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

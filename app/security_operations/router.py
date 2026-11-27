@@ -7,6 +7,8 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.control import observed_call
+
 from app.security_operations.catalog import EMERGENCY_CONFIRMATION_SCHEMA, POLICY_CONFIRMATION_SCHEMA, POLICY_DECISION_SCHEMA, POLICY_ENDPOINT_SELECTION, SOC_TOOLS, TOOL_INPUT_SCHEMAS
 from app.security_operations.handlers import (
     confirm_emergency,
@@ -68,7 +70,8 @@ def _soc_endpoint(resource_id: str, tool_name: str):
             if not isinstance(arguments, dict):
                 raise MockError(422, "arguments 必须是 JSON 对象。")
             base_url = f"{request.url.scheme}://{request.url.netloc}"
-            return invoke_soc(resource_id, tool_name, arguments, base_url)
+            return await observed_call(tool_name, f"soc:{resource_id}", arguments,
+                                       lambda: invoke_soc(resource_id, tool_name, arguments, base_url))
         except MockError as error:
             return _error(error)
 
@@ -222,9 +225,10 @@ def create_router() -> APIRouter:
         description="report_id 使用模拟服务回执中的标识；未知标识返回 404。固定 HTML 模板仅包含已校验的基本运行元数据，不包含上传正文或真实业务结论。",
         tags=["报告模拟"],
     )
-    def download_report(report_id: str):
+    async def download_report(report_id: str):
         try:
-            return HTMLResponse(report_html(report_id))
+            return HTMLResponse(await observed_call("download_report", "report:download", {"reportId": report_id},
+                                                    lambda: report_html(report_id)))
         except MockError as error:
             return _error(error)
 

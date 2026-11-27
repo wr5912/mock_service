@@ -7,6 +7,8 @@ from fastapi import APIRouter, HTTPException, Path, Request
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from app.control import observed_call
+
 from .soc import EVENT_TIME, alert, incident
 from .state import INCIDENT_IDS, MockError, asset
 
@@ -58,8 +60,9 @@ router = APIRouter(tags=["组合只读模拟"])
     summary="按标识查询基本模拟资产",
     description="只读取已有基本资产；未知标识返回 404，不创建资产或操作记录。",
 )
-def get_asset(assetId: Annotated[int, Path(ge=1)]) -> AssetResult:
-    return AssetResult(code=200, data=_asset(assetId))
+async def get_asset(assetId: Annotated[int, Path(ge=1)]) -> AssetResult:
+    return await observed_call("get_soc_asset_by_asset_id", "readonly:asset", {"assetId": assetId},
+                               lambda: AssetResult(code=200, data=_asset(assetId)))
 
 
 @router.get(
@@ -73,7 +76,7 @@ def get_asset(assetId: Annotated[int, Path(ge=1)]) -> AssetResult:
         "schema": AlertQuery.model_json_schema(),
     }]},
 )
-def list_alerts(request: Request) -> AlertsResult:
+async def list_alerts(request: Request) -> AlertsResult:
     try:
         query = AlertQuery.model_validate(dict(request.query_params))
     except ValidationError:
@@ -93,13 +96,14 @@ def list_alerts(request: Request) -> AlertsResult:
     offset = (query.pageNum - 1) * query.pageSize
     end = datetime.fromisoformat(EVENT_TIME.replace("Z", "+00:00"))
     start = end - timedelta(seconds=query.windowSeconds)
-    return AlertsResult(code=200, data=AlertGroups(
+    result = AlertsResult(code=200, data=AlertGroups(
         groups=groups[offset:offset + query.pageSize], totalGroups=len(groups),
         totalAlerts=sum(row["alertCount"] for row in groups),
         truncated=offset + query.pageSize < len(groups),
         **{"from": start.isoformat().replace("+00:00", "Z")}, to=EVENT_TIME,
         pageNum=query.pageNum, pageSize=query.pageSize,
     ))
+    return await observed_call("list_detect_alert", "readonly:alerts", query.model_dump(), lambda: result)
 
 
 _readonly_routes = list(router.routes)

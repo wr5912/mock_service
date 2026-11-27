@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from contextvars import ContextVar
 from datetime import datetime, timezone
 from hashlib import sha256
 import json
@@ -18,7 +19,23 @@ class MockError(Exception):
 
 
 LOCK = RLock()
-STATE = {name: {} for name in ("inspection", "policy", "policy_endpoints", "emergency", "claims", "writebacks", "reports", "requests")}
+FAMILIES = ("inspection", "policy", "policy_endpoints", "emergency", "claims", "writebacks", "reports", "requests")
+BUSINESS_STATE: ContextVar[dict | None] = ContextVar("mock_business_state", default=None)
+
+
+class ScopedState(dict):
+    """旧入口使用原状态；验收请求使用其 fixture 的同一业务处理器。"""
+
+    def __getitem__(self, key):
+        scoped = BUSINESS_STATE.get()
+        return scoped[key] if scoped is not None else super().__getitem__(key)
+
+    def values(self):
+        scoped = BUSINESS_STATE.get()
+        return scoped.values() if scoped is not None else super().values()
+
+
+STATE = ScopedState({name: {} for name in FAMILIES})
 ASSETS = [
     {"assetId": 9106, "id": 9106, "name": "测试应用服务器", "hostname": "mock-app", "ip": "192.0.2.10", "status": "ONLINE", "importance": "NORMAL", "type": "SERVER"},
     {"assetId": 9107, "id": 9107, "name": "测试数据库服务器", "hostname": "mock-db", "ip": "192.0.2.20", "status": "ONLINE", "importance": "NORMAL", "type": "SERVER"},

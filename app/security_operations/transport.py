@@ -12,6 +12,9 @@ from pydantic import ValidationError
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 
+from app.config import get_settings
+from app.control import RESOURCE_TEXT, RESOURCE_URI, observed_call
+
 from app.security_operations.catalog import TOOL_GROUPS
 from app.security_operations.handlers import invoke
 from app.security_operations.state import MockError
@@ -53,7 +56,8 @@ def _server(group: str) -> Server:
                 raise MockError(404, "未找到模拟工具。")
             request = ctx.request
             base_url = f"{request.url.scheme}://{request.url.netloc}"
-            payload = invoke(group, params.name, params.arguments or {}, base_url)
+            payload = await observed_call(params.name, f"mcp:{group}", params.arguments or {},
+                                          lambda: invoke(group, params.name, params.arguments or {}, base_url))
             failed = False
         except MockError as error:
             payload = {"code": error.status_code, "message": error.message}
@@ -67,7 +71,19 @@ def _server(group: str) -> Server:
     async def list_resources(
         ctx: ServerRequestContext, params: types.PaginatedRequestParams | None
     ) -> types.ListResourcesResult:
-        return types.ListResourcesResult(resources=[])
+        resources = [types.Resource(uri=RESOURCE_URI, name="SOC 固定资产摘要", mimeType="text/plain")]
+        return types.ListResourcesResult(resources=resources if get_settings().mock_control_enabled and group == "sec-ops" else [])
+
+    async def read_resource(
+        ctx: ServerRequestContext, params: types.ReadResourceRequestParams
+    ) -> types.ReadResourceResult:
+        if not get_settings().mock_control_enabled or group != "sec-ops" or str(params.uri) != RESOURCE_URI:
+            raise MCPError(-32602, "未找到模拟资源。")
+        try:
+            text = await observed_call("read_resource", RESOURCE_URI, {"uri": RESOURCE_URI}, lambda: RESOURCE_TEXT)
+        except MockError:
+            raise MCPError(-32603, "模拟资源读取未完成。") from None
+        return types.ReadResourceResult(contents=[types.TextResourceContents(uri=RESOURCE_URI, mimeType="text/plain", text=text)])
 
     async def list_resource_templates(
         ctx: ServerRequestContext, params: types.PaginatedRequestParams | None
@@ -80,6 +96,7 @@ def _server(group: str) -> Server:
         on_list_tools=list_tools,
         on_call_tool=call_tool,
         on_list_resources=list_resources,
+        on_read_resource=read_resource,
         on_list_resource_templates=list_resource_templates,
         get_tool_input_schema=lambda name: catalog.get(name, {}).get("inputSchema"),
     )

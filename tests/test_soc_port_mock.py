@@ -457,6 +457,7 @@ def owned_soc_process(tmp_path: Path):
     (local / ".local/soc-mocks").mkdir(parents=True)
     (local / ".venv").symlink_to(root / ".venv", target_is_directory=True)
     shutil.copyfile(root / "scripts/stop_soc_mcp_mocks.sh", local / "scripts/stop_soc_mcp_mocks.sh")
+    shutil.copyfile(root / "scripts/soc_mcp_mock_common.sh", local / "scripts/soc_mcp_mock_common.sh")
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         port = listener.getsockname()[1]

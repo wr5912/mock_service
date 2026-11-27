@@ -5,6 +5,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from app.config import Settings, get_settings
+from app.control import control_context, router as control_router
+from app.security_operations.state import MockError
 from app.llm import LOCAL_MODEL, generate_scenario
 from app.security_operations.composition import router as composition_router
 from app.security_operations.router import create_router
@@ -58,6 +60,8 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 app.include_router(threat_analysis_router)
+app.middleware("http")(control_context)
+app.include_router(control_router)
 app.include_router(composition_router)
 app.include_router(create_router())
 mount_mcp(app)
@@ -67,6 +71,11 @@ mount_mcp(app)
 async def invalid_request(_request: Request, _error: RequestValidationError) -> JSONResponse:
     """验证失败时不把请求值复制到公开响应。"""
     return JSONResponse(status_code=422, content={"detail": "请求参数无效"})
+
+
+@app.exception_handler(MockError)
+async def mock_failure(_request: Request, error: MockError) -> JSONResponse:
+    return JSONResponse(status_code=error.status_code, content={"detail": error.message})
 
 
 @app.get("/health", tags=["系统"], response_model=HealthResponse, summary="健康检查")
